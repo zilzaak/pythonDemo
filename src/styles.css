@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+.custom-back {
+	background-color: #220844 !important;
+	color: white ;
+	border-color: #220844 !important; /* Optional: Update the border color */
+	border-radius: 5px; /* Optional: Rounded corners */
+	transition: all 0.3s ease; /* Smooth transition for hover/focus effects */
+  }
+
+  /* Hover Effect */
+.custom-back:hover {
+	background-color: #1a0636 !important; /* Slightly darker background on hover */
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+	transform: scale(1.02); /* Slightly enlarge the button */
+  }
+  
+  /* Focus Effect */
+  .custom-back:focus {
+	outline: none; /* Remove default focus outline */
+	box-shadow: 0 0 10px 2px rgba(34, 8, 68, 0.7); /* Add glowing blur effect */
+	border-color: #ffffff !important; /* Highlight border */
+  }
+  
+  /* Active (Click) Effect */
+  .custom-back:active {
+	background-color: #140429 !important; /* Even darker background when clicked */
+	box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); /* Inner shadow for pressed effect */
+	transform: scale(0.98); /* Slightly shrink the button */
+  }

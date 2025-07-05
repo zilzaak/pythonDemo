@@ -1,0 +1,147 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><span style="color:#220844;"><b>Dashboard</b></span></li>
+                    <li class="breadcrumb-item active"><span style="color:#220844;"><b>User</b></span></li>
+                    <li class="breadcrumb-item active"><span style="color:#220844;"><b>Role</b></span></li>
+                    <li class="breadcrumb-item active"><span style="color:#220844;"><b>List</b></span></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+
+    <div class="card mb-2" style="background-color:transparent;">
+        <div class="card-body p-3">
+
+            <div class="col-md-12 mt-2">
+                <form (ngSubmit)="getList()" [formGroup]="searchForm">
+                    <div class="row mb-12">
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                              
+                                <input  type="text"  placeholder="Any field"   
+                                 formControlName="anyfield" class="form-control" />
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-10 text-center">
+                            <button 
+                            type="submit" 
+                            id="submit" 
+                            class="btn btn-success custom-back  btn-ripple">
+                            <i class="fa fa-search" aria-hidden="true"> Search</i>
+                          </button>
+                            &nbsp;
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- /Search Filter -->
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="card customCard">
+
+                <div class="card-header">
+                    <div class="card-tools">
+                        <a class="btn custom-back" routerLink="/user/role/create">
+                            <i class="fa fa-plus"></i> <span class="custom-back">Create</span> &nbsp;&nbsp;&nbsp;</a>
+                    </div>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <div class="d-flex justify-content-start pb-1">
+                            <div class="pgn-displayDataInfo">
+                                <span class="page-item disabled">Displaying ( {{ ( ((configPgn.pageNum-1) *
+                                    configPgn.pageSize) + (1) ) }} to {{configPgn.pngDiplayLastSeq}} of
+                                    {{configPgn.totalItem}} ) entries</span>
+                            </div>
+                        </div>
+
+                        <table id="genListTable" class="table table-striped custom-table">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let thisObj of listData | paginate : configPgn; let i = index">
+
+                                    <td>{{ ( ((configPgn.pageNum-1) * configPgn.pageSize) + (i+1) )
+                                        }}</td>
+
+                                    <td>{{thisObj?.name}}</td>
+
+                                    <td>{{thisObj?.description}}</td>
+
+                                    <td>
+
+                                        &nbsp;
+                                        <a class="btn custom-back btn-sm btn-primary"  routerLink="./view/{{thisObj.id}}"
+                                            target="_blank"><i class="fa fa-eye m-r-5"></i></a>&nbsp;&nbsp;
+
+                                        &nbsp;
+                                        <a class="btn custom-back btn-sm btn-info" routerLink="/user/role/edit/{{thisObj.id}}"
+                                            target="_blank"><i class="fa fa-pencil m-r-5"></i></a>&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="listData.length === 0">
+                                    <td colspan="10">
+                                        <h5 style="text-align: center;">No data found</h5>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="d-flex justify-content-end ">
+
+                            <div class="">
+                                Items per Page
+                                <select (change)="handlePageSizeChange($event)" class="pgn-pageSizeOption">
+                                    <option *ngFor="let size of configPgn.pageSizes" [value]="size">
+                                        {{ size }}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="pgn-pageSliceCt">
+                                <pagination-controls [responsive]="true" previousLabel="Prev" nextLabel="Next"
+                                    (pageChange)="handlePageChange($event)">
+                                </pagination-controls>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

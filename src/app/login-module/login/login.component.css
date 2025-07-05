@@ -1,0 +1,58 @@
+.fullDiv {
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    background-image: url('/assets/images/login_bg.jpg');
+    background-size: cover; /* Ensures the image covers the entire container */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+  
+    /* Flexbox for centering */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+  }
+  
+  .login-form {
+    max-width: 500px; /* Restrict width for better alignment */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners for a clean look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    background: rgba(255, 255, 255, 0.1); /* Very light transparency to blend with the background */
+    margin-bottom: 15%;
+  }
+  
+  .form-control {
+    height: 45px; /* Increase input height for better touchability */
+    font-size: 16px; /* Larger font size for readability */
+    border: 1px solid #ffffff; /* White border for visibility */
+    border-radius: 5px; /* Slightly rounded corners */
+    background: rgba(255, 255, 255, 0.1); /* 
+    color: #ffffff; /* White text for better contrast */
+  }
+  
+  .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Placeholder text color */
+  }
+  
+  .btn-primary {
+    height: 45px; /* Match button height with inputs */
+    font-size: 16px; /* Larger font size for the button */
+    border-radius: 5px; /* Rounded corners for consistency */
+    background-color: #007bff; /* Bootstrap primary blue */
+    border: none; /* Remove border */
+    color: #ffffff; /* White text */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .text-center a {
+    color: #ffffff; /* White text for the link */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .text-center a:hover {
+    text-decoration: underline; /* Add underline on hover */
+  }

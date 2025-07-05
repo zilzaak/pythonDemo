@@ -1,0 +1,32 @@
+<div class="fullDiv">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <!-- Username Input -->
+    <input
+      type="text"
+      class="form-control mb-3"
+      formControlName="username"
+      placeholder="Enter your username"
+    />
+
+    <!-- Password Input -->
+    <input
+      type="password"
+      class="form-control mb-3"
+      formControlName="password"
+      placeholder="Enter your password"
+    />
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">
+      Login
+    </button>
+
+    <!-- Forgot Password Link -->
+    <div class="text-center mt-3">
+      <a href="javascript:void(0)" (click)="openForgotPasswordModal()">Forgot Password?</a>
+    </div>
+  </form>
+</div>
+
+  <!-- Backdrop for Modal -->
+  <div *ngIf="showForgotPasswordModal" class="modal-backdrop fade show"></div>

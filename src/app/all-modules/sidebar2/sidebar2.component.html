@@ -1,0 +1,50 @@
+<div class="admin-dashboard">
+    <i class="fas fa-users">gg</i>
+  <i class="fas fa-laptop">gg</i>
+  <i class="fas fa-cog">gg</i>
+  <i class="fas fa-sliders-h">gg</i>
+    <!-- Toggle Button -->
+    <button class="toggle-btn" (click)="isSidebarCollapsed = !isSidebarCollapsed">
+      <i class="fas fa-bars"></i>
+    </button>
+  
+    <!-- Sidebar -->
+    <div class="sidebar" [@slideInOut]="!isSidebarCollapsed ? 'expanded' : 'collapsed'">
+      <div class="logo">
+        <h2>DPE Dashboard</h2>
+   
+      </div>
+      <br />
+      <nav class="menu">
+        <!-- Dynamic Menus Based on User Role -->
+        <div *ngFor="let menu of visibleMenus" class="menu-item" [class.collapsed]="menu.collapsed">
+          <!-- Main Menu Title -->
+          <a (click)="menu.collapsed = !menu.collapsed; setActiveMenu(menu.title)" href="javascript:void(0)" [class.active]="activeMenu === menu.title">
+            <!-- Icon -->
+            <i [class]="getMenuIcon(menu.title)"></i>
+            <!-- Title -->
+            <span *ngIf="!isSidebarCollapsed">{{ menu.title }}</span>
+            <!-- Collapse Indicator -->
+            <i class="fas fa-chevron-right" *ngIf="menu.collapsed && !isSidebarCollapsed"></i>
+            <i class="fas fa-chevron-down" *ngIf="!menu.collapsed && !isSidebarCollapsed"></i>
+          </a>
+  
+          <!-- Submenus -->
+          <div class="submenu-container" [@expandCollapse]="!menu.collapsed ? 'expanded' : 'collapsed'">
+            <ul class="submenu">
+              <li *ngFor="let submenu of menu.submenus">
+                <a [routerLink]="submenu.link" [class.active]="isActiveRoute(submenu.link)">
+                  {{ submenu.title }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="main-content" [class.collapsed]="isSidebarCollapsed">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
