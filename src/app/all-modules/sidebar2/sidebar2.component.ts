@@ -26,7 +26,7 @@ import { MenuItem } from 'src/app/login-module/models/menuItem';
 })
 
 export class Sidebar2Component implements OnInit, OnDestroy {
-  userRole!: string; 
+  permittedMenus!: string; 
   visibleMenus: MenuItem[] = []; 
   activeMenu: string = ''; 
   isSidebarCollapsed: boolean = false;
@@ -36,8 +36,8 @@ export class Sidebar2Component implements OnInit, OnDestroy {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem('roles') || '';
-    this.visibleMenus = this.allMenus.filter(menu => menu.roles.includes(this.userRole));
+    this.permittedMenus = localStorage.getItem('menus') || '';
+    this.visibleMenus = this.allMenus.filter(menu => menu.roles.includes(this.permittedMenus));
 
     this.router.events
       .pipe(takeUntil(this.destroy$)) 
