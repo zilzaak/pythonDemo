@@ -35,7 +35,7 @@
           <div class="submenu-container" [@expandCollapse]="!menu.collapsed ? 'expanded' : 'collapsed'">
             <ul class="submenu">
               <li *ngFor="let submenu of menu">
-                <a [routerlink]="submenu" [class.active]="isActiveRoute(submenu.frontUrl)">
+                <a [routerLink]="submenu.frontUrl" [class.active]="isActiveRoute(submenu.frontUrl)">
                   {{ submenu.title }}
                 </a>
               </li>
