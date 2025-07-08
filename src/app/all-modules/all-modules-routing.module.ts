@@ -23,6 +23,11 @@ const routes: Routes = [
       },
 
       {
+        path: 'base',
+        loadChildren: () => import('./base/base.module').then(m => m.BaseModule)
+      },
+
+      {
         path: 'service',
         loadChildren: () => import('./serviceModule/service.module').then(m => m.ServiceModule)
       },

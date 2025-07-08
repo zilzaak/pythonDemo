@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MenuItem } from 'src/app/login-module/models/menuItem';
+import { LoginServiceService } from 'src/app/login-module/service/login-service.service';
 
 @Component({
   selector: 'app-sidebar2',
@@ -20,24 +20,80 @@ import { MenuItem } from 'src/app/login-module/models/menuItem';
       trigger('expandCollapse', [
         state('expanded', style({ maxHeight: '500px', padding: '10px 0' })),
         state('collapsed', style({ maxHeight: '0px', padding: '0px' })),
-        transition('expanded <=> collapsed', animate('600ms ease-in-out')) // Slower animation
+        transition('expanded <=> collapsed', animate('600ms ease-in-out'))
       ])
     ]
 })
 
-export class Sidebar2Component implements OnInit, OnDestroy {
-  permittedMenus!: string; 
-  visibleMenus: MenuItem[] = []; 
+export class Sidebar2Component implements OnInit, OnDestroy { 
+  visibleMenus: any[] = []; 
   activeMenu: string = ''; 
   isSidebarCollapsed: boolean = false;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private loginService:LoginServiceService) {}
 
   ngOnInit(): void {
-    this.permittedMenus = localStorage.getItem('menus') || '';
-    this.visibleMenus = this.allMenus.filter(menu => menu.roles.includes(this.permittedMenus));
+ 
+    this.loginService.getMenu().subscribe(
+      (menus: any) => {
+        this.visibleMenus = menus.data; 
+      },); 
+
+    if(!this.visibleMenus){
+      this.visibleMenus =[ 
+        
+        {
+        title: 'PURCHASE',
+        roles: ['ADMIN', 'SUPER_ADMIN'],
+        collapsed: true,
+        submenus: [
+          { title: 'User List', frontUrl: '/user/list' },
+          { title: 'Role List', frontUrl: '/user/role/list' }
+        ]
+      },
+
+
+      {
+        title: 'INVENTORY',
+        roles: ['SCHOOL', 'SUPER_ADMIN'],
+        collapsed: true,
+        submenus: [
+          { title: 'List', frontUrl: '/school/list' }
+        ]
+      },
+
+
+      {
+        title: 'SALES',
+        roles: ['SCHOOL', 'SUPER_ADMIN'],
+        collapsed: true,
+        submenus: [
+          { title: 'List', frontUrl: '/service/list' },
+        ]
+      },
+      {
+        title: 'BASE',
+        roles: ['ADMIN', 'SUPER_ADMIN'],
+        collapsed: true,
+        submenus: [
+          { title: 'Create', frontUrl: '/base/menu/create' },
+          { title: 'List', frontUrl: '/base/menu/list' },
+        ]
+      },
+      {
+        title: 'BASE',
+        roles: ['ADMIN', 'SUPER_ADMIN'],
+        collapsed: true,
+        submenus: [
+          { title: 'Location', frontUrl: '/setting/user' },
+        ]
+      }
+       ];
+
+
+    }
 
     this.router.events
       .pipe(takeUntil(this.destroy$)) 
@@ -46,6 +102,7 @@ export class Sidebar2Component implements OnInit, OnDestroy {
           this.updateActiveMenu();
         }
       });
+
   }
 
   ngOnDestroy(): void {
@@ -69,51 +126,16 @@ export class Sidebar2Component implements OnInit, OnDestroy {
     this.activeMenu = menuTitle;
   }
 
-  isActiveRoute(link: string): boolean {
-    return this.router.url === link;
+  isActiveRoute(frontUrl: string): boolean {
+    return true;
   }
 
   updateActiveMenu(): void {
     const activeMenu = this.visibleMenus.find(menu =>
-      menu.submenus.some(submenu => this.router.url === submenu.link)
+      menu.submenus.some((submenu: { frontUrl: string; }) => this.router.url === submenu.frontUrl)
     );
     this.activeMenu = activeMenu?.title || '';
   }
 
   // Define all possible menus and submenus
-  allMenus: MenuItem[] = [
-    {
-      title: 'User',
-      roles: ['ADMIN', 'SUPER_ADMIN'],
-      collapsed: true,
-      submenus: [
-        { title: 'User List', link: '/user/list' },
-        { title: 'Role List', link: '/user/role/list' }
-      ]
-    },
-    {
-      title: 'Laptop',
-      roles: ['SCHOOL', 'SUPER_ADMIN'],
-      collapsed: true,
-      submenus: [
-        { title: 'List', link: '/school/list' }
-      ]
-    },
-    {
-      title: 'Service',
-      roles: ['SCHOOL', 'SUPER_ADMIN'],
-      collapsed: true,
-      submenus: [
-        { title: 'List', link: '/service/list' },
-      ]
-    },
-    {
-      title: 'Setting',
-      roles: ['ADMIN', 'SUPER_ADMIN'],
-      collapsed: true,
-      submenus: [
-        { title: 'Location', link: '/setting/user' },
-      ]
-    }
-  ];
 }

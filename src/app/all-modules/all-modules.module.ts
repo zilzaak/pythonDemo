@@ -8,11 +8,11 @@ import { Sidebar2Component } from './sidebar2/sidebar2.component';
 
 
 
+
 @NgModule({
   declarations: [
     AllModulesComponent,
-    Sidebar2Component,
-    
+    Sidebar2Component,   
   ],
   imports: [
     CommonModule,
@@ -21,4 +21,9 @@ import { Sidebar2Component } from './sidebar2/sidebar2.component';
 
   ]
 })
-export class AllModulesModule { }
+export class AllModulesModule {
+
+
+  
+
+ }
