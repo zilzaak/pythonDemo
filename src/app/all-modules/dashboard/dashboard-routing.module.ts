@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from './admin/admin-dashboard.component';
 import { DashboardComponent } from './dashboard.component';
-import { UserComponent } from '../userModule/user.component';
+
 
 const routes: Routes = [{
   path: '',
