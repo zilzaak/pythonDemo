@@ -12,29 +12,17 @@ const routes: Routes = [
     path: '',
     component: AllModulesComponent,
     children: [
-     {
+      {
         path: 'dashboard',
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
       },
-
-      {
-        path: 'school',
-        loadChildren: () => import('./schoolModule/school.module').then(m => m.SchoolModule)
-      },
-
       {
         path: 'base',
         loadChildren: () => import('./base/base.module').then(m => m.BaseModule)
       },
-
-      {
-        path: 'service',
-        loadChildren: () => import('./serviceModule/service.module').then(m => m.ServiceModule)
-      },
-
-      {
-        path: 'setting',
-        loadChildren: () => import('./settingModule/setting.module').then(m => m.SettingModule)
+            {
+        path: 'pricing',
+        loadChildren: () => import('./pricing/pricing.module').then(m => m.PricingModule)
       },
     ]
   }

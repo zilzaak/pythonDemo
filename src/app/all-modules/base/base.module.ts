@@ -12,6 +12,9 @@ import { UserCreateComponent } from './user/create/user-create.component';
 import { RoleCreateComponent } from './role/create/role-create.component';
 import { RoleEditComponent } from './role/edit/role-edit.component';
 import { RoleListComponent } from './role/list/role-list.component';
+import { PermissionListComponent } from './menuPerm/list/permission-list.component';
+import { PermissionCreateComponent } from './menuPerm/create/permission-create.component';
+import { PermissionEditComponent } from './menuPerm/edit/permission-edit.component';
 
 
 
@@ -20,7 +23,9 @@ import { RoleListComponent } from './role/list/role-list.component';
     BaseComponent,
     MenuListComponent,MenuCreateComponent,MenuEditComponent,
     UserCreateComponent,UserEditComponent,UserListComponent,
-    RoleCreateComponent,RoleEditComponent,RoleListComponent,
+    RoleCreateComponent,RoleEditComponent,RoleListComponent, 
+    PermissionListComponent, PermissionCreateComponent,
+     PermissionEditComponent,
   ],
   imports: [
     CommonModule,
