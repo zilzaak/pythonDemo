@@ -1,0 +1,53 @@
+.menu-item {
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.menu-parent {
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.menu-parent:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.toggle-icon {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.menu-link {
+  display: block;
+  padding: 10px 15px;
+  color: #e0e0e0;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.menu-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sub-menu {
+  list-style: none;
+  padding-left: 15px;
+  margin: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.has-children > .menu-parent {
+  font-weight: 500;
+  color: white;
+}
