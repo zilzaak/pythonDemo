@@ -20,6 +20,7 @@ import { LoginServiceService } from 'src/app/login-module/service/login-service.
       transition('expanded <=> collapsed', animate('600ms ease-in-out'))
     ])
   ]
+
 })
 export class Sidebar2Component implements OnInit {
   menuList: MenuItem[] = [];
@@ -29,6 +30,7 @@ export class Sidebar2Component implements OnInit {
 
   ngOnInit(): void {
     this.getMenu();
+
   }
 
   getMenu() {
@@ -43,4 +45,6 @@ export class Sidebar2Component implements OnInit {
       }
     });
   }
+
 }
+

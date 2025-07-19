@@ -9,12 +9,13 @@ import { ItemMenuComponent } from './sidebar2/item-menu.component';
 
 
 
+
 @NgModule({
   declarations: [
     AllModulesComponent,
     Sidebar2Component,
     ItemMenuComponent,
-    
+  
   ],
   imports: [
     CommonModule,
@@ -23,4 +24,9 @@ import { ItemMenuComponent } from './sidebar2/item-menu.component';
 
   ]
 })
-export class AllModulesModule { }
+export class AllModulesModule {
+
+
+  
+
+ }

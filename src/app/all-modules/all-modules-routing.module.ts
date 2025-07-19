@@ -18,13 +18,13 @@ const routes: Routes = [
       },
 
       {
-        path: 'user',
-        loadChildren: () => import('./userModule/user.module').then(m => m.UserModule)
+        path: 'school',
+        loadChildren: () => import('./schoolModule/school.module').then(m => m.SchoolModule)
       },
 
       {
-        path: 'school',
-        loadChildren: () => import('./schoolModule/school.module').then(m => m.SchoolModule)
+        path: 'base',
+        loadChildren: () => import('./base/base.module').then(m => m.BaseModule)
       },
 
       {

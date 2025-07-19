@@ -10,7 +10,6 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginServiceService {
 
-
   baseUrl = environment?.baseUrl;
 
   private key: any;
@@ -18,7 +17,6 @@ export class LoginServiceService {
   constructor(private http: HttpClient, private router: Router,) { }
 
 
-  //generate Token
   public generateToken(loginData: any) {
     return this.http.post('http://localhost:8000/auth/getToken', loginData);
   }
