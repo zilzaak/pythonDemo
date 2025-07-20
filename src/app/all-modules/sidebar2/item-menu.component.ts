@@ -12,6 +12,22 @@ export class ItemMenuComponent{
   @Input() level: number = 0;
   expandedMenus: { [id: string]: boolean } = {};
 
+
+
+  checkUrl(menu:MenuItem):boolean{
+    let  fruits = ['create', 'update','delete','get','edit'];
+  if(menu.apiPattern==null){
+   return true;
+  }
+  let strArr=menu.apiPattern.toString().split("/");
+  let lastPart=strArr[strArr.length-1];
+  if(fruits.includes(lastPart)){
+    return false;
+  }
+   return true;
+  }
+
+
   toggleMenu(menuId: string): void {
     this.expandedMenus[menuId] = !this.expandedMenus[menuId];
   }

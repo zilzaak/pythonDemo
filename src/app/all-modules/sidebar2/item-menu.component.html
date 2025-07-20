@@ -8,9 +8,12 @@
     </span>
   </div>
   
-  <a *ngIf="!menu.details.length" [routerLink]="menu.frontUrl" class="menu-link">
-    {{ menu.menu }}
-  </a>
+  <span *ngIf="!menu.details.length">
+    <a  *ngIf="checkUrl(menu)===true" [routerLink]="[menu.frontUrl]" class="menu-link">
+      {{ menu.menu }}
+    </a>
+  </span>
+
 
   <ul *ngIf="menu.details.length > 0 && isMenuExpanded(menu.id)" 
       class="sub-menu" 

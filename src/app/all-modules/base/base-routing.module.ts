@@ -14,33 +14,33 @@ const routes: Routes = [
 
   //all menu in this project 
  {
-    path: '/menu/list', component: MenuListComponent,
+    path: 'menu/list', component: MenuListComponent,
     data: { title: 'Menu List' },
   },
 
   {
-    path: '/menu/create', component: MenuCreateComponent,
+    path: 'menu/create', component: MenuCreateComponent,
     data: { title: 'Create Menu' },
   },
 
   {
-    path: '/menu/edit/:id', component: MenuEditComponent,
+    path: 'menu/edit/:id', component: MenuEditComponent,
     data: { title: 'Edit Menu' },
   },
 
 // menu permnission 
  {
-    path: '/menuPerm/list', component: MenuListComponent,
+    path: 'menuPerm/list', component: MenuListComponent,
     data: { title: 'Menu Permission' },
   },
 
   {
-    path: '/menuPerm/create', component: MenuCreateComponent,
+    path: 'menuPerm/create', component: MenuCreateComponent,
     data: { title: 'Permission List' },
   },
 
   {
-    path: '/menuPerm/edit/:id', component: MenuEditComponent,
+    path: 'menuPerm/edit/:id', component: MenuEditComponent,
     data: { title: 'Edit Persion' },
   },
 
@@ -48,32 +48,32 @@ const routes: Routes = [
   //user data
 
   {
-    path: '/user/list', component: UserListComponent,
+    path: 'user/list', component: UserListComponent,
     data: { title: 'Menu List' },
   },
 
   {
-    path: '/user/create', component: UserCreateComponent,
+    path: 'user/create', component: UserCreateComponent,
     data: { title: 'Create Menu' },
   },
 
   {
-    path: '/user/edit/:id', component: UserEditComponent,
+    path: 'user/edit/:id', component: UserEditComponent,
     data: { title: 'Edit Menu' },
   },
 
   {
-    path: '/role/list', component: RoleListComponent,
+    path: 'role/list', component: RoleListComponent,
     data: { title: 'Role List' },
   },
 
   {
-    path: '/role/create', component: RoleCreateComponent,
+    path: 'role/create', component: RoleCreateComponent,
     data: { title: 'Role Create' },
   },
 
   {
-    path: '/role/edit/:id', component: RoleEditComponent,
+    path: 'role/edit/:id', component: RoleEditComponent,
     data: { title: 'Role Edit' },
   },
 
