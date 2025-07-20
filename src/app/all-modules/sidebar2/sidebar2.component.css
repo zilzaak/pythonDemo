@@ -1,3 +1,24 @@
+.page-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar-container {
+  width: 250px; /* Adjust width as needed */
+  background: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  height: 100vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+}
+
+.content-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
 .sidebar-container {
   width: 250px;
   height: 100vh;
@@ -17,4 +38,11 @@
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+@media (max-width: 768px) {
+  .sidebar-container {
+    width: 60px; /* Collapsed state */
+    overflow-x: hidden;
+  }
 }

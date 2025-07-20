@@ -9,7 +9,8 @@
   </div>
   
   <span *ngIf="!menu.details.length">
-    <a  *ngIf="checkUrl(menu)===true" [routerLink]="[menu.frontUrl]" class="menu-link">
+    <a  *ngIf="checkUrl(menu)===true"   routerLinkActive="active-menu"
+    [routerLink]="[menu.frontUrl]" class="menu-link">
       {{ menu.menu }}
     </a>
   </span>
