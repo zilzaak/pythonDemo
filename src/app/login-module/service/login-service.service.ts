@@ -29,7 +29,7 @@ export class LoginServiceService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.get<any>('http://localhost:8000/permittedModule/getMenu', { headers })
+    return this.http.get<any>('http://localhost:8000/base/permittedModule/getMenu', { headers })
       .pipe(retry(3));
   
   }

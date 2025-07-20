@@ -11,6 +11,8 @@ import { RoleCreateComponent } from './role/create/role-create.component';
 import { RoleEditComponent } from './role/edit/role-edit.component';
 
 const routes: Routes = [
+
+  //all menu in this project 
  {
     path: '/menu/list', component: MenuListComponent,
     data: { title: 'Menu List' },
@@ -25,6 +27,25 @@ const routes: Routes = [
     path: '/menu/edit/:id', component: MenuEditComponent,
     data: { title: 'Edit Menu' },
   },
+
+// menu permnission 
+ {
+    path: '/menuPerm/list', component: MenuListComponent,
+    data: { title: 'Menu Permission' },
+  },
+
+  {
+    path: '/menuPerm/create', component: MenuCreateComponent,
+    data: { title: 'Permission List' },
+  },
+
+  {
+    path: '/menuPerm/edit/:id', component: MenuEditComponent,
+    data: { title: 'Edit Persion' },
+  },
+
+
+  //user data
 
   {
     path: '/user/list', component: UserListComponent,

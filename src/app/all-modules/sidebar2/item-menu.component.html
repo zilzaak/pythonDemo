@@ -1,0 +1,24 @@
+<li class="menu-item" [class.has-children]="menu.details.length > 0">
+  <div *ngIf="menu.details.length > 0" class="menu-parent" (click)="toggleMenu(menu.id)">
+    <span class="menu-label">
+      {{ menu.menu }}
+      <span class="toggle-icon">
+        {{ isMenuExpanded(menu.id) ? '▼' : '►' }}
+      </span>
+    </span>
+  </div>
+  
+  <a *ngIf="!menu.details.length" [routerLink]="menu.frontUrl" class="menu-link">
+    {{ menu.menu }}
+  </a>
+
+  <ul *ngIf="menu.details.length > 0 && isMenuExpanded(menu.id)" 
+      class="sub-menu" 
+      [style.padding-left.px]="15 + (level * 15)">
+    <app-item-menu 
+      *ngFor="let child of menu.details"
+      [menu]="child"
+      [level]="level + 1">
+    </app-item-menu>
+  </ul>
+</li>
