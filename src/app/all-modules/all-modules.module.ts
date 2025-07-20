@@ -11,6 +11,10 @@ import { OrgEditComponent } from './common/organization/edit/org-edit.component'
 import { OrgListComponent } from './common/organization/list/org-list.component';
 import { ProductCreateComponent } from './common/product/create/product-create.component';
 import { ProductListComponent } from './common/product/list/product-list.component';
+import { ProducteditComponent } from './common/product/edit/productedit.component';
+import { ProductCritCreateComponent } from './common/productCriteria/create/product-crit-create.component';
+import { ProductCritEditComponent } from './common/productCriteria/edit/product-crit-edit.component';
+import { ProductCritComponent } from './common/productCriteria/list/product-crit.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,10 @@ import { ProductListComponent } from './common/product/list/product-list.compone
     OrgListComponent,
     ProductCreateComponent,
     ProductListComponent,
+    ProducteditComponent,
+    ProductCritCreateComponent,
+    ProductCritEditComponent,
+    ProductCritComponent,
   
   ],
   imports: [
