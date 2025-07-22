@@ -15,6 +15,7 @@ import { RoleListComponent } from './role/list/role-list.component';
 import { PermissionListComponent } from './menuPerm/list/permission-list.component';
 import { PermissionCreateComponent } from './menuPerm/create/permission-create.component';
 import { PermissionEditComponent } from './menuPerm/edit/permission-edit.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -29,7 +30,9 @@ import { PermissionEditComponent } from './menuPerm/edit/permission-edit.compone
   ],
   imports: [
     CommonModule,
-    BaseRoutingModule
+    BaseRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class BaseModule { 
