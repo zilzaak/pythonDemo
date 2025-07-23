@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -22,6 +22,21 @@ export class CommonServiceService {
     console.log("@sendGetRequest");
     return this.http.get(apiURL, {params: queryParams});
 
+  }
+
+  getWithToken(url: string, params?: any) {
+    const token = localStorage.getItem('jwtToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get<any>(url, { headers, params }).pipe(retry(3));
+  }
+
+  // Existing method (for reference)
+  getMenu() {
+    return this.getWithToken('http://localhost:8000/base/permittedModule/getMenu');
   }
 
   public sendPostRequest(apiURL:any, formData:any)

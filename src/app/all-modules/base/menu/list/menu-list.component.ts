@@ -30,18 +30,26 @@ export class MenuListComponent implements OnInit {
   }
 
   getListData(){
-    let queryParams={};
     let apiUrl=this.baseUrl+"/base/module/list";
-    this.commonService.sendGetRequest(apiUrl,queryParams).subscribe(
-      (response: any) => {
-console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-console.log(response)
+    const params = {
+      moduleId: '66',
+      pageNum: '1',
+      pageSize: '10'
+    };
 
-     },
-     (error) => {
-       alert('Invalid username or password');
-     });
-
+    return this.commonService.getWithToken(
+      'http://localhost:8000/base/module/list',
+      params
+    ).subscribe({
+      next: (response) => {
+       console.log('Module list:', response);
+      },
+      error: (err) => {
+        console.error('Failed to load module list', err);
+      }
+    });
   }
+
+
 
 }
