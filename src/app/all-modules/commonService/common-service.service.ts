@@ -31,6 +31,10 @@ export class CommonServiceService {
       'Content-Type': 'application/json'
     });
 
+    console.log(url)
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+    console.log(headers)
+
     return this.http.get<any>(url, { headers, params }).pipe(retry(3));
   }
 

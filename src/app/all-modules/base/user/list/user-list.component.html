@@ -1,1 +1,26 @@
-<p>user-list works!</p>
+<div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>SL</th>
+          <th>User</th>
+          <th>Roles</th>
+          <th>Created</th>
+          <th>Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of listData; index as i">
+          <td data-label="SL">{{ i + 1 }}</td>
+          <td data-label="User">{{ user.username }}</td>
+          <td data-label="Roles">{{ user.roles }}</td>
+          <td>{{ user.created | date }}</td>
+          <td>{{ user.updated | date }}</td>
+        </tr>
+  
+        <tr *ngIf="listData.length === 0">
+          <td colspan="3">No users found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
