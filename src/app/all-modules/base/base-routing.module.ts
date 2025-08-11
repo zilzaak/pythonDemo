@@ -9,6 +9,9 @@ import { UserEditComponent } from './user/edit/user-edit.component';
 import { RoleListComponent } from './role/list/role-list.component';
 import { RoleCreateComponent } from './role/create/role-create.component';
 import { RoleEditComponent } from './role/edit/role-edit.component';
+import { PermissionListComponent } from './menuPerm/list/permission-list.component';
+import { PermissionCreateComponent } from './menuPerm/create/permission-create.component';
+import { PermissionEditComponent } from './menuPerm/edit/permission-edit.component';
 
 const routes: Routes = [
 
@@ -30,17 +33,17 @@ const routes: Routes = [
 
 // menu permnission 
  {
-    path: 'menuPerm/list', component: MenuListComponent,
+    path: 'menuPerm/list', component: PermissionListComponent,
     data: { title: 'Menu Permission' },
   },
 
   {
-    path: 'menuPerm/create', component: MenuCreateComponent,
+    path: 'menuPerm/create', component: PermissionCreateComponent,
     data: { title: 'Permission List' },
   },
 
   {
-    path: 'menuPerm/edit/:id', component: MenuEditComponent,
+    path: 'menuPerm/edit/:id', component: PermissionEditComponent,
     data: { title: 'Edit Persion' },
   },
 
