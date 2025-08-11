@@ -19,6 +19,7 @@ export class UserCreateComponent implements OnInit {
   pageTitle!: any;
   baseUrl = environment.baseUrl;
   roleList: any[]=[];
+  selectedRole:any[]=[];
 
   ngOnInit(): void {
     this.initializeForm();
@@ -50,7 +51,22 @@ export class UserCreateComponent implements OnInit {
         }
       }
     )
+  }
 
+  setRoles(index:any){
+    console.log("======================");
+    console.log(this.selectedRole);
+    let role:any;
+    role=this.roleList[index];
+    let i:any;  i=0;
+    for(let obj of this.selectedRole){
+       if(role.id===obj.id){
+        this.selectedRole.splice(i,1);
+        return;
+       }      
+      i++;
+      }
+    this.selectedRole.push(role);
 
   }
 
