@@ -1,1 +1,94 @@
-<p>user-create works!</p>
+<div class="container-fluid mt-3">
+    <div class="row">
+<div class="col col-10">
+    <h4 class="mb-3">{{pageTitle}}</h4>
+</div>
+<div  style="text-align:right;"class="col col-2" >
+    <a [routerLink]="['/base/user/list']" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-times me-1"></i> Cancel
+      </a>
+
+</div>
+    </div>
+
+  
+
+<div class="row">
+
+<div class="col col-8" style="text-align:right;">
+    <form [formGroup]="createForm" class="bg-light p-3 rounded shadow-sm" style="max-width: 600px; margin: 0 auto;">
+  
+        <!-- Display Name -->
+        <div class="mb-2">
+          <label for="displayName" class="form-label small">Full Name</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            id="displayName"
+            formControlName="displayName"
+            placeholder="Enter display name"
+          />
+        </div>
+    
+        <!-- Email -->
+        <div class="mb-2">
+          <label for="email" class="form-label small">Email</label>
+          <input
+            type="email"
+            class="form-control form-control-sm"
+            id="email"
+            formControlName="email"
+            placeholder="Enter email"
+          />
+        </div>
+    
+        <!-- Phone -->
+        <div class="mb-2">
+          <label for="phone" class="form-label small">Phone</label>
+          <input
+            type="tel"
+            class="form-control form-control-sm"
+            id="phone"
+            formControlName="phone"
+            placeholder="Enter phone"
+          />
+        </div>
+    
+        <!-- Address -->
+        <div class="mb-2">
+          <label for="address" class="form-label small">Address</label>
+          <textarea
+            class="form-control form-control-sm"
+            id="address"
+            formControlName="address"
+            rows="2"
+            placeholder="Enter address"
+          ></textarea>
+        </div>
+    
+        <!-- Enabled Checkbox -->
+        <div class="mb-3 form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="enabled"
+            formControlName="enabled"
+          />
+          <label class="form-check-label small" for="enabled">Enabled</label>
+        </div>
+    
+        <!-- Action Buttons -->
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-sm btn-primary">
+            <i class="fas fa-save me-1"></i> Save
+          </button>
+        </div>
+       </form>
+
+</div>
+<div class="col col-4">
+</div>
+</div>
+
+
+  </div>

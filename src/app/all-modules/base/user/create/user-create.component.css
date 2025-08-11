@@ -1,0 +1,11 @@
+/* Reduce default form control padding */
+.form-control-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Compact label size */
+  .form-label {
+    font-size: 0.85rem;
+    margin-bottom: 0.2rem;
+  }

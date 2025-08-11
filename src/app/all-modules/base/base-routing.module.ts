@@ -57,12 +57,16 @@ const routes: Routes = [
 
   {
     path: 'user/create', component: UserCreateComponent,
-    data: { title: 'Create Menu' },
+    data: { title: 'Create User' },
   },
 
   {
     path: 'user/edit/:id', component: UserEditComponent,
-    data: { title: 'Edit Menu' },
+    data: { title: 'Edit User' },
+  },
+  {
+    path: 'user/view/:id', component: UserEditComponent,
+    data: { title: 'View User' },
   },
 
   {
