@@ -35,7 +35,6 @@ export class UserCreateComponent implements OnInit {
       phone: [''],
       address: ['', Validators.required],
       displayName: ['', Validators.required],
-      roles:['']
     });
   }
 
@@ -67,13 +66,25 @@ export class UserCreateComponent implements OnInit {
       i++;
       }
     this.selectedRole.push(role);
-
   }
 
 
-  onSubmit() {
-
-
+  onSubmit(){
+    let api:any;
+    api=this.baseUrl+"/base/user/create";
+    let roleStrList:any[];
+    roleStrList=[];
+    let user:any=this.createForm.value;
+    for(let x of this.selectedRole){
+      roleStrList.push(x.authority);
+    }
+     user.roles=roleStrList;
+     this.commmonService.sendPostRequest<any>(api,user).subscribe(res => {
+     alert("successfully created data ");
+       
+    });
   }
+
+
 
 }

@@ -12,9 +12,9 @@ export class CommonServiceService {
   
    baseUrl = environment?.baseUrl;
   
-  constructor(private http: HttpClient, private router: Router,) {
+    constructor(private http: HttpClient, private router: Router,) {
 
-   }
+    }
 
 
    public sendGetRequest(apiURL:any, queryParams:any){
@@ -25,17 +25,8 @@ export class CommonServiceService {
   }
 
   getWithToken(url: string, params?: any) {
-    const token = localStorage.getItem('jwtToken');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-
-    console.log(url)
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    console.log(headers)
-
-    return this.http.get<any>(url, { headers, params }).pipe(retry(3));
+    const headers = this.getHeaders();
+   return this.http.get<any>(url, { headers, params }).pipe(retry(3));
   }
 
   // Existing method (for reference)
@@ -43,10 +34,18 @@ export class CommonServiceService {
     return this.getWithToken('http://localhost:8000/base/permittedModule/getMenu');
   }
 
-  public sendPostRequest(apiURL:any, formData:any)
-  {
-    console.log("@sendPostRequest");
-    return this.http.post(apiURL, formData);
+  public sendPostRequest<T>(apiURL:any, data: any): Observable<T> {
+    const headers = this.getHeaders();
+    return this.http.post<T>(apiURL, data, { headers });
+  }
+
+  private getHeaders(): HttpHeaders {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
   }
  
   public sendPutRequest(apiURL:any,formData:any){
