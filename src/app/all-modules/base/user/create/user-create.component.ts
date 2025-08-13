@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -10,21 +10,21 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./user-create.component.css']
 })
 export class UserCreateComponent implements OnInit {
-
   constructor(private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private activeRouter: ActivatedRoute,
+    private router:Router
   ) { }
   createForm!: FormGroup;
   pageTitle!: any;
   baseUrl = environment.baseUrl;
   roleList: any[]=[];
   selectedRole:any[]=[];
-
+  loading = false;
   ngOnInit(): void {
     this.initializeForm();
     this.fetchRoles();
-    this.pageTitle = this.route.snapshot.data['title'];
+    this.pageTitle = this.activeRouter.snapshot.data['title'];
   }
 
 
@@ -69,22 +69,27 @@ export class UserCreateComponent implements OnInit {
   }
 
 
-  onSubmit(){
-    let api:any;
-    api=this.baseUrl+"/base/user/create";
-    let roleStrList:any[];
-    roleStrList=[];
-    let user:any=this.createForm.value;
-    for(let x of this.selectedRole){
-      roleStrList.push(x.authority);
-    }
-     user.roles=roleStrList;
-     this.commmonService.sendPostRequest<any>(api,user).subscribe(res => {
-     alert("successfully created data ");
-       
+  onSubmit() {
+    this.loading=true;
+    const api = this.baseUrl + "/base/user/create";
+    const user = { ...this.createForm.value };
+    user.roles = this.selectedRole.map(x => x.authority);  
+    this.commmonService.sendPostRequest<any>(api, user).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.router.navigate(['/base/user/list']);
+        } else {
+          alert(response.message);
+          this.router.navigate(['/base/user/list']);
+        }
+      }
     });
   }
 
 
 
 }
+function ViewChild(arg0: string): (target: UserCreateComponent, propertyKey: "backBtn") => void {
+  throw new Error('Function not implemented.');
+}
+

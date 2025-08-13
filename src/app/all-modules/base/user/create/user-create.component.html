@@ -4,8 +4,8 @@
     <h4 class="mb-3">{{pageTitle}}</h4>
 </div>
 <div  style="text-align:right;"class="col col-2" >
-    <a [routerLink]="['/base/user/list']" class="btn btn-sm btn-outline-secondary">
-        <i class="fas fa-times me-1"></i> Cancel
+    <a id="backBtn"   [routerLink]="['/base/user/list']" class="btn btn-sm btn-outline-secondary"> 
+        <i class="fas fa-times me-1"></i> Back
       </a>
 
 </div>
@@ -16,7 +16,7 @@
 <div class="row">
 
 <div class="col col-8" style="text-align:right;">
-    <form [formGroup]="createForm" class="bg-light p-3 rounded shadow-sm" style="max-width: 600px; margin: 0 auto;">
+    <form  [formGroup]="createForm" class="bg-light p-3 rounded shadow-sm" style="max-width: 600px; margin: 0 auto;">
   
         <!-- Display Name -->
         <div class="mb-2">
@@ -97,5 +97,8 @@
 </div>
 </div>
 
-
+<div *ngIf="loading" class="loader-overlay">
+  <div class="spinner"></div>
+  <span>Saving user...</span>
+</div>
   </div>
