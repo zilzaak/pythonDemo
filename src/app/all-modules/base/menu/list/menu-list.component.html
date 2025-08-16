@@ -1,1 +1,43 @@
-<p>menu-list works!</p>
+<!-- Main Content Area -->
+<div class="content-container">
+    <button  class="btn btn-primary btn-sm" routerLink="/base/menu/create">
+       <i class="fas fa-plus-circle"></i>Create</button> <br/>
+    <!-- Table Container -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>SL</th>
+            <th>Parent menu</th>
+            <th>Child Menu</th>
+            <th>Backend Url</th>
+            <th>Front Url</th>
+            <th>Method</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th>Edit</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of listData; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ x.moduleName}}</td>
+            <td>{{ x.parentModule}}</td>
+            <td>{{ x.apiPattern}}</td>
+            <td>{{ x.frontUrl}}</td>
+            <td>{{ x.methodName}}</td>
+            <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
+            <td><a  routerLink="/base/menu/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
+            <td> <a  routerLink="/base/menu/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
+
+          </tr>
+  
+          <tr *ngIf="listData.length === 0">
+            <td colspan="5">No users found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { BaseRoutingModule } from './base-routing.module';
 import { BaseComponent } from './base.component';
 import { MenuListComponent } from './menu/list/menu-list.component';
-import { MenuEditComponent } from './menu/edit/menu-edit.component';
 import { UserListComponent } from './user/list/user-list.component';
 import { MenuCreateComponent } from './menu/create/menu-create.component';
 import { UserCreateComponent } from './user/create/user-create.component';
@@ -22,7 +21,7 @@ import { OrgCreateComponent } from './org/create/org-create.component';
 @NgModule({
   declarations: [
     BaseComponent,
-    MenuListComponent,MenuCreateComponent,MenuEditComponent,
+    MenuListComponent,MenuCreateComponent,
     UserCreateComponent,UserListComponent,
     RoleCreateComponent,RoleListComponent, 
     PermissionListComponent, PermissionCreateComponent,

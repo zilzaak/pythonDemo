@@ -32,7 +32,6 @@ export class MenuListComponent implements OnInit {
   getListData(){
     let apiUrl=this.baseUrl+"/base/module/list";
     const params = {
-      moduleId: '66',
       pageNum: '1',
       pageSize: '10'
     };
@@ -42,7 +41,7 @@ export class MenuListComponent implements OnInit {
       params
     ).subscribe({
       next: (response) => {
-       console.log('Module list:', response);
+       this.listData=response.data.listData;
       },
       error: (err) => {
         console.error('Failed to load module list', err);

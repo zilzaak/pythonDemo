@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MenuListComponent } from './menu/list/menu-list.component';
 import { MenuCreateComponent } from './menu/create/menu-create.component';
-import { MenuEditComponent } from './menu/edit/menu-edit.component';
 import { UserListComponent } from './user/list/user-list.component';
 import { UserCreateComponent } from './user/create/user-create.component';
 import { RoleListComponent } from './role/list/role-list.component';
@@ -10,23 +9,29 @@ import { RoleCreateComponent } from './role/create/role-create.component';
 import { PermissionListComponent } from './menuPerm/list/permission-list.component';
 import { PermissionCreateComponent } from './menuPerm/create/permission-create.component';
 import { PermissionEditComponent } from './menuPerm/edit/permission-edit.component';
+import { OrgCreateComponent } from './org/create/org-create.component';
+import { OrgListComponent } from '../common/organization/list/org-list.component';
 
 const routes: Routes = [
 
   //all menu in this project 
  {
     path: 'menu/list', component: MenuListComponent,
-    data: { title: 'Menu List' },
+    data: { title: 'List' },
   },
 
   {
     path: 'menu/create', component: MenuCreateComponent,
-    data: { title: 'Create Menu' },
+    data: { title: 'Create' },
   },
 
   {
-    path: 'menu/edit/:id', component: MenuEditComponent,
-    data: { title: 'Edit Menu' },
+    path: 'menu/edit/:id', component: MenuCreateComponent,
+    data: { title: 'Edit' },
+  },
+  {
+    path: 'menu/view/:id', component: MenuCreateComponent,
+    data: { title: 'View' },
   },
 
 // menu permnission 
@@ -84,6 +89,23 @@ const routes: Routes = [
   {
     path: 'role/edit/:id', component: RoleCreateComponent,
     data: { title: 'Role Edit' },
+  },
+  {
+    path: 'organization/create', component: RoleCreateComponent,
+    data: { title: 'Create' },
+  },
+  {
+    path: 'organization/view/:id', component: OrgCreateComponent,
+    data: { title: 'View' },
+  },
+
+  {
+    path: 'organization/edit/:id', component: OrgCreateComponent,
+    data: { title: 'Edit' },
+  },
+  {
+    path: 'organization/list', component: OrgListComponent,
+    data: { title: 'List' },
   },
 
 ];
