@@ -5,10 +5,8 @@ import { MenuCreateComponent } from './menu/create/menu-create.component';
 import { MenuEditComponent } from './menu/edit/menu-edit.component';
 import { UserListComponent } from './user/list/user-list.component';
 import { UserCreateComponent } from './user/create/user-create.component';
-import { UserEditComponent } from './user/edit/user-edit.component';
 import { RoleListComponent } from './role/list/role-list.component';
 import { RoleCreateComponent } from './role/create/role-create.component';
-import { RoleEditComponent } from './role/edit/role-edit.component';
 import { PermissionListComponent } from './menuPerm/list/permission-list.component';
 import { PermissionCreateComponent } from './menuPerm/create/permission-create.component';
 import { PermissionEditComponent } from './menuPerm/edit/permission-edit.component';
@@ -61,11 +59,11 @@ const routes: Routes = [
   },
 
   {
-    path: 'user/edit/:id', component: UserEditComponent,
+    path: 'user/edit/:id', component: UserCreateComponent,
     data: { title: 'Edit User' },
   },
   {
-    path: 'user/view/:id', component: UserEditComponent,
+    path: 'user/view/:id', component: UserCreateComponent,
     data: { title: 'View User' },
   },
 
@@ -78,9 +76,13 @@ const routes: Routes = [
     path: 'role/create', component: RoleCreateComponent,
     data: { title: 'Role Create' },
   },
+  {
+    path: 'role/view/:id', component: RoleCreateComponent,
+    data: { title: 'Role View' },
+  },
 
   {
-    path: 'role/edit/:id', component: RoleEditComponent,
+    path: 'role/edit/:id', component: RoleCreateComponent,
     data: { title: 'Role Edit' },
   },
 

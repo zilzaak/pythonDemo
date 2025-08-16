@@ -74,7 +74,7 @@ export class UserCreateComponent implements OnInit {
     const api = this.baseUrl + "/base/user/create";
     const user = { ...this.createForm.value };
     user.roles = this.selectedRole.map(x => x.authority);  
-    this.commmonService.sendPostRequest<any>(api, user).subscribe({
+    this.commmonService.sendPostPutReq<any>(api, user,"post").subscribe({
       next: (response: any) => {
         if (response.success) {
           this.router.navigate(['/base/user/list']);
@@ -86,10 +86,6 @@ export class UserCreateComponent implements OnInit {
     });
   }
 
-
-
 }
-function ViewChild(arg0: string): (target: UserCreateComponent, propertyKey: "backBtn") => void {
-  throw new Error('Function not implemented.');
-}
+
 

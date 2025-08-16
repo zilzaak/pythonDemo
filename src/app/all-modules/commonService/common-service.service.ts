@@ -18,9 +18,8 @@ export class CommonServiceService {
 
 
    public sendGetRequest(apiURL:any, queryParams:any){
-
-    console.log("@sendGetRequest");
-    return this.http.get(apiURL, {params: queryParams});
+   console.log("@sendGetRequest");
+  return this.http.get(apiURL, {params: queryParams});
 
   }
 
@@ -34,10 +33,23 @@ export class CommonServiceService {
     return this.getWithToken('http://localhost:8000/base/permittedModule/getMenu');
   }
 
-  public sendPostRequest<T>(apiURL:any, data: any): Observable<T> {
-    const headers = this.getHeaders();
-    return this.http.post<T>(apiURL, data, { headers });
-  }
+
+ public sendPostPutReq<T>(apiURL:any, data: any,method:any): Observable<T>{
+  const headers = this.getHeaders();
+if(method.toString()==='post'){
+  return this.http.post<T>(apiURL, data, { headers });
+}
+else if(method.toString()==='put'){
+  return this.http.put<T>(apiURL, data, { headers });
+}
+else if(method.toString()==='patch'){
+  return this.http.patch<T>(apiURL, data, { headers });
+}
+else{
+  return this.http.patch<T>(apiURL, data, { headers });
+}
+ }
+
 
   private getHeaders(): HttpHeaders {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -47,17 +59,9 @@ export class CommonServiceService {
     }
     return headers;
   }
- 
-  public sendPutRequest(apiURL:any,formData:any){
-
-    console.log("@sendPutRequest");
-    return this.http.put(apiURL,formData);
-
-  }
 
 
   public sendDeleteRequest(apiURL:any, formData:any){
-
     console.log("@sendDeleteRequest");
     return this.http.delete(apiURL, formData);
 

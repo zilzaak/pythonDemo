@@ -31,8 +31,9 @@
             <td>{{ user?.enabled}}</td>
             <td>{{ user.created | date: 'yyyy-MM-dd' }}</td>
             <td>{{ user.updated | date: 'yyyy-MM-dd' }}</td>
-            <td> <a  routerLink="/base/user/edit/user.id"><i class="fas fa-eye"></i></a></td>
-            <td><a  routerLink="/base/user/view/user.id"><i class="fas fa-edit"></i></a></td>
+            <td><a  routerLink="/base/user/edit/{{user.id}}"><i class="fas fa-edit"></i></a></td>
+            <td> <a  routerLink="/base/user/view/{{user.id}}"><i class="fas fa-eye"></i></a></td>
+
           </tr>
   
           <tr *ngIf="listData.length === 0">

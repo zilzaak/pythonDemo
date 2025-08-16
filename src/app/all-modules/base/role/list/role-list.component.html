@@ -1,1 +1,35 @@
-<p>role-list works!</p>
+<!-- Main Content Area -->
+<div class="content-container">
+    <button  class="btn btn-primary btn-sm" routerLink="/base/role/create">
+       <i class="fas fa-plus-circle"></i>Create</button> <br/>
+    <!-- Table Container -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>SL</th>
+            <th>Authority</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th>Edit</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let role of listData; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ role.authority }}</td>
+            <td>{{ role.created | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ role.updated | date: 'yyyy-MM-dd' }}</td>
+            <td><a  routerLink="/base/role/edit/{{role.id}}"><i class="fas fa-edit"></i></a></td>
+            <td> <a  routerLink="/base/role/view/{{role.id}}"><i class="fas fa-eye"></i></a></td>
+
+          </tr>
+  
+          <tr *ngIf="listData.length === 0">
+            <td colspan="5">No users found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
