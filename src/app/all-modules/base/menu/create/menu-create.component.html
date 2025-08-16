@@ -1,1 +1,58 @@
-<p>menu-create works!</p>
+<div class="container-fluid mt-3">
+    <div class="row">
+<div class="col col-10">
+    <h4 class="mb-3">Menu {{pageTitle}}</h4>
+</div>
+<div  style="text-align:right;"class="col col-2" >
+    <a id="backBtn"   [routerLink]="['/base/menu/list']" class="btn btn-sm btn-outline-secondary"> 
+        <i class="fas fa-times me-1"></i> Back
+      </a>
+
+</div>
+    </div>
+
+  
+
+<div class="row">
+
+<div class="col col-8" style="text-align:right;">
+    <form  [formGroup]="createForm" class="bg-light p-3 rounded shadow-sm" style="max-width: 600px; margin: 0 auto;">
+        <!-- Phone -->
+        <div class="mb-1" >
+          <input 
+            type="tel"
+            class="form-control"
+            id="phone"
+            formControlName="authority"
+            placeholder="Enter Authority"
+          />
+        </div>
+        <div class="mb-1">
+            <input
+              type="text"
+              class="form-control"
+              id="phone"
+              formControlName="remarks"
+              placeholder="Remarks"
+            />
+          </div>
+   
+          <br/>
+        <!-- Action Buttons -->
+        <div class="d-flex gap-2" *ngIf="showSaveBtn">
+          <button type="submit" class="btn btn-sm btn-primary" (click)="onSubmit()">
+            <i class="fas fa-save me-1"></i> Save
+          </button>
+        </div>
+       </form>
+
+</div>
+<div class="col col-4">
+</div>
+</div>
+
+<div *ngIf="loading" class="loader-overlay">
+  <div class="spinner"></div>
+  <span>Saving user...</span>
+</div>
+  </div>
