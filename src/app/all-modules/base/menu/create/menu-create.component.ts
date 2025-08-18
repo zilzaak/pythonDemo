@@ -14,44 +14,45 @@ export class MenuCreateComponent implements OnInit {
   constructor(private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,
     private activeRouter: ActivatedRoute,
-    private router:Router
+    private router: Router
   ) { }
   createForm!: FormGroup;
   pageTitle!: any;
-  opMode!:any;
-  api!:any;
+  opMode!: any;
+  api!: any;
   baseUrl = environment.baseUrl;
   loading = false;
-  showSaveBtn:boolean = true; 
+  showSaveBtn: boolean = true;
   ngOnInit(): void {
     this.initializeForm();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
-    if(this.pageTitle==='Create'){
-      this.opMode="create";
-      this.api= this.baseUrl + "/base/role/create";
+    if (this.pageTitle === 'Create') {
+      this.opMode = "create";
+      this.api = this.baseUrl + "/base/role/create";
     }
-    if(this.pageTitle==='Edit'){
-      this.api= this.baseUrl + "/base/role/update";
-      this.opMode="edit";
+    if (this.pageTitle === 'Edit') {
+      this.api = this.baseUrl + "/base/role/update";
+      this.opMode = "edit";
       this.formData(this.activeRouter.snapshot.params.id);
     }
-    if(this.pageTitle==='View'){
-      this.api= this.baseUrl + "/base/role/view";
-      this.opMode="view";
+    if (this.pageTitle === 'View') {
+      this.api = this.baseUrl + "/base/role/view";
+      this.opMode = "view";
       this.createForm.controls['authority'].disable();
       this.createForm.controls['remarks'].disable();
-      this.showSaveBtn=false;
-      
+      this.showSaveBtn = false;
+
     }
   }
 
 
   formData(id: any) {
-    let para:any={id:id};
-    let api=this.baseUrl+"/base/role/get"
-    this.commmonService.getWithToken(api,para).subscribe(
-      { next: (response) => {
-           this.createForm.patchValue(response);
+    let para: any = { id: id };
+    let api = this.baseUrl + "/base/role/get"
+    this.commmonService.getWithToken(api, para).subscribe(
+      {
+        next: (response) => {
+          this.createForm.patchValue(response);
         },
         error: (err) => {
         }
@@ -63,37 +64,39 @@ export class MenuCreateComponent implements OnInit {
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
-      id:[''],
-      authority: [''],
-      remarks: [''],
-      created:[""],
-      updated: [''],
+      id: [''],
+      frontUrl: [''],
+      menu: [''],
+      parentMenu: [''],
+      apiPattern: [''],
+      methodName: [''],
+      apiSeq: [''],
     });
   }
 
 
   onSubmit() {
-    if(this.opMode==='view'){
-       return;
+    if (this.opMode === 'view') {
+      return;
     }
-    this.loading=true;
+    this.loading = true;
     const user = { ...this.createForm.value };
-    let mthod:any;
-    if(this.opMode==='create'){
-      mthod="post";
+    let mthod: any;
+    if (this.opMode === 'create') {
+      mthod = "post";
     }
-    if(this.opMode==='edit'){
-      mthod="put";
+    if (this.opMode === 'edit') {
+      mthod = "put";
     }
-      this.commmonService.sendPostPutReq<any>(this.api, user,mthod).subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            this.router.navigate(['/base/role/list']);
-          } else {
-            alert(response.message);
-            this.router.navigate(['/base/role/list']);
-          }
+    this.commmonService.sendPostPutReq<any>(this.api, user, mthod).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.router.navigate(['/base/role/list']);
+        } else {
+          alert(response.message);
+          this.router.navigate(['/base/role/list']);
         }
-      });
+      }
+    });
   }
 }
