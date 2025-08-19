@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrganizationComponent } from './org/list/organization.component';
 import { OrgCreateComponent } from './org/create/org-create.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -35,7 +36,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BaseRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule 
+    NgSelectModule ,
+    NgxPaginationModule
   
   ]
 })

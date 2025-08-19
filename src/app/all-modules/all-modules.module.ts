@@ -15,6 +15,7 @@ import { ProducteditComponent } from './common/product/edit/productedit.componen
 import { ProductCritCreateComponent } from './common/productCriteria/create/product-crit-create.component';
 import { ProductCritEditComponent } from './common/productCriteria/edit/product-crit-edit.component';
 import { ProductCritComponent } from './common/productCriteria/list/product-crit.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { ProductCritComponent } from './common/productCriteria/list/product-crit
     CommonModule,
     AllModulesRoutingModule,
     HttpClientModule,
-
+    NgxPaginationModule
   ]
 })
 export class AllModulesModule {

@@ -31,14 +31,15 @@
                       <div class="row">
                          
                                   <div class="col-md-3 form-group">
-                                    <label>Menu <span class="text-danger">*</span></label>
+                                    <label for="name-f" >Menu</label>
                                     <ng-select
+                                    (click)="setId()"
                                     [items]="menuOptions"
                                     bindLabel="ddlCode"
-                                    bindValue="id"
+                                    bindValue="moduleName"
                                     formControlName="menu"
-                                    (search)="onSearch($event)"
-                                    (scrollToEnd)="loadMore()"
+                                    (search)="onSearch($event,'menu')"
+                                    (scrollToEnd)="loadMore('menu')"
                                      [loading]="loadingDropdown"
                                     [clearable]="true"
                                     [closeOnSelect]="true"
@@ -49,13 +50,25 @@
                             
                                   </div>
 
-                                
-          
-                              
+                                                      
 
                               <div class="col-md-3 form-group">
                                 <label for="name-f" >Parent Menu</label>
-                                <input type="text" class="form-control"  formControlName="parentMenu">
+                                <ng-select 
+                                (click)="setParentId()"
+                                [items]="menuParents"
+                                bindLabel="ddlCode"
+                                bindValue="moduleName"
+                                formControlName="parentMenu"
+                                (search)="onSearch($event,'parent')"
+                                (scrollToEnd)="loadMore('parent')"
+                                 [loading]="loadingDropdown2"
+                                [clearable]="true"
+                                [closeOnSelect]="true"
+                                [editableSearchTerm]="false"
+                                [addTag]="false" 
+                                class="form-control-patch">
+                              </ng-select>
                                 </div>
 
                                 <div class="col-md-3 form-group">
@@ -75,7 +88,9 @@
 
                                       <div class="col-md-3 form-group">
                                         <label for="name-f" class="val-required">Method Name</label>
-                                        <input type="text" class="form-control"  formControlName="methodName">
+                                        <ng-select [items]="methodNames" formControlName="methodName"
+                                        [closeOnSelect]="true" class="form-control-patch">
+                                       </ng-select>
                                         </div>
 
                                         <div class="d-flex gap-2 mt-2" *ngIf="showSaveBtn">
