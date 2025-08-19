@@ -5,11 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
 import { environment } from 'src/environments/environment';
 
-interface MenuOption {
-  id: number;
-  name: string;
-}
-
 @Component({
   selector: 'app-menu-create',
   templateUrl: './menu-create.component.html',
@@ -23,21 +18,21 @@ export class MenuCreateComponent implements OnInit {
   baseUrl = environment.baseUrl;
   loading = false;
   showSaveBtn: boolean = true;
+  listData:any[]=[];
 
-  menuOptions: MenuOption[] = [];
   loadingDropdown = false;
   currentPage = 1;
   pageSize = 10;
   hasMore = true;
+  menuOptions:any[]=[];
 
-  private debounceTimer: any; // For debouncing input
+  private debounceTimer: any;
 
   constructor(
     private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,
     private activeRouter: ActivatedRoute,
-    private router: Router,
-    private http: HttpClient
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +55,9 @@ export class MenuCreateComponent implements OnInit {
     }
   }
 
+
+
+
   formData(id: any) {
     const para = { id };
     const api = this.baseUrl + '/base/module/get';
@@ -72,6 +70,9 @@ export class MenuCreateComponent implements OnInit {
       }
     });
   }
+
+
+
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
@@ -89,7 +90,7 @@ export class MenuCreateComponent implements OnInit {
     if (this.opMode === 'view') return;
 
     this.loading = true;
-    const payload = { ...this.createForm.value };
+    const payload = { ...this.createForm.value};
     const method = this.opMode === 'create' ? 'post' : 'put';
 
     this.commmonService.sendPostPutReq<any>(this.api, payload, method).subscribe({
@@ -107,87 +108,69 @@ export class MenuCreateComponent implements OnInit {
     });
   }
 
-  // ✅ Called when user types in ng-select
+
+
+
   onSearch(event: any): void {
     const term = event.term?.trim();
-
-    // Clear previous debounce
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
     }
-
-    // Reset if empty
     if (!term || term.length === 0) {
       this.menuOptions = [];
       return;
     }
-
-    // Debounce: wait 300ms before calling API
     this.debounceTimer = setTimeout(() => {
       this.currentPage = 1;
-      this.menuOptions = [];
       this.hasMore = true;
       this.performSearch(term);
     }, 300);
   }
 
-  // ✅ Load more when user scrolls to end
   loadMore(): void {
     if (!this.hasMore || this.loadingDropdown) return;
 
     const term = this.createForm.get('menu')?.value?.trim();
     if (!term || typeof term !== 'string') return;
-
     this.currentPage++;
     this.loadingDropdown = true;
+   let params: any={
+      menu: term,
+      pageNum: this.currentPage.toString(),
+      pageSize: this.pageSize.toString()
+    }
 
-    this.http
-      .get<MenuOption[]>(this.baseUrl + '/base/menu/search', {
-        params: {
-          q: term,
-          page: this.currentPage.toString(),
-          size: this.pageSize.toString()
-        }
-      })
-      .subscribe(
-        (results: MenuOption[]) => {
-          if (Array.isArray(results)) {
-            this.menuOptions = [...this.menuOptions, ...results];
-            this.hasMore = results.length === this.pageSize;
-          } else {
-            this.hasMore = false;
-          }
-          this.loadingDropdown = false;
-        },
-        (error) => {
-          console.error('Load more failed', error);
-          this.loadingDropdown = false;
-        }
-      );
+    let uri=this.baseUrl+"/base/module/list";
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+        this.menuOptions = response?.data?.listData || [];
+        this.hasMore = this.menuOptions.length === this.pageSize;
+        this.loadingDropdown = false;
+      },
+      error: (err) => {
+        this.loadingDropdown = false; 
+      }
+    });
   }
 
-  // ✅ Perform initial search
+
   private performSearch(term: string): void {
     this.loadingDropdown = true;
-
-    this.http
-      .get<MenuOption[]>(this.baseUrl + '/base/menu/search', {
-        params: {
-          q: term,
-          page: this.currentPage.toString(),
-          size: this.pageSize.toString()
-        }
-      })
-      .subscribe(
-        (results: MenuOption[]) => {
-          this.menuOptions = Array.isArray(results) ? results : [];
-          this.hasMore = this.menuOptions.length === this.pageSize;
-          this.loadingDropdown = false;
-        },
-        (error) => {
-          console.error('Search failed', error);
-          this.loadingDropdown = false;
-        }
-      );
+    let uri=this.baseUrl+"/base/module/list";
+    let params: any={
+      menu: term,
+      pageNum: this.currentPage.toString(),
+      pageSize: this.pageSize.toString()
+    }
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+        this.menuOptions = response?.data?.listData || [];
+        this.hasMore = this.menuOptions.length === this.pageSize;
+        this.loadingDropdown = false; 
+      },
+      error: (err) => {
+        this.loadingDropdown = false; 
+      }
+    });
   }
 }

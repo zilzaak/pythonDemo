@@ -29,28 +29,23 @@
              <div class="card-body">
                   <form  [formGroup]="createForm">
                       <div class="row">
-
-
-                          <!-- <div class="col-md-3 form-group">
-                              <label for="name-f">Menu</label>
-                              <input type="text" class="form-control"  formControlName="menu">
-                              </div> -->
-
-                          
+                         
                                   <div class="col-md-3 form-group">
                                     <label>Menu <span class="text-danger">*</span></label>
                                     <ng-select
-                                      [items]="menuOptions"
-                                     bindLabel="name" formControlName="menu"
-                                      (search)="onSearch($event)"
-                                      (scrollToEnd)="loadMore()"
-                                      [clearable]="true"
-                                      [closeOnSelect]="true"
-                                      [editableSearchTerm]="false"
-                                      [addTag]="false"
-                                      bindValue="name"
-                                      class="form-control-patch">
-                                    </ng-select>
+                                    [items]="menuOptions"
+                                    bindLabel="ddlCode"
+                                    bindValue="id"
+                                    formControlName="menu"
+                                    (search)="onSearch($event)"
+                                    (scrollToEnd)="loadMore()"
+                                     [loading]="loadingDropdown"
+                                    [clearable]="true"
+                                    [closeOnSelect]="true"
+                                    [editableSearchTerm]="false"
+                                    [addTag]="false" 
+                                    class="form-control-patch">
+                                  </ng-select>
                             
                                   </div>
 
