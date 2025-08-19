@@ -1,3 +1,10 @@
+.customCard {
+	border-radius: 10px;
+	background: #ffffff;
+	box-shadow: 10px 10px 10px #d9d9d9,
+		-0px -0px 0px #ffffff;
+}
+
 /* You can add global styles to this file, and also import other style files */
 .custom-back {
 	background-color: #220844 !important;

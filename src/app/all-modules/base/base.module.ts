@@ -15,6 +15,7 @@ import { PermissionEditComponent } from './menuPerm/edit/permission-edit.compone
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrganizationComponent } from './org/list/organization.component';
 import { OrgCreateComponent } from './org/create/org-create.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
@@ -34,6 +35,8 @@ import { OrgCreateComponent } from './org/create/org-create.component';
     BaseRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule 
+  
   ]
 })
 export class BaseModule { 
