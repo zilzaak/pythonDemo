@@ -73,7 +73,7 @@ export class MenuCreateComponent implements OnInit {
         this.createForm.controls['menu'].setValue(response?.data?.listData[0].moduleName);
         this.createForm.controls['parentMenu'].setValue(response?.data?.parent?.menu);
         this.createForm.controls['apiSeq'].setValue(response?.data?.listData[0].apiSeq);
-        this.createForm.controls['apiPattern'].setValue(response?.data.listData[0].apiPattern);
+        this.createForm.controls['apiPattern'].setValue(response?.data?.listData[0].apiPattern);
         this.createForm.controls['frontUrl'].setValue(response?.data.listData[0].frontUrl);
         this.createForm.controls['methodName'].setValue(response?.data?.listData[0].methodName);
         this.createForm.controls['parentId'].setValue(response?.data?.parent?.id);
