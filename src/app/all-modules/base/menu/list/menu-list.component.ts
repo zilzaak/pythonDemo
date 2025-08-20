@@ -33,27 +33,6 @@ export class MenuListComponent implements OnInit {
     })
   }
 
-  // getListData(){
-  //   let apiUrl=this.baseUrl+"/base/module/list";
-  //   const params = {
-  //     pageNum: '1',
-  //     pageSize: '10'
-  //   };
-
-  //   return this.commonService.getWithToken(
-  //     'http://localhost:8000/base/module/list',
-  //     params
-  //   ).subscribe({
-  //     next: (response) => {
-  //      this.listData=response.data.listData;
-  //     },
-  //     error: (err) => {
-  //       console.error('Failed to load module list', err);
-  //     }
-  //   });
-  // }
-
-
   getPageRange(): number[] {
     const maxVisiblePages = 5;
     const start = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
