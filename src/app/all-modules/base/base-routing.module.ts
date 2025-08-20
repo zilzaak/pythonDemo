@@ -8,7 +8,6 @@ import { RoleListComponent } from './role/list/role-list.component';
 import { RoleCreateComponent } from './role/create/role-create.component';
 import { PermissionListComponent } from './menuPerm/list/permission-list.component';
 import { PermissionCreateComponent } from './menuPerm/create/permission-create.component';
-import { PermissionEditComponent } from './menuPerm/edit/permission-edit.component';
 import { OrgCreateComponent } from './org/create/org-create.component';
 import { OrgListComponent } from '../common/organization/list/org-list.component';
 
@@ -42,12 +41,16 @@ const routes: Routes = [
 
   {
     path: 'menuPerm/create', component: PermissionCreateComponent,
-    data: { title: 'Permission List' },
+    data: { title: 'Create' },
   },
 
   {
-    path: 'menuPerm/edit/:id', component: PermissionEditComponent,
-    data: { title: 'Edit Persion' },
+    path: 'menuPerm/edit/:id', component: PermissionCreateComponent,
+    data: { title: 'Edit' },
+  },
+  {
+    path: 'menuPerm/view/:id', component: PermissionCreateComponent,
+    data: { title: 'View' },
   },
 
 
