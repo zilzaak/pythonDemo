@@ -41,10 +41,10 @@
           <tr>
             <th>SL</th>
             <th>Menu</th>
-            <th>Parent Menu</th>
-            <th>Backend Url</th>
             <th>Front Url</th>
-            <th>Method</th>
+            <th>Backend Url</th>
+            <th>Permitted User</th>
+            <th>Permitted Role</th>
             <th>Created</th>
             <th>Updated</th>
             <th>Edit</th>
@@ -55,15 +55,15 @@
         <tbody>
           <tr *ngFor="let x of listData; index as i">
             <td>{{ i + 1 }}</td>
-            <td>{{ x.moduleName}}</td>
-            <td>{{ x.parentModule}}</td>
-            <td>{{ x.apiPattern}}</td>
-            <td>{{ x.frontUrl}}</td>
-            <td>{{ x.methodName}}</td>
+            <td>{{ x.menu}}</td>
+            <td>{{ x.frontendUrl}}</td>
+            <td>{{ x.backendUrl	}}</td>
+            <td>{{ x.username}}</td>
+            <td>{{ x.authority}}</td>
             <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
             <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
-            <td><a  routerLink="/base/menu/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
-            <td> <a  routerLink="/base/menu/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
+            <td><a  routerLink="/base/menuPerm/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
+            <td> <a  routerLink="/base/menuPerm/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
             <td> <a ><i class="fas fa-delete"></i></a></td>
 
           </tr>
