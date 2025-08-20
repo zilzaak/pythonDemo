@@ -33,7 +33,6 @@ export class CommonServiceService {
     return this.getWithToken('http://localhost:8000/base/permittedModule/getMenu');
   }
 
-
  public sendPostPutReq<T>(apiURL:any, data: any,method:any): Observable<T>{
   const headers = this.getHeaders();
 if(method.toString()==='post'){

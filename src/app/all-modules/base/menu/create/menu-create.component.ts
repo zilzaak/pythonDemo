@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
 import { environment } from 'src/environments/environment';
@@ -17,7 +17,6 @@ export class MenuCreateComponent implements OnInit {
   api!: any;
   baseUrl = environment.baseUrl;
   loading = false;
-  showSaveBtn: boolean = true;
   listData:any[]=[];
   methodNames:any[]=['POST','PUT','PATCH','DELETE','GET'];
   loadingDropdown = false;
@@ -28,6 +27,8 @@ export class MenuCreateComponent implements OnInit {
   menuOptions:any[]=[];
   menuParents:any[]=[];
   private debounceTimer: any;
+  childMenuDetails:any[]=[];
+  parentMenuDetails:any;
 
   constructor(
     private commmonService: CommonServiceService,
@@ -49,10 +50,8 @@ export class MenuCreateComponent implements OnInit {
       this.formData(this.activeRouter.snapshot.params.id);
     } else if (this.pageTitle === 'View') {
       this.opMode = 'view';
-      this.api = this.baseUrl + '/base/module/get';
-      this.createForm?.controls['authority'].disable();
-      this.createForm?.controls['remarks'].disable();
-      this.showSaveBtn = false;
+      this.api = this.baseUrl + '/base/module/list';
+      this.formData(this.activeRouter.snapshot.params.id);
     }
   }
 
@@ -60,11 +59,39 @@ export class MenuCreateComponent implements OnInit {
 
 
   formData(id: any) {
-    const para = { id };
-    const api = this.baseUrl + '/base/module/get';
-    this.commmonService.getWithToken(api, para).subscribe({
+    const para = { moduleId :id , menuDetails:"menuDetails"};
+    this.commmonService.getWithToken(this.baseUrl + '/base/module/list', para).subscribe({
       next: (response) => {
-        this.createForm.patchValue(response);
+        this.menuOptions=response?.data?.listData;
+        let k:any=response?.data?.parent?.apiSeq.toString()+'-'+response?.data?.parent?.menu
+        this.menuParents=[{
+          id:response?.data?.parent?.id ,
+          moduleName:response?.data?.parent?.menu,
+          ddlCode:k
+     }];
+        this.createForm.controls['id'].setValue(response?.data?.listData[0].id);
+        this.createForm.controls['menu'].setValue(response?.data?.listData[0].moduleName);
+        this.createForm.controls['parentMenu'].setValue(response?.data?.parent?.menu);
+        this.createForm.controls['apiSeq'].setValue(response?.data?.listData[0].apiSeq);
+        this.createForm.controls['apiPattern'].setValue(response?.data.listData[0].apiPattern);
+        this.createForm.controls['frontUrl'].setValue(response?.data.listData[0].frontUrl);
+        this.createForm.controls['methodName'].setValue(response?.data?.listData[0].methodName);
+        this.createForm.controls['parentId'].setValue(response?.data?.parent?.id);
+        this.childMenuDetails=response?.data?.childMenus;
+
+
+        console.log("======================================================");
+        console.log(this.createForm.value);
+
+
+        if(this.opMode==='view'){
+          this.createForm.controls['menu'].disable();
+          this.createForm.controls['parentMenu'].disable();
+          this.createForm.controls['apiSeq'].disable();
+          this.createForm.controls['apiPattern'].disable();
+          this.createForm.controls['frontUrl'].disable();
+          this.createForm.controls['methodName'].disable();
+        }
       },
       error: (err) => {
         console.error('Failed to load data', err);
@@ -79,9 +106,9 @@ export class MenuCreateComponent implements OnInit {
     this.createForm = this.formBuilder.group({
       id: [''],
       frontUrl: [''],
-      menu: [''],
+      menu: ['',Validators.required],
       parentMenu: [''],
-      apiPattern: [''],
+      apiPattern: ['',Validators.required],
       methodName: [''],
       apiSeq: [''],
       parentId:[''],
@@ -90,27 +117,29 @@ export class MenuCreateComponent implements OnInit {
 
   onSubmit() {
     if (this.opMode === 'view') return;
-
+    if(this.createForm.invalid){
+      alert("Invalid form");
+return;
+    }
     this.loading = true;
-    const payload = { ...this.createForm.value};
-    const method = this.opMode === 'create' ? 'post' : 'put';
-
-    console.log("============================");
-    console.log(payload);
-
-    // this.commmonService.sendPostPutReq<any>(this.api, payload, method).subscribe({
-    //   next: (response: any) => {
-    //     if (response.success) {
-    //       this.router.navigate(['/base/menu/list']);
-    //     } else {
-    //       alert(response.message);
-    //       this.router.navigate(['/base/menu/list']);
-    //     }
-    //   },
-    //   error: () => {
-    //     this.loading = false;
-    //   }
-    // });
+    let payload:any={ ...this.createForm.value};
+    let method = this.opMode === 'create' ? 'post' : 'put';
+    let formData:any[]=[];
+    formData.push(payload);
+    this.commmonService.sendPostPutReq<any>(this.api.toString(), formData,method).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          alert(response.message);
+          this.router.navigate(['/base/menu/list']);
+        } else {
+          alert(response.message);
+          this.router.navigate(['/base/menu/list']);
+        }
+      },
+      error: () => {
+        this.loading = false;
+      }
+    });
   }
 
 
@@ -213,15 +242,31 @@ export class MenuCreateComponent implements OnInit {
     });
   }
 
+
+
   setId(){
+    this.childMenuDetails=[];
+    this.parentMenuDetails=null;
     let menu:any=this.createForm.value.menu;
     for(let obj of this.menuOptions){
         if(menu===obj.moduleName){
           this.createForm.controls['id'].setValue(obj.id);
+          let uri=this.baseUrl+"/base/module/list";
+          let params: any={ moduleId: obj.id,menuDetails:"menuDetails" }
+          this.commmonService.getWithToken(uri, params).subscribe({
+            next: (response) => {
+              this.childMenuDetails=response.data.childMenus;
+              this.parentMenuDetails=response.data.parent;
+            },
+            error: (err) => { 
+            }
+          });
           break;
         } 
     }
   }
+
+
   setParentId(){
     let menu:any=this.createForm.value.parentMenu;
     for(let obj of this.menuParents){

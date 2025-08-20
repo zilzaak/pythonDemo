@@ -49,9 +49,7 @@
                                   </ng-select>
                             
                                   </div>
-
-                                                      
-
+                                                
                               <div class="col-md-3 form-group">
                                 <label for="name-f" >Parent Menu</label>
                                 <ng-select 
@@ -81,7 +79,7 @@
                                     <input type="text" class="form-control"  formControlName="frontUrl">
                                     </div>
 
-                                    <div class="col-md-3 form-group">
+                                    <div class="col-md-3 form-group" *ngIf="opMode ==='view'">
                                       <label for="name-f" class="val-required">Api Sequence</label>
                                       <input type="text" class="form-control"  formControlName="apiSeq">
                                       </div>
@@ -93,7 +91,7 @@
                                        </ng-select>
                                         </div>
 
-                                        <div class="d-flex gap-2 mt-2" *ngIf="showSaveBtn">
+                                        <div class="d-flex gap-2 mt-2" *ngIf="opMode==='edit' || opMode==='create'">
                                           <button type="submit" class="btn btn-sm btn-primary" (click)="onSubmit()">
                                             <i class="fas fa-save me-1"></i> Save
                                           </button>
@@ -110,4 +108,104 @@
   <div class="spinner"></div>
   <span>Saving user...</span>
 </div>
+
+
+<!---- child menu details -->
+<br/>
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card customCard" *ngIf='childMenuDetails.length>0'>
+        <div class="card card-header">
+          <span style="text-align:center;">Child menu list</span>
+        </div>
+         <div class="card-body">
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>SL</th>
+                  <th>Menu</th>
+                  <th>Parent Menu</th>
+                  <th>Api Seq</th>
+                  <th>Backend Url</th>
+                  <th>Front Url</th>
+                  <th>Method</th>
+                  <th>Created</th>
+                  <th>Updated</th>
+                  <th>Edit</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let x of childMenuDetails; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ x.menu}}</td>
+                  <td>{{ x.parentMenu}}</td>
+                  <td>{{ x.apiSeq}}</td>
+                  <td>{{ x.apiPattern}}</td>
+                  <td>{{ x.frontUrl}}</td>
+                  <td>{{ x.methodName}}</td>
+                  <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
+                  <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
+                  <td><a  routerLink="/base/menu/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
+                  <td> <a  routerLink="/base/menu/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>     
+                </tr>
+      
+              </tbody>
+            </table>
+
+          </div>
+</div>
+</div>
+</div>
+</div>
+
+<!------------------------------- parent menu details -------------------------->
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card customCard" *ngIf='parentMenuDetails!=null'>
+        <div class="card card-header">
+          <span style="text-align:center;">Parent menu</span>
+        </div>
+         <div class="card-body">
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Menu</th>
+                  <th>Parent Menu</th>
+                  <th>Api Seq</th>
+                  <th>Backend Url</th>
+                  <th>Front Url</th>
+                  <th>Method</th>
+                  <th>Created</th>
+                  <th>Updated</th>
+                  <th>Edit</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ parentMenuDetails.menu}}</td>
+                  <td>{{ parentMenuDetails.parentMenu}}</td>
+                  <td>{{ parentMenuDetails.apiSeq}}</td>
+                  <td>{{ parentMenuDetails.apiPattern}}</td>
+                  <td>{{ parentMenuDetails.frontUrl}}</td>
+                  <td>{{ parentMenuDetails.methodName}}</td>
+                  <td>{{ parentMenuDetails.created | date: 'yyyy-MM-dd' }}</td>
+                  <td>{{ parentMenuDetails.updated | date: 'yyyy-MM-dd' }}</td>
+                  <td><a  routerLink="/base/menu/edit/{{parentMenuDetails.id}}"><i class="fas fa-edit"></i></a></td>
+                  <td> <a  routerLink="/base/menu/view/{{parentMenuDetails.id}}"><i class="fas fa-eye"></i></a></td>     
+                </tr>
+      
+              </tbody>
+            </table>
+
+          </div>
+</div>
+</div>
+</div>
+</div>
+
+
   </div>
