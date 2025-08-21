@@ -7,6 +7,8 @@
     box-sizing: border-box;
     width: 100%;
   }
+
+
   
   /* Responsive Table */
   .data-table {
@@ -92,5 +94,7 @@
     .data-table td:nth-child(2)::before { content: "User"; }
     .data-table td:nth-child(3)::before { content: "Roles"; }
   }
+
+
 
 

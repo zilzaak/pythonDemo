@@ -38,14 +38,14 @@ export class PermissionCreateComponent implements OnInit {
     this.fetchRoles();
     if (this.pageTitle === 'Create') {
       this.opMode = 'create';
-      this.api = this.baseUrl + '/base/permittedMenu/create';
+      this.api = this.baseUrl + '/base/permittedModule/create';
     } else if (this.pageTitle === 'Edit') {
       this.opMode = 'edit';
-      this.api = this.baseUrl + '/base/permittedMenu/update';
+      this.api = this.baseUrl + '/base/permittedModule/update';
       this.formData(this.activeRouter.snapshot.params.id);
     } else if (this.pageTitle === 'View') {
       this.opMode = 'view';
-      this.api = this.baseUrl + '/base/permittedMenu/list';
+      this.api = this.baseUrl + '/base/permittedModule/list';
       this.formData(this.activeRouter.snapshot.params.id);
     }
   }
@@ -99,20 +99,22 @@ export class PermissionCreateComponent implements OnInit {
     let method = this.opMode === 'create' ? 'post' : 'put';
     let formData:any[]=[];
     formData.push(payload);
-    this.commmonService.sendPostPutReq<any>(this.api.toString(), formData,method).subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          alert(response.message);
-          this.router.navigate(['/base/menu/list']);
-        } else {
-          alert(response.message);
-          this.router.navigate(['/base/menu/list']);
-        }
-      },
-      error: () => {
-        this.loading = false;
-      }
-    });
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    console.log(formData);
+    // this.commmonService.sendPostPutReq<any>(this.api.toString(), formData,method).subscribe({
+    //   next: (response: any) => {
+    //     if (response.success) {
+    //       alert(response.message);
+    //       this.router.navigate(['/base/menuPerm/list']);
+    //     } else {
+    //       alert(response.message);
+    //       this.router.navigate(['/base/menuPerm/list']);
+    //     }
+    //   },
+    //   error: () => {
+    //     this.loading = false;
+    //   }
+    // });
   }
 
 
@@ -159,7 +161,10 @@ export class PermissionCreateComponent implements OnInit {
     if (!term || typeof term !== 'string') return;
     this.currentPage++;
     this.loadingDropdown = true;
-   let params: any={ menu: term,  pageNum: this.currentPage.toString(), pageSize: this.pageSize.toString()
+   let params: any={ menu: term,  
+    pageNum: this.currentPage.toString(),
+     pageSize: this.pageSize.toString(),
+     loadMethod:"loadMethod"
     }
 
     let uri=this.baseUrl+"/base/module/list";
@@ -186,6 +191,7 @@ export class PermissionCreateComponent implements OnInit {
     let uri=this.baseUrl+"/base/module/list";
     let params: any={
       menu: term,
+      loadMethod:"loadMethod",
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString()
     }

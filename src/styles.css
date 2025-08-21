@@ -44,3 +44,12 @@
 	background-color: #256fba !important; /* Slightly darker on hover */
 	border-color: #256fba !important;
   }
+
+  .pagination-container{
+    display: flex;
+    justify-content: center;           /* Center horizontally */
+    margin-top: 50px;                  /* Exactly 50px from the top */
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 100%;
+  }
