@@ -1,1 +1,89 @@
-<p>permission-create works!</p>
+<div class="container-fluid mt-3">
+
+    <div class="page-header">
+      <div class="row align-items-center">
+          <div class="col">
+             <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a routerLink="/irecruitment/vacancy/list">Base</a></li>
+                  <li class="breadcrumb-item active">Menu</li>
+                  <li class="breadcrumb-item active">Create</li>
+              </ul>
+          </div>
+          <div class="col-auto float-right ml-auto">
+            <a id="backBtn"   [routerLink]="['/base/menu/list']" class="btn btn-sm btn-outline-secondary"> 
+              <i class="fas fa-times me-1"></i> Back
+            </a>
+          </div>
+      </div>
+       </div>
+  
+  <span style="text-align:left;">
+    <h3 class="card-title">Menu {{pageTitle}}</h3>
+  </span>
+         <br/>
+  
+    
+      <div class="row">
+        <div class="col-lg-12">
+            <div class="card customCard">
+               <div class="card-body">
+                    <form  [formGroup]="createForm">
+                        <div class="row">
+                           
+                                    <div class="col-md-3 form-group">
+                                      <label for="name-f" >Menu</label>
+                                      <ng-select
+                                      [items]="menuOptions"
+                                      bindLabel="ddlCode"
+                                      bindValue="id"
+                                      formControlName="menuId"
+                                      (search)="onSearch($event,'menu')"
+                                      (scrollToEnd)="loadMore('menu')"
+                                       [loading]="loadingDropdown"
+                                      [clearable]="true"
+                                      [closeOnSelect]="true"
+                                      [editableSearchTerm]="false"
+                                      [addTag]="false" 
+                                      (click)="setMethod()"
+                                      class="form-control-patch">
+                                    </ng-select>                            
+                                    </div>
+                                        
+                                        <div class="col-md-3 form-group">
+                                        <label for="name-f" class="val-required">Method</label>
+                                        <input type="text" class="form-control"  formControlName="method" readonly>
+                                        </div>
+   
+                                    <div class="col-md-3 form-group">
+                                      <label for="name-f" class="val-required">User</label>
+                                      <input type="text" class="form-control"  formControlName="user">
+                                      </div>
+
+                                      <div class="col-md-3 form-group">
+                                        <label for="name-f" >Role</label>
+                                        <ng-select
+                                        [items]="roleList"
+                                        bindLabel="authority" bindValue="id"
+                                        formControlName="role" class="form-control-patch">
+                                      </ng-select>                            
+                                      </div>
+  
+  
+                                          <div class="d-flex gap-2 mt-2" *ngIf="opMode==='edit' || opMode==='create'">
+                                            <button type="submit" class="btn btn-sm btn-primary" (click)="onSubmit()">
+                                              <i class="fas fa-save me-1"></i> Save
+                                            </button>
+                                          </div>
+  
+                            </div></form></div>
+                            </div>
+                            </div>
+                            </div>
+                            
+  
+  
+  <div *ngIf="loading" class="loader-overlay">
+    <div class="spinner"></div>
+    <span>Saving user...</span>
+  </div>
+    </div>
