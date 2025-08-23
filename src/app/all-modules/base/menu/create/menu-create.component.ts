@@ -108,9 +108,9 @@ export class MenuCreateComponent implements OnInit {
       frontUrl: [''],
       menu: ['',Validators.required],
       parentMenu: [''],
-      apiPattern: ['',Validators.required],
+      apiPattern: [''],
       methodName: [''],
-      apiSeq: [''],
+      apiSeq: ['',Validators.required],
       parentId:[''],
     });
   }
