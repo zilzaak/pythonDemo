@@ -23,7 +23,17 @@ export class PermissionCreateComponent implements OnInit {
   pageSize = 10;    
   hasMore = true; 
   menuOptions:any[]=[];
+  userOptions:any[]=[];
   private debounceTimer: any;
+
+  loading2 = false;
+  loadingDropdown2 = false;
+  currentPage2 = 1;
+  pageSize2 = 10;    
+  hasMore2 = true; 
+  username:any;
+  private debounceTimer2: any;
+
   roleList:any[]=[];
   constructor(
     private commmonService: CommonServiceService,
@@ -56,11 +66,23 @@ export class PermissionCreateComponent implements OnInit {
     this.commmonService.getWithToken(this.baseUrl + '/base/permittedModule/list', para).subscribe({
       next: (response) => {
         this.menuOptions=response?.data?.listData;
-        this.createForm.controls['id'].setValue(response?.data?.listData[0].id);
-        this.createForm.controls['menuId'].setValue(response?.data?.listData[0].moduleName);
-        this.createForm.controls['backendUrl'].setValue(response?.data?.listData[0].apiPattern);
-        this.createForm.controls['user'].setValue(response?.data.listData[0].frontUrl);
-        this.createForm.controls['role'].setValue(response?.data?.listData[0].methodName);;
+        this.createForm.controls['id'].setValue(response?.data?.listData[0]?.id);
+        this.createForm.controls['menuId'].setValue(response?.data?.listData[0]?.menuId);
+        this.createForm.controls['backendUrl'].setValue(response?.data?.listData[0]?.backendUrl);
+        this.createForm.controls['user'].setValue(response?.data?.listData[0]?.userId);
+        this.createForm.controls['role'].setValue(response?.data?.listData[0]?.roleId);
+        this.createForm.controls['method'].setValue(response?.data?.listData[0]?.methodName);
+        this.menuOptions=[
+          {id:response?.data?.listData[0].menuId,
+          ddlCode:response?.data?.listData[0].backendUrl
+          }
+        ];
+        this.userOptions=[
+          {
+            id:response?.data?.listData[0]?.userId,
+            username:response?.data.listData[0].username
+          }
+        ];
         console.log("======================================================");
         console.log(this.createForm.value);
         if(this.opMode==='view'){
@@ -84,7 +106,8 @@ export class PermissionCreateComponent implements OnInit {
       user:[''],
       role:[''],
       method:[''],
-      menuId:['']
+      menuId:[''],
+      username:['']
     });
   }
 
@@ -99,22 +122,20 @@ export class PermissionCreateComponent implements OnInit {
     let method = this.opMode === 'create' ? 'post' : 'put';
     let formData:any[]=[];
     formData.push(payload);
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    console.log(formData);
-    // this.commmonService.sendPostPutReq<any>(this.api.toString(), formData,method).subscribe({
-    //   next: (response: any) => {
-    //     if (response.success) {
-    //       alert(response.message);
-    //       this.router.navigate(['/base/menuPerm/list']);
-    //     } else {
-    //       alert(response.message);
-    //       this.router.navigate(['/base/menuPerm/list']);
-    //     }
-    //   },
-    //   error: () => {
-    //     this.loading = false;
-    //   }
-    // });
+    this.commmonService.sendPostPutReq<any>(this.api.toString(), formData,method).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          alert(response.message);
+          this.router.navigate(['/base/menuPerm/list']);
+        } else {
+          alert(response.message);
+          this.router.navigate(['/base/menuPerm/list']);
+        }
+      },
+      error: () => {
+        this.loading = false;
+      }
+    });
   }
 
 
@@ -154,6 +175,23 @@ export class PermissionCreateComponent implements OnInit {
     }, 300);
   }
 
+  onSearchUser(event: any): void {
+    const term = event.term?.trim();
+    if (this.debounceTimer2) {
+      clearTimeout(this.debounceTimer2);
+    }
+    if (!term || term.length === 0) {
+        this.userOptions = [];
+      
+           return;
+    }
+    this.debounceTimer2 = setTimeout(() => {
+        this.currentPage2 = 1;
+        this.hasMore2 = true;
+        this.performSearchUser(term);
+    }, 300);
+  }
+
   loadMore(menu:any): void {
     if (!this.hasMore || this.loadingDropdown) return;
 
@@ -182,6 +220,42 @@ export class PermissionCreateComponent implements OnInit {
     });
   }
 
+  loadMoreUser(): void {
+    if (!this.hasMore2 || this.loadingDropdown2) return;
+
+    
+    if (!this.username || typeof this.username !== 'string') return;
+    this.currentPage2++;
+    this.loadingDropdown2 = true;
+   let params: any={ 
+    username: !this.username,  
+    dropDown:"dropDown",
+    pageNum: this.currentPage2.toString(),
+    pageSize2: this.pageSize2.toString(),
+    }
+
+    let uri=this.baseUrl+"/base/user/list";
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+          this.userOptions = response?.data?.listData || [];
+          this.hasMore2 = this.userOptions.length === this.pageSize2;
+        this.loadingDropdown2 = false;
+      },
+      error: (err) => {
+        this.loadingDropdown2 = false; 
+      }
+    });
+  }
+
+  setUser(){
+for(let k of this.userOptions){
+if(k.userId===this.createForm.value.user){
+this.username=k.username;
+ break;
+}
+}
+
+  }
 
   private performSearch(term: string,menu:any): void {
         if(menu==='menu'){
@@ -209,11 +283,33 @@ export class PermissionCreateComponent implements OnInit {
     });
   }
 
+  private performSearchUser(term: string): void {
+  this.loadingDropdown2 = true;
+let uri=this.baseUrl+"/base/user/list";
+let params: any={
+  username: term,
+  dropDown:"dropDown",
+  pageNum: this.currentPage2.toString(),
+  pageSize: this.pageSize2.toString()
+}
+this.commmonService.getWithToken(uri, params).subscribe({
+  next: (response) => {
+      this.userOptions = response?.data?.listData || [];
+      this.hasMore2 = this.userOptions.length === this.pageSize2;
+      this.loadingDropdown2 = false;    
+  },
+  error: (err) => {
+    this.loadingDropdown2 = false; 
+  }
+});
+}
+
 
   setMethod(){
     for(let c of this.menuOptions){
          if(c.id===this.createForm.value.menuId){
           this.createForm.controls['method'].setValue(c.methodName);
+          this.createForm.controls['backendUrl'].setValue(c.apiPattern);
           break;
          }
     }

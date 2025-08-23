@@ -4,13 +4,13 @@
       <div class="row align-items-center">
           <div class="col">
              <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/irecruitment/vacancy/list">Base</a></li>
+                  <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Base</a></li>
                   <li class="breadcrumb-item active">Menu</li>
                   <li class="breadcrumb-item active">Create</li>
               </ul>
           </div>
           <div class="col-auto float-right ml-auto">
-            <a id="backBtn"   [routerLink]="['/base/menu/list']" class="btn btn-sm btn-outline-secondary"> 
+            <a id="backBtn"   [routerLink]="['/base/menuPerm/list']" class="btn btn-sm btn-outline-secondary"> 
               <i class="fas fa-times me-1"></i> Back
             </a>
           </div>
@@ -54,10 +54,24 @@
                                         <input type="text" class="form-control"  formControlName="method" readonly>
                                         </div>
    
-                                    <div class="col-md-3 form-group">
-                                      <label for="name-f" class="val-required">User</label>
-                                      <input type="text" class="form-control"  formControlName="user">
-                                      </div>
+                                        <div class="col-md-3 form-group">
+                                          <label for="name-f" >User</label>
+                                          <ng-select
+                                          [items]="userOptions"
+                                          bindLabel="username"
+                                          bindValue="id"
+                                          formControlName="user"
+                                          (search)="onSearchUser($event)"
+                                          (scrollToEnd)="loadMoreUser()"
+                                           [loading]="loadingDropdown2"
+                                          [clearable]="true"
+                                          [closeOnSelect]="true"
+                                          [editableSearchTerm]="false"
+                                          [addTag]="false" 
+                                          (click)="setUser()"
+                                          class="form-control-patch">
+                                        </ng-select>                            
+                                        </div>
 
                                       <div class="col-md-3 form-group">
                                         <label for="name-f" >Role</label>
