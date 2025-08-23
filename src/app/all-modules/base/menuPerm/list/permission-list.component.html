@@ -46,7 +46,21 @@
               <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus">
                   <label class="focus-label">User</label>
-                   <input type="text" class="form-control floating" formControlName="userId">
+                  <ng-select
+                  [items]="userOptions"
+                  bindLabel="username"
+                  bindValue="id"
+                  formControlName="user"
+                  (search)="onSearchUser($event)"
+                  (scrollToEnd)="loadMoreUser()"
+                   [loading]="loadingDropdown3"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  [editableSearchTerm]="false"
+                  [addTag]="false" 
+                  (click)="setUser()"
+                  class="form-control-patch">
+                </ng-select> 
                    
                 </div>
             </div>

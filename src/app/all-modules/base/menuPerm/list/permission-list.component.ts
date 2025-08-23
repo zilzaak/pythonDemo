@@ -30,6 +30,14 @@ export class PermissionListComponent implements OnInit {
   roleList: any;
   searchForm!: FormGroup;
 
+  private debounceTimer3: any;
+  loading3 = false;
+  loadingDropdown3 = false;
+  currentPage3 = 1;
+  pageSize3 = 10;    
+  hasMore3 = true; 
+  username: any;
+
   constructor(private commonService:CommonServiceService,   
      private formBuilder: FormBuilder,) { }
 
@@ -200,6 +208,81 @@ export class PermissionListComponent implements OnInit {
       }
     });
   }
+
+
+  private performSearchUser(term: string): void {
+    this.loadingDropdown3 = true;
+  let uri=this.baseUrl+"/base/user/list";
+  let params: any={
+    username: term,
+    dropDown:"dropDown",
+    pageNum: this.currentPage3.toString(),
+    pageSize: this.pageSize3.toString()
+  }
+  this.commonService.getWithToken(uri, params).subscribe({
+    next: (response) => {
+        this.userOptions = response?.data?.listData || [];
+        this.hasMore3 = this.userOptions.length === this.pageSize3;
+        this.loadingDropdown3 = false;    
+    },
+    error: (err) => {
+      this.loadingDropdown3 = false; 
+    }
+  });
+  }
+
+  loadMoreUser(): void {
+    if (!this.hasMore3 || this.loadingDropdown3) return;
+
+    
+    if (!this.username || typeof this.username !== 'string') return;
+    this.currentPage3++;
+    this.loadingDropdown3 = true;
+   let params: any={ 
+    username: !this.username,  
+    dropDown:"dropDown",
+    pageNum: this.currentPage3.toString(),
+    pageSize2: this.pageSize3.toString(),
+    }
+
+    let uri=this.baseUrl+"/base/user/list";
+    this.commonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+          this.userOptions = response?.data?.listData || [];
+          this.hasMore3 = this.userOptions.length === this.pageSize3;
+        this.loadingDropdown3 = false;
+      },
+      error: (err) => {
+        this.loadingDropdown3 = false; 
+      }
+    });
+  }
+
+  onSearchUser(event: any): void {
+    const term = event.term?.trim();
+    if (this.debounceTimer3) {
+      clearTimeout(this.debounceTimer3);
+    }
+    if (!term || term.length === 0) {
+        this.userOptions = [];
+      
+           return;
+    }
+    this.debounceTimer3 = setTimeout(() => {
+        this.currentPage3 = 1;
+        this.hasMore3 = true;
+        this.performSearchUser(term);
+    }, 300);
+  }
+
+  setUser(){
+    for(let k of this.userOptions){
+    if(k.userId===this.searchForm.value.userId){
+    this.username=k.username;
+     break;
+    }
+    }
+      }
 
 }
 
