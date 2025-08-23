@@ -1,28 +1,163 @@
 <!-- Main Content Area -->
 <div class="content-container">
-    <button  class="btn btn-primary btn-sm" routerLink="/base/organization/create">
+
+  <div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+           <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Base</a></li>
+                <li class="breadcrumb-item active">Organization</li>
+                <li class="breadcrumb-item active">List</li>
+            </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a id="backBtn"   [routerLink]="['/base/menuPerm/list']" class="btn btn-sm btn-outline-secondary"> 
+            <i class="fas fa-times me-1"></i> Back
+          </a>
+        </div>
+    </div>
+     </div>
+
+    <button  class="btn btn-primary btn-sm" routerLink="/base/menu/create">
        <i class="fas fa-plus-circle"></i>Create</button> <br/>
     <!-- Table Container -->
+
+    <div class="pagination-container mt-3">
+      <ul class="pagination">
+        <!-- Previous Button -->
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage - 1)">
+            Previous
+          </a>
+        </li>
+    
+        <!-- Page Numbers -->
+        <li class="page-item" *ngFor="let page of getPageRange()" [class.active]="page === currentPage">
+          <a class="page-link" href="javascript:void(0)" (click)="loadPage(page)">
+            {{ page }}
+          </a>
+        </li>
+    
+        <!-- Next Button -->
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage + 1)">
+            Next
+          </a>
+        </li>
+      </ul>
+    
+      <!-- Info Text -->
+      <div class="pagination-info mt-2 text-center">
+        Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} total items)
+      </div>
+    </div>
+
+
+
+    <!---- search div start -->
+<div class="card mb-2 mt-2" style="background-color:transparent;margin-left:23%;margin-right:24%;">
+  <div class="card-body p-3">
+     <form novalidate [formGroup]="searchForm">
+          <div class="row filter-row" >
+
+
+                 <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus">
+                    <label class="focus-label">Parent Menu</label>
+                    <ng-select
+                    [items]="menuOptions"
+                    bindLabel="ddlCode"
+                    bindValue="id"
+                    formControlName="parentMenuId"
+                    (search)="onSearch($event,'menu')"
+                    (scrollToEnd)="loadMore('menu')"
+                     [loading]="loadingDropdown"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    [editableSearchTerm]="false"
+                    [addTag]="false" 
+                    class="form-control-patch">
+                  </ng-select> 
+                    
+                  </div>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                  <label class="focus-label">Backend Url</label>
+                  <ng-select
+                  [items]="urlOptions"
+                  bindLabel="ddlCode"
+                  bindValue="id"
+                  formControlName="backendUrl"
+                  (search)="onSearch($event,'url')"
+                  (scrollToEnd)="loadMore('url')"
+                   [loading]="loadingDropdown"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  [editableSearchTerm]="false"
+                  [addTag]="false" 
+                  class="form-control-patch">
+                </ng-select> 
+                  
+                </div>
+            </div>
+
+
+
+            <div class="col-sm-6 col-md-3">
+              <div class="form-group form-focus">
+                <label class="focus-label">Frontend Url</label>
+                <input type="text" class="form-control"  formControlName="frontendUrl"/> 
+                
+              </div>
+          </div>
+
+              <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus">
+                    <button class="btn btn-md btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
+                </div>
+            </div> 
+          </div>
+      </form>
+
+  </div>
+</div>
+<!---- search div ended-->
+
+
     <div class="table-container">
       <table class="data-table">
         <thead>
           <tr>
             <th>SL</th>
-            <th>Authority</th>
+            <th>Menu</th>
+            <th>Parent Menu</th>
+            <th>Api Seq</th>
+            <th>Backend Url</th>
+            <th>Front Url</th>
+            <th>Method</th>
             <th>Created</th>
             <th>Updated</th>
             <th>Edit</th>
             <th>View</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let role of listData; index as i">
+          <tr *ngFor="let x of listData; index as i">
             <td>{{ i + 1 }}</td>
-            <td>{{ role.authority }}</td>
-            <td>{{ role.created | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ role.updated | date: 'yyyy-MM-dd' }}</td>
-            <td><a  routerLink="/base/role/edit/{{role.id}}"><i class="fas fa-edit"></i></a></td>
-            <td> <a  routerLink="/base/role/view/{{role.id}}"><i class="fas fa-eye"></i></a></td>
+            <td>{{ x.moduleName}} {{ x.modulename}}</td>
+            <td>{{ x.parentModule}} {{ x.parentmodule}}</td>
+            <td>{{ x.apiSeq}} {{ x.apiseq}}</td>
+            <td>{{ x.apiPattern}} {{ x.apipattern}}</td>
+            <td>{{ x.frontUrl}}</td>
+            <td>{{ x.methodName}}</td>
+            <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
+            <td><a  routerLink="/base/menu/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
+            <td> <a  routerLink="/base/menu/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
+            <td> <a ><i class="fas fa-delete"></i></a></td>
 
           </tr>
   
@@ -31,5 +166,35 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="pagination-container mt-3">
+      <ul class="pagination">
+        <!-- Previous Button -->
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage - 1)">
+            Previous
+          </a>
+        </li>
+    
+        <!-- Page Numbers -->
+        <li class="page-item" *ngFor="let page of getPageRange()" [class.active]="page === currentPage">
+          <a class="page-link" href="javascript:void(0)" (click)="loadPage(page)">
+            {{ page }}
+          </a>
+        </li>
+    
+        <!-- Next Button -->
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage + 1)">
+            Next
+          </a>
+        </li>
+      </ul>
+    
+      <!-- Info Text -->
+      <div class="pagination-info mt-2 text-center">
+        Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} total items)
+      </div>
     </div>
   </div>

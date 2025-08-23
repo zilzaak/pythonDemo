@@ -9,7 +9,7 @@ import { RoleCreateComponent } from './role/create/role-create.component';
 import { PermissionListComponent } from './menuPerm/list/permission-list.component';
 import { PermissionCreateComponent } from './menuPerm/create/permission-create.component';
 import { OrgCreateComponent } from './org/create/org-create.component';
-import { OrgListComponent } from '../common/organization/list/org-list.component';
+import { OrganizationComponent } from './org/list/organization.component';
 
 const routes: Routes = [
 
@@ -107,7 +107,7 @@ const routes: Routes = [
     data: { title: 'Edit' },
   },
   {
-    path: 'organization/list', component: OrgListComponent,
+    path: 'organization/list', component: OrganizationComponent,
     data: { title: 'List' },
   },
 
