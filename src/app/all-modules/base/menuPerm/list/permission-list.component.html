@@ -5,13 +5,13 @@
     <!-- Table Container -->
 
 <!---- search div start -->
-<div class="card mb-2 mt-2" style="background-color:transparent;padding-left:25%;">
+<div class="card mb-2 mt-2" style="background-color:transparent;margin-left:23%;margin-right:24%;">
   <div class="card-body p-3">
      <form novalidate [formGroup]="searchForm">
           <div class="row filter-row" >
 
 
-                 <div class="col-sm-6 col-md-2">
+                 <div class="col-sm-6 col-md-3">
                   <div class="form-group form-focus">
                     <label class="focus-label">Url</label>
                     <ng-select
@@ -32,7 +32,7 @@
                   </div>
               </div>
 
-              <div class="col-sm-6 col-md-2">
+              <div class="col-sm-6 col-md-3">
                   <div class="form-group form-focus">
                     <label class="focus-label">Role</label>
                     <ng-select
@@ -43,7 +43,7 @@
                   </div>
               </div> 
               
-              <div class="col-sm-6 col-md-2">
+              <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
                   <label class="focus-label">User</label>
                   <ng-select
@@ -66,7 +66,7 @@
             </div>
               <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus">
-                    <button class="btn btn-sm btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
+                    <button class="btn btn-md btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
                 </div>
             </div> 
           </div>
