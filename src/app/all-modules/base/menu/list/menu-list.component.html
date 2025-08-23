@@ -1,5 +1,23 @@
 <!-- Main Content Area -->
 <div class="content-container">
+
+  <div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+           <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Base</a></li>
+                <li class="breadcrumb-item active">Menu</li>
+                <li class="breadcrumb-item active">List</li>
+            </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a id="backBtn"   [routerLink]="['/base/menuPerm/list']" class="btn btn-sm btn-outline-secondary"> 
+            <i class="fas fa-times me-1"></i> Back
+          </a>
+        </div>
+    </div>
+     </div>
+
     <button  class="btn btn-primary btn-sm" routerLink="/base/menu/create">
        <i class="fas fa-plus-circle"></i>Create</button> <br/>
     <!-- Table Container -->
