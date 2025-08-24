@@ -65,7 +65,12 @@ export class PermissionCreateComponent implements OnInit {
     const para = { id :id};
     this.commmonService.getWithToken(this.baseUrl + '/base/permittedModule/list', para).subscribe({
       next: (response) => {
-        this.menuOptions=response?.data?.listData;
+        this.menuOptions=[
+          {
+            id:response?.data?.listData[0]?.menuId,
+            urlCode:response?.data?.listData[0]?.backendUrl
+          }
+        ];
         this.createForm.controls['id'].setValue(response?.data?.listData[0]?.id);
         this.createForm.controls['menuId'].setValue(response?.data?.listData[0]?.menuId);
         this.createForm.controls['backendUrl'].setValue(response?.data?.listData[0]?.backendUrl);
@@ -73,8 +78,9 @@ export class PermissionCreateComponent implements OnInit {
         this.createForm.controls['role'].setValue(response?.data?.listData[0]?.roleId);
         this.createForm.controls['method'].setValue(response?.data?.listData[0]?.methodName);
         this.menuOptions=[
-          {id:response?.data?.listData[0].menuId,
-          ddlCode:response?.data?.listData[0].backendUrl
+          {
+            id:response?.data?.listData[0].menuId,
+           urlCode:response?.data?.listData[0].backendUrl
           }
         ];
         this.userOptions=[
