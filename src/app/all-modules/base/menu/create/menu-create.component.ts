@@ -129,11 +129,10 @@ return;
     this.commmonService.sendPostPutReq<any>(this.api.toString(), formData,method).subscribe({
       next: (response: any) => {
         if (response.success) {
-          alert(response.message);
+          alert(response.data);
           this.router.navigate(['/base/menu/list']);
         } else {
-          alert(response.message);
-          this.router.navigate(['/base/menu/list']);
+          alert(response.data);
         }
       },
       error: () => {
