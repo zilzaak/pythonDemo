@@ -65,13 +65,14 @@
                   <div class="form-group form-focus">
                     <label class="focus-label">Parent Menu</label>
                     <ng-select
+                    (keyup)="setValm($event.target)"
                     [items]="menuOptions"
-                    bindLabel="ddlCode"
+                    bindLabel="moduleName"
                     bindValue="id"
                     formControlName="parentMenuId"
-                    (search)="onSearch($event,'menu')"
-                    (scrollToEnd)="loadMore('menu')"
-                     [loading]="loadingDropdown"
+                    (search)="onSearchm()"
+                    (scrollToEnd)="loadMorem()"
+                     [loading]="loadingDropdownm"
                     [clearable]="true"
                     [closeOnSelect]="true"
                     [editableSearchTerm]="false"
@@ -86,13 +87,14 @@
                 <div class="form-group form-focus">
                   <label class="focus-label">Backend Url</label>
                   <ng-select
+                  (keyup)="setValu($event.target)"
                   [items]="urlOptions"
-                  bindLabel="ddlCode"
+                  bindLabel="urlCode"
                   bindValue="id"
                   formControlName="backendUrl"
-                  (search)="onSearch($event,'url')"
-                  (scrollToEnd)="loadMore('url')"
-                   [loading]="loadingDropdown"
+                  (search)="onSearchu()"
+                  (scrollToEnd)="loadMoreu()"
+                   [loading]="loadingDropdownu"
                   [clearable]="true"
                   [closeOnSelect]="true"
                   [editableSearchTerm]="false"

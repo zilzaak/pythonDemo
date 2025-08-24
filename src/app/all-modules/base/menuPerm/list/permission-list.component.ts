@@ -25,18 +25,29 @@ export class PermissionListComponent implements OnInit {
   pageSize1 = 10;    
   hasMore = true; 
   menuOptions:any[]=[];
+  parentMenuOptions:any[]=[];
   userOptions:any[]=[];
   private debounceTimer: any;
+  private debounceTimerp: any;
   roleList: any;
   searchForm!: FormGroup;
 
   private debounceTimer3: any;
   loading3 = false;
+  loadingP = false;
   loadingDropdown3 = false;
+  loadingDropdownp = false;
   currentPage3 = 1;
   pageSize3 = 10;    
   hasMore3 = true; 
+  hasMorep = true; 
   username: any;
+
+  pvalue:any;
+  uvalue:any;
+
+  currentPagep = 1;
+  pageSizeP = 10;   
 
   constructor(private commonService:CommonServiceService,   
      private formBuilder: FormBuilder,) { }
@@ -52,7 +63,8 @@ export class PermissionListComponent implements OnInit {
     this.searchForm=this.formBuilder.group({
       userId:[''],
       roleId:[''],
-      menuId:['']
+      menuId:[''],
+      parentMenuId:['']
     });
   }
 
@@ -72,6 +84,14 @@ export class PermissionListComponent implements OnInit {
   getList(){
   this.loadPage(this.currentPage);
   }
+
+  setuValue(x:any){
+this.uvalue=x.value
+  }
+
+  setpValue(x:any){
+    this.pvalue=x.value
+      }
 
   fetchRoles() {
     let api=this.baseUrl+"/base/role/list"
@@ -96,14 +116,21 @@ export class PermissionListComponent implements OnInit {
     pageSize: this.pageSize.toString()
   };
 
-  if(this.searchForm.value.roleId && this.searchForm.value.roleId!=null && this.searchForm.value.roleId!==''){
+  if(this.searchForm.value.roleId && this.searchForm.value.roleId!=null
+     && this.searchForm.value.roleId!==''){
     params.roleId=this.searchForm.value.roleId;
   }
-  if(this.searchForm.value.userId && this.searchForm.value.userId!=null && this.searchForm.value.userId!==''){
+  if(this.searchForm.value.userId && this.searchForm.value.userId!=null
+     && this.searchForm.value.userId!==''){
     params.userId=this.searchForm.value.userId;
   }
-  if(this.searchForm.value.menuId && this.searchForm.value.menuId!=null && this.searchForm.value.menuId!==''){
+  if(this.searchForm.value.menuId && this.searchForm.value.menuId!=null 
+    && this.searchForm.value.menuId!==''){
     params.menuId=this.searchForm.value.menuId;
+  }
+  if(this.searchForm.value.parentMenuId && this.searchForm.value.parentMenuId!=null 
+    && this.searchForm.value.parentMenuId!==''){
+    params.parentMenuId=this.searchForm.value.parentMenuId;
   }
 
   console.log("search form vaue is ");
@@ -152,6 +179,22 @@ export class PermissionListComponent implements OnInit {
     }, 300);
   }
 
+  onSearchp(): void {
+    const term =this.pvalue;
+    if (this.debounceTimerp) {
+      clearTimeout(this.debounceTimerp);
+    }
+    if (!term || term.length === 0) {
+            this.parentMenuOptions = [];
+                return;
+    }
+    this.debounceTimerp = setTimeout(() => {
+        this.currentPagep = 1;
+        this.hasMorep = true;     
+      this.performSearchp(term);
+    }, 300);
+  }
+
 
   loadMore(menu:any): void {
     if (!this.hasMore || this.loadingDropdown) return;
@@ -182,6 +225,31 @@ export class PermissionListComponent implements OnInit {
   }
 
 
+  loadMorep(): void {
+    if (!this.hasMorep || this.loadingDropdownp) return;
+
+    const term = this.pvalue;
+    if (!term || typeof term !== 'string') return;
+    this.currentPagep++;
+    this.loadingDropdownp = true;
+   let params: any={ menu: term,  
+     pageNum: this.currentPagep.toString(),
+     pageSize: this.pageSizeP.toString(),
+     menuSearch:"menuSearch"
+    }
+
+    let uri=this.baseUrl+"/base/module/list";
+    this.commonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+          this.parentMenuOptions = response?.data?.listData || [];
+          this.hasMorep = this.parentMenuOptions.length === this.pageSizeP;    
+          this.loadingDropdownp = false;
+      },
+      error: (err) => {
+        this.loadingDropdownp = false; 
+      }
+    });
+  }
 
   private performSearch(term: string,menu:any): void {
         if(menu==='menu'){
@@ -208,6 +276,28 @@ export class PermissionListComponent implements OnInit {
       }
     });
   }
+
+
+  private performSearchp(term: string): void {
+  this.loadingDropdownp = true;
+let uri=this.baseUrl+"/base/module/list";
+let params: any={
+  menu: term,
+  menuSearch:"menuSearch",
+  pageNum: this.currentPagep.toString(),
+  pageSize: this.pageSizeP.toString()
+}
+this.commonService.getWithToken(uri, params).subscribe({
+  next: (response) => {
+      this.parentMenuOptions = response?.data?.listData || [];
+      this.hasMorep = this.parentMenuOptions.length === this.pageSizeP;
+      this.loadingDropdownp = false; 
+  },
+  error: (err) => {
+    this.loadingDropdownp = false; 
+  }
+});
+}
 
 
   private performSearchUser(term: string): void {

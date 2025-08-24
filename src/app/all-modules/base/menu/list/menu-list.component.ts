@@ -18,17 +18,30 @@ export class MenuListComponent implements OnInit {
   currentPage = 1;
   pageSize = 10;
 
-  loading = false;
-  loadingDropdown = false;
-  currentPage1 = 1;
-  pageSize1 = 10;    
-  hasMore = true; 
-  menuOptions:any[]=[];
-  urlOptions:any[]=[];
-  userOptions:any[]=[];
-  private debounceTimer: any;
   roleList: any;
   username:any;
+
+  loadingu = false;
+  loadingDropdownu = false;
+  currentPageu = 1;
+  pageSizeu = 10;    
+  hasMoreu = true; 
+  urlOptions:any[]=[];
+  userOptions:any[]=[];
+  private debounceTimeru: any;
+
+
+  loadingm = false;
+  loadingDropdownm = false;
+  currentPagem = 1;
+  pageSizem = 10;    
+  hasMorem = true; 
+  menuOptions:any[]=[];
+  private debounceTimerm: any;
+
+
+  uvalue:any;
+  mvalue:any;
 
   constructor(private commonService:CommonServiceService,    private formBuilder: FormBuilder,) { }
 
@@ -114,114 +127,161 @@ export class MenuListComponent implements OnInit {
    this.loadPage(this.currentPage);
   }
 
-  onSearch(event: any,menu:any): void {
-    const term = event.term?.trim();
-    if (this.debounceTimer) {
-      clearTimeout(this.debounceTimer);
+  onSearchu(): void {
+    const term = this.uvalue
+    console.log("const term = this.uvalue is "+term)
+    if (this.debounceTimeru) {
+      clearTimeout(this.debounceTimeru);
     }
     if (!term || term.length === 0) {
-      if(menu==='menu'){
-        this.menuOptions = [];
-      }
-      if(menu==='url'){
-this.urlOptions=[];
-      }
-           return;
+               this.urlOptions=[];
+               console.log("oooooooohhhhhhhhhhhhhh urlOptions is empty  now ")
+                 return;
     }
-    this.debounceTimer = setTimeout(() => {
-      if(menu==='menu'){
-        this.currentPage1 = 1;
-        this.hasMore = true;
-      }
-      this.performSearch(term,menu);
+    this.debounceTimeru = setTimeout(() => {
+        this.currentPageu = 1;
+        this.hasMoreu = true;    
+      this.performSearchu();
     }, 300);
   }
 
+  onSearchm(): void {
+    const term = this.mvalue;
+    console.log("onSearchm()")
+    console.log("const term = this.mvalue is "+term)
+    if (this.debounceTimerm) {
+      clearTimeout(this.debounceTimerm);
+    }
+    if (!term || term.length === 0) {
+        this.menuOptions = [];
+        console.log("oooooooohhhhhhhhhhhhhh menuOptions is empty  now ")
+        return;
+    }
+    this.debounceTimerm = setTimeout(() => {
+       this.currentPagem = 1;
+        this.hasMorem = true;      
+      this.performSearchm();
+    }, 300);
+  }
 
-  loadMore(menu:any): void {
-    if (!this.hasMore || this.loadingDropdown) return;
+  setValu(x:any){
+    this.uvalue=x.value
+  }
 
-    const term = this.searchForm.get('menu')?.value?.trim();
+  setValm(x:any){
+    this.mvalue=x.value
+  }
+
+  loadMoreu(): void {
+    if (!this.hasMoreu || this.loadingDropdownu) return;
+    const term = this.uvalue;
+    console.log("loadMoreu() term is  "+term)
     if (!term || typeof term !== 'string') return;
-    this.currentPage1++;
-    this.loadingDropdown = true;
+    this.currentPageu++;
+    this.loadingDropdownu = true;
 
    let params: any;
-   if(menu==='menu'){
+
     params= { menu: term,  
-      menuSearch:"menuSearch",
-      pageNum: this.currentPage1.toString(),
-       pageSize: this.pageSize1.toString(),
-      }
-   }
-   if(menu==='url'){
-    params= { menu: term,  
-      pageNum: this.currentPage1.toString(),
-       pageSize: this.pageSize1.toString(),
+       pageNum: this.currentPageu.toString(),
+       pageSize: this.pageSizeu.toString(),
        loadMethod:"loadMethod"
       }
-   }
-
+  
     let uri=this.baseUrl+"/base/module/list";
     this.commonService.getWithToken(uri, params).subscribe({
       next: (response) => {
-        if(menu==='menu'){
-          this.menuOptions = response?.data?.listData || [];
-          this.hasMore = this.menuOptions.length === this.pageSize1;
-        }
-        this.loadingDropdown = false;
-      },
-      error: (err) => {
-        this.loadingDropdown = false; 
-      }
-    });
-  }
-
-
-
-  private performSearch(term: string,menu:any): void {
-        if(menu==='menu'){
-      this.loadingDropdown = true;
-    }
-
-    let uri=this.baseUrl+"/base/module/list";
-   
-    let params: any;
-    if(menu==='menu'){
-      params={
-        menu: term,
-        menuSearch:"menuSearch",
-        pageNum: this.currentPage.toString(),
-        pageSize: this.pageSize.toString()
-      }
-    }
-    if(menu==='url'){
-      params={
-        menu: term,
-        loadMethod:"loadMethod",
-        pageNum: this.currentPage.toString(),
-        pageSize: this.pageSize.toString()
-      }
-    }
-
-    this.commonService.getWithToken(uri, params).subscribe({
-      next: (response) => {
-        if(menu==='menu'){
-          this.menuOptions = response?.data?.listData || [];
-          this.hasMore = this.menuOptions.length === this.pageSize;
-          this.loadingDropdown = false; 
-        }
-        if(menu==='url'){
           this.urlOptions = response?.data?.listData || [];
-          this.hasMore = this.urlOptions.length === this.pageSize;
-          this.loadingDropdown = false; 
-        }
+          this.hasMoreu = this.menuOptions.length === this.pageSizeu;
+              this.loadingDropdownu = false;
       },
       error: (err) => {
-        this.loadingDropdown = false; 
+        this.loadingDropdownu = false; 
       }
     });
   }
+
+  loadMorem(): void {
+    if (!this.hasMorem || this.loadingDropdownm) return;
+    const term = this.mvalue;
+    console.log("loadMorem() term is  "+term)
+    if (!term || typeof term !== 'string') return;
+    this.currentPagem++;
+    this.loadingDropdownm = true;
+
+   let params: any;
+
+    params= { menu: term,  
+       pageNum: this.currentPagem.toString(),
+       pageSize: this.pageSizem.toString(),
+       menuSearch:"menuSearch"
+      }
+   
+    let uri=this.baseUrl+"/base/module/list";
+    this.commonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+          this.menuOptions = response?.data?.listData || [];
+          this.hasMorem = this.menuOptions.length === this.pageSizem;
+              this.loadingDropdownm = false;
+      },
+      error: (err) => {
+        this.loadingDropdownm = false; 
+      }
+    });
+  }
+
+
+
+private performSearchm(): void {
+  console.log("performSearchm()()")
+this.loadingDropdownm = true;
+let uri=this.baseUrl+"/base/module/list";
+let params: any;
+  params={
+    menu: this.mvalue,
+    menuSearch:"menuSearch",
+    pageNum: this.currentPagem.toString(),
+    pageSize: this.pageSizem.toString()
+  }
+  console.log("params ");
+  console.log(params);
+this.commonService.getWithToken(uri, params).subscribe({
+next: (response) => {
+    this.menuOptions = response?.data?.listData || [];
+    console.log(this.menuOptions)
+    this.hasMorem = this.menuOptions.length === this.pageSizem;
+    this.loadingDropdownm = false;  
+},
+error: (err) => {
+  this.loadingDropdownm = false; 
+}
+});
+}
+
+
+  private performSearchu(): void {
+      this.loadingDropdownu = true;  
+    let uri=this.baseUrl+"/base/module/list";  
+    let params: any;
+      params={
+        menu: this.uvalue,
+        loadMethod:"loadMethod",
+        pageNum: this.currentPageu.toString(),
+        pageSize: this.pageSizeu.toString()
+      }
+    
+    this.commonService.getWithToken(uri, params).subscribe({
+      next: (response) => { 
+          this.urlOptions = response?.data?.listData || [];
+          this.hasMoreu = this.urlOptions.length === this.pageSizeu;
+          this.loadingDropdownu = false;       
+      },
+      error: (err) => {
+        this.loadingDropdownu = false; 
+      }
+    });
+  }
+
   setUser(){
     for(let k of this.userOptions){
     if(k.userId===this.searchForm.value.userId){

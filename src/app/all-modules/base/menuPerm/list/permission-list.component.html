@@ -23,18 +23,40 @@
     <!-- Table Container -->
 
 <!---- search div start -->
-<div class="card mb-2 mt-2" style="background-color:transparent;margin-left:23%;margin-right:24%;">
+<div class="card mb-2 mt-2" style="background-color:transparent;margin-left:10%;margin-right:20%;">
   <div class="card-body p-3">
      <form novalidate [formGroup]="searchForm">
           <div class="row filter-row" >
 
+
+            <div class="col-sm-6 col-md-3">
+              <div class="form-group form-focus">
+                <label class="focus-label">Parent Menu</label>
+                <ng-select
+                [items]="parentMenuOptions"
+                (keyup)="setpValue($event.target)"
+                bindLabel="moduleName"
+                bindValue="id"
+                formControlName="parentMenuId"
+                (search)="onSearchp()"
+                (scrollToEnd)="loadMorep()"
+                 [loading]="loadingDropdownp"
+                [clearable]="true"
+                [closeOnSelect]="true"
+                [editableSearchTerm]="false"
+                [addTag]="false" 
+                class="form-control-patch">
+              </ng-select> 
+                
+              </div>
+          </div>
 
                  <div class="col-sm-6 col-md-3">
                   <div class="form-group form-focus">
                     <label class="focus-label">Url</label>
                     <ng-select
                     [items]="menuOptions"
-                    bindLabel="ddlCode"
+                    bindLabel="urlCode"
                     bindValue="id"
                     formControlName="menuId"
                     (search)="onSearch($event,'menu')"
@@ -134,13 +156,12 @@
             <th>Menu</th>
             <th>Front Url</th>
             <th>Backend Url</th>
+            <th>Method</th>
             <th>Permitted User</th>
             <th>Permitted Role</th>
             <th>Created</th>
             <th>Updated</th>
-            <th>Edit</th>
-            <th>View</th>
-            <th>Delete</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -149,13 +170,18 @@
             <td>{{ x.menu}}</td>
             <td>{{ x.frontendUrl}}</td>
             <td>{{ x.backendUrl	}}</td>
+            <td>{{ x.methodName	}}</td>
             <td>{{ x.username}}</td>
             <td>{{ x.authority}}</td>
             <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
             <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
-            <td><a  routerLink="/base/menuPerm/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
-            <td> <a  routerLink="/base/menuPerm/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
-            <td> <a ><i class="fas fa-delete"></i></a></td>
+
+            <td>
+              <span>
+                <a  routerLink="/base/menuPerm/edit/{{x.id}}"><i class="fas fa-edit"></i></a>
+                <a  routerLink="/base/menuPerm/view/{{x.id}}"><i class="fas fa-eye"></i></a>
+               <a ><i class="fas fa-delete">delete</i></a>
+              </span></td>
 
           </tr>
   

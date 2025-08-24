@@ -178,7 +178,10 @@ return;
     if (!term || typeof term !== 'string') return;
     this.currentPage++;
     this.loadingDropdown = true;
-   let params: any={ menu: term,  pageNum: this.currentPage.toString(), pageSize: this.pageSize.toString()
+   let params: any={ menu: term, 
+    menuSearch:"menuSearch", 
+    pageNum: this.currentPage.toString(), 
+    pageSize: this.pageSize.toString()
     }
 
     let uri=this.baseUrl+"/base/module/list";
@@ -212,6 +215,7 @@ return;
     let uri=this.baseUrl+"/base/module/list";
     let params: any={
       menu: term,
+      menuSearch:"menuSearch",
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString()
     }

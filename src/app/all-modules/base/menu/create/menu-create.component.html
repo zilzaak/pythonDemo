@@ -35,7 +35,7 @@
                                     <ng-select
                                     (click)="setId()"
                                     [items]="menuOptions"
-                                    bindLabel="ddlCode"
+                                    bindLabel="moduleName"
                                     bindValue="moduleName"
                                     formControlName="menu"
                                     (search)="onSearch($event,'menu')"
@@ -55,7 +55,7 @@
                                 <ng-select 
                                 (click)="setParentId()"
                                 [items]="menuParents"
-                                bindLabel="ddlCode"
+                                bindLabel="moduleName"
                                 bindValue="moduleName"
                                 formControlName="parentMenu"
                                 (search)="onSearch($event,'parent')"
