@@ -58,6 +58,7 @@ export class UserCreateComponent implements OnInit {
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
+      id:[''],
       enabled: [true],
       email: [''],
       username:[''],
