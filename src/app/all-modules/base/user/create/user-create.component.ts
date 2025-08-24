@@ -25,6 +25,34 @@ export class UserCreateComponent implements OnInit {
     this.initializeForm();
     this.fetchRoles();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
+    if(this.pageTitle==='View' || this.pageTitle==='Edit'){
+    this.getFormData(this.activeRouter.snapshot.params.id);
+    }
+  }
+
+  isExist(id:any){
+
+    for(let x of this.selectedRole){
+         if(x.id===id){
+           return true;
+         }
+    }
+
+    return false;
+  }
+
+  getFormData(id:any){
+    let api=this.baseUrl+"/base/user/get"
+    this.commmonService.getWithToken(api,{id:id}).subscribe(
+      { next: (response) => {
+        this.createForm.patchValue(response);
+        this.selectedRole=response.roles;
+        },
+        error: (err) => {
+        }
+      }
+    )
+
   }
 
 
@@ -32,6 +60,8 @@ export class UserCreateComponent implements OnInit {
     this.createForm = this.formBuilder.group({
       enabled: [true],
       email: [''],
+      username:[''],
+      password:[''],
       phone: [''],
       address: ['', Validators.required],
       displayName: ['', Validators.required],

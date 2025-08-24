@@ -63,16 +63,16 @@ const routes: Routes = [
 
   {
     path: 'user/create', component: UserCreateComponent,
-    data: { title: 'Create User' },
+    data: { title: 'Create' },
   },
 
   {
     path: 'user/edit/:id', component: UserCreateComponent,
-    data: { title: 'Edit User' },
+    data: { title: 'Edit' },
   },
   {
     path: 'user/view/:id', component: UserCreateComponent,
-    data: { title: 'View User' },
+    data: { title: 'View' },
   },
 
   {
