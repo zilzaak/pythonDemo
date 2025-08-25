@@ -1,1 +1,101 @@
-<p>org-create works!</p>
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+           <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/base/user/list">Base</a></li>
+                <li class="breadcrumb-item active">Organization</li>
+                <li class="breadcrumb-item active">{{pageTitle}}</li>
+            </ul>
+        </div>
+    </div>
+     </div>
+  
+  
+  <div class="container-fluid mt-3">
+      <div class="row">
+  <div class="col col-10">
+      <h4 class="mb-3">Organization {{pageTitle}}</h4>
+  </div>
+  <div  style="text-align:right;"class="col col-2" >
+      <a id="backBtn"   [routerLink]="['/base/organization/list']" class="btn btn-sm btn-outline-secondary"> 
+          <i class="fas fa-times me-1"></i> Back
+        </a>
+  
+  </div>
+      </div>
+  
+    
+  
+  <div class="row">
+  
+  <div class="col col-8" style="text-align:right;">
+      <form  [formGroup]="createForm" class="bg-light p-3 rounded shadow-sm" style="max-width: 600px; margin: 0 auto;">
+    
+         <!-- Email -->
+          <div class="mb-2">
+            <label for="email" class="form-label small">Name</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="name"
+              formControlName="name"
+              placeholder="Enter name"
+            />
+          </div>
+      
+          <!-- Phone -->
+          <div class="mb-2">
+            <label for="phone" class="form-label small">Phone</label>
+            <input
+              type="tel"
+              class="form-control form-control-sm"
+              id="phone"
+              formControlName="phone"
+              placeholder="Enter phone"
+            />
+          </div>
+      
+          <!-- Address -->
+          <div class="mb-2">
+            <label for="address" class="form-label small">Address</label>
+            <textarea
+              class="form-control form-control-sm"
+              id="address"
+              formControlName="address"
+              rows="2"
+              placeholder="Enter address"
+            ></textarea>
+          </div>
+
+
+                    <!-- Address -->
+          <div class="mb-2">
+            <label for="displayName" class="form-label small">Remarks</label>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="remarks"
+              formControlName="remarks"
+              placeholder="Enter Remarks "
+            />
+          </div>
+     
+          
+          <!-- Action Buttons -->
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-sm btn-primary" (click)="onSubmit()">
+              <i class="fas fa-save me-1"></i> Save
+            </button>
+          </div>
+         </form>
+  
+  </div>
+  <div class="col col-4">
+  </div>
+  </div>
+  
+  <div *ngIf="loading" class="loader-overlay">
+    <div class="spinner"></div>
+    <span>Saving user...</span>
+  </div>
+    </div>

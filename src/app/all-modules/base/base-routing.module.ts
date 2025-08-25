@@ -94,7 +94,7 @@ const routes: Routes = [
     data: { title: 'Role Edit' },
   },
   {
-    path: 'organization/create', component: RoleCreateComponent,
+    path: 'organization/create', component: OrgCreateComponent,
     data: { title: 'Create' },
   },
   {

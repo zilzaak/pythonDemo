@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
 import { environment } from 'src/environments/environment';
@@ -18,83 +18,71 @@ export class OrgCreateComponent implements OnInit {
   ) { }
   createForm!: FormGroup;
   pageTitle!: any;
-  opMode!:any;
-  api!:any;
   baseUrl = environment.baseUrl;
   loading = false;
-  showSaveBtn:boolean = true; 
+
+
   ngOnInit(): void {
     this.initializeForm();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
-    if(this.pageTitle==='Create'){
-      this.opMode="create";
-      this.api= this.baseUrl + "/base/role/create";
-    }
-    if(this.pageTitle==='Edit'){
-      this.api= this.baseUrl + "/base/role/update";
-      this.opMode="edit";
-      this.formData(this.activeRouter.snapshot.params.id);
-    }
-    if(this.pageTitle==='View'){
-      this.api= this.baseUrl + "/base/role/view";
-      this.opMode="view";
-      this.createForm.controls['authority'].disable();
-      this.createForm.controls['remarks'].disable();
-      this.showSaveBtn=false;
-      
+    if(this.pageTitle==='View' || this.pageTitle==='Edit'){
+    this.getFormData(this.activeRouter.snapshot.params.id);
     }
   }
 
 
-  formData(id: any) {
-    let para:any={id:id};
-    let api=this.baseUrl+"/base/role/get"
-    this.commmonService.getWithToken(api,para).subscribe(
+  getFormData(id:any){
+    let api=this.baseUrl+"/base/organization/list"
+    this.commmonService.getWithToken(api,{orgId:id}).subscribe(
       { next: (response) => {
-           this.createForm.patchValue(response);
+        this.createForm.patchValue(response?.data?.listData[0]);
         },
         error: (err) => {
         }
       }
     )
-
   }
 
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
       id:[''],
-      authority: [''],
-      remarks: [''],
-      created:[""],
-      updated: [''],
+      name:['',Validators.required],
+      phone: [''],
+      address: ['', Validators.required],
+      remarks: ['', Validators.required],
     });
   }
 
 
+
   onSubmit() {
-    if(this.opMode==='view'){
-       return;
-    }
     this.loading=true;
-    const user = { ...this.createForm.value };
-    let mthod:any;
-    if(this.opMode==='create'){
-      mthod="post";
-    }
-    if(this.opMode==='edit'){
-      mthod="put";
-    }
-      this.commmonService.sendPostPutReq<any>(this.api, user,mthod).subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            this.router.navigate(['/base/role/list']);
-          } else {
-            alert(response.message);
-            this.router.navigate(['/base/role/list']);
-          }
+    const api = this.baseUrl + "/base/organization/create";
+  let org:any={
+    id:this.createForm.value.id,    
+    name:this.createForm.value.name,   
+     phone:this.createForm.value.phone,
+     address:this.createForm.value.address,
+  } 
+
+console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+console.log(org);
+
+
+
+
+    this.commmonService.sendPostPutReq<any>(api, org,"post").subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.router.navigate(['/base/organization/list']);
+        } else {
+          alert(response.message);
+          this.router.navigate(['/base/organization/list']);
         }
-      });
+      }
+    });
   }
+
 
 }
