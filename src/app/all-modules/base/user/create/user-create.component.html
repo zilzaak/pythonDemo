@@ -100,6 +100,26 @@
             placeholder="Enter address"
           ></textarea>
         </div>
+
+
+        <div class="mb-2">
+          <label for="name-f" >Organization</label>
+          <ng-select
+          [items]="menuOptions"
+          bindLabel="moduleName"
+          bindValue="moduleName"
+          formControlName="org"
+          (search)="onSearch($event,'menu')"
+          (scrollToEnd)="loadMore('menu')"
+           [loading]="loadingDropdown"
+          [clearable]="true"
+          [closeOnSelect]="true"
+          [editableSearchTerm]="false"
+          [addTag]="false" 
+          class="form-control-patch">
+        </ng-select>
+  
+        </div>
     
         <!-- Enabled Checkbox -->
         <div class="mb-3 form-check">

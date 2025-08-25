@@ -21,6 +21,15 @@ export class UserCreateComponent implements OnInit {
   roleList: any[]=[];
   selectedRole:any[]=[];
   loading = false;
+
+
+  loadingDropdown = false;
+  currentPage = 1;
+  pageSize = 10;  
+  hasMore = true;  
+  menuOptions:any[]=[];
+  private debounceTimer: any;
+
   ngOnInit(): void {
     this.initializeForm();
     this.fetchRoles();
@@ -59,6 +68,7 @@ export class UserCreateComponent implements OnInit {
   initializeForm() {
     this.createForm = this.formBuilder.group({
       id:[''],
+      org:[''],
       enabled: [true],
       email: [''],
       username:[''],
@@ -98,6 +108,73 @@ export class UserCreateComponent implements OnInit {
       }
     this.selectedRole.push(role);
   }
+
+
+  onSearch(event: any,menu:any): void {
+    const term = event.term?.trim();
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+    if (!term || term.length === 0) {
+        this.menuOptions = [];
+        return;
+    }
+    this.debounceTimer = setTimeout(() => {
+        this.currentPage = 1;
+        this.hasMore = true;
+        this.performSearch(term,menu);
+    }, 300);
+  }
+
+  loadMore(menu:any): void {
+    if (!this.hasMore || this.loadingDropdown) return;
+    const term = this.createForm.get('menu')?.value?.trim();
+    if (!term || typeof term !== 'string') return;
+    this.currentPage++;
+    this.loadingDropdown = true;
+   let params: any={ menu: term, 
+    menuSearch:"menuSearch", 
+    pageNum: this.currentPage.toString(), 
+    pageSize: this.pageSize.toString()
+    }
+
+    let uri=this.baseUrl+"/base/module/list";
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+          this.menuOptions = response?.data?.listData || [];
+          this.hasMore = this.menuOptions.length === this.pageSize;       
+          this.loadingDropdown = false;
+      },
+      error: (err) => {
+        this.loadingDropdown = false; 
+      }
+    });
+  }
+
+
+  private performSearch(term: string,menu:any): void {
+      this.loadingDropdown = true;
+    let uri=this.baseUrl+"/base/module/list";
+    let params: any={
+      menu: term,
+      menuSearch:"menuSearch",
+      pageNum: this.currentPage.toString(),
+      pageSize: this.pageSize.toString()
+    }
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+          this.menuOptions = response?.data?.listData || [];
+          this.hasMore = this.menuOptions.length === this.pageSize;
+          this.loadingDropdown = false; 
+  
+      },
+      error: (err) => {
+        this.loadingDropdown = false; 
+      }
+    });
+  }
+
+
 
 
   onSubmit() {
