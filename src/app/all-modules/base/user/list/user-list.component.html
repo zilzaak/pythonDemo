@@ -11,12 +11,46 @@
         </div>
     </div>
      </div>
-
-
-
     <button  class="btn btn-primary btn-sm" routerLink="/base/user/create">
        <i class="fas fa-plus-circle"></i>Create</button> <br/>
     <!-- Table Container -->
+
+    <!---- search div start -->
+<div class="card mb-2 mt-2" style="background-color:transparent;margin-left:15%;margin-right:20%;">
+  <div class="card-body p-3">
+     <form novalidate [formGroup]="searchForm">
+          <div class="row filter-row" >
+
+
+            <div class="col-sm-6 col-md-3">
+              <div class="form-group form-focus">
+                <input type="text" class="form-control form-control-sm" id="email"
+                formControlName="username"
+                placeholder="User Name"
+              />
+                
+              </div>
+          </div>
+             
+          <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus">
+              <input type="text" class="form-control form-control-sm" id="email"
+              formControlName="commonField"
+              placeholder="Phone/Email/Address"
+            /> </div>
+        </div>
+
+              <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus">
+                    <button class="btn btn-md btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
+                </div>
+            </div> 
+          </div>
+      </form>
+
+  </div>
+</div>
+
     <div class="table-container">
       <table class="data-table">
         <thead>

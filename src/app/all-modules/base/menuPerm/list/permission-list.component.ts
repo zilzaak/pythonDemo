@@ -10,7 +10,6 @@ import { environment } from 'src/environments/environment';
 })
 export class PermissionListComponent implements OnInit {
 
-
   listData:any[]=[];
   baseUrl=environment.baseUrl;
   totalItems = 0;

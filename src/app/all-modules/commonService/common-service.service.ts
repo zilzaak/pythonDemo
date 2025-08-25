@@ -23,7 +23,7 @@ export class CommonServiceService {
 
   }
 
-  getWithToken(url: string, params?: any) {
+  getWithToken(url: any, params?: any) {
     const headers = this.getHeaders();
    return this.http.get<any>(url, { headers, params }).pipe(retry(3));
   }
