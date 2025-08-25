@@ -56,8 +56,8 @@
           <div class="row filter-row" >
             <div class="col-sm-6 col-md-3">
               <div class="form-group form-focus">
-                <label class="focus-label">Frontend Url</label>
-                <input type="text" class="form-control"  formControlName="frontendUrl"/> 
+                <label class="focus-label">Name/Phone/Address</label>
+                <input type="text" class="form-control"  formControlName="commonField"/> 
                 
               </div>
           </div>
@@ -97,13 +97,13 @@
           <tr *ngFor="let x of listData; index as i">
             <td>{{ i + 1 }}</td>
             <td>{{ x.name}}</td>
-            <td>{{ x.phnone}}/td>
+            <td>{{ x.phone}}</td>
             <td>{{ x.address}}</td>
             <td>{{ x.remarks}}</td>
             <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
             <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ x.createBy | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ x.updateBy | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ x.createBy}}</td>
+            <td>{{ x.updateBy }}</td>
             <td><a  routerLink="/base/organization/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
             <td> <a  routerLink="/base/organization/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
             <td> <a ><i class="fas fa-delete"></i></a></td>

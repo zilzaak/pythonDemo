@@ -82,7 +82,7 @@
      
           
           <!-- Action Buttons -->
-          <div class="d-flex gap-2">
+          <div class="d-flex gap-2" *ngIf="pageTitle!=='View'">
             <button type="submit" class="btn btn-sm btn-primary" (click)="onSubmit()">
               <i class="fas fa-save me-1"></i> Save
             </button>

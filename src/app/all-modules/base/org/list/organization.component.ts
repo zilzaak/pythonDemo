@@ -29,9 +29,8 @@ export class OrganizationComponent implements OnInit {
   initForm(){
 
     this.searchForm=this.formBuilder.group({
-      parentMenuId:[''],
-      backendUrl:[''],
-      frontendUrl:['']
+      commonField:[''],
+      orgId:['']
     })
   }
 
@@ -59,22 +58,10 @@ export class OrganizationComponent implements OnInit {
   };
   console.log("form value is ");
   console.log( this.searchForm.value);
-  if(this.searchForm.value.parentMenuId && this.searchForm.value.parentMenuId!=null 
-    && this.searchForm.value.parentMenuId!==''
+  if(this.searchForm.value.commonField && this.searchForm.value.commonField!=null 
+    && this.searchForm.value.commonField!==''
   ){
-    params.parentMenuId=this.searchForm.value.parentMenuId;
-  }
-
-  if(this.searchForm.value.backendUrl && this.searchForm.value.backendUrl!=null 
-    && this.searchForm.value.backendUrl!==''
-  ){
-    params.backendUrlId=this.searchForm.value.backendUrl;
-  }
-
-  if(this.searchForm.value.frontendUrl && this.searchForm.value.frontendUrl!=null 
-    && this.searchForm.value.frontendUrl!==''
-  ){
-    params.frontendUrl=this.searchForm.value.frontendUrl;
+    params.commonField=this.searchForm.value.commonField;
   }
 
     this.commonService.getWithToken('http://localhost:8000/base/organization/list', params)

@@ -36,6 +36,9 @@ export class OrgCreateComponent implements OnInit {
     this.commmonService.getWithToken(api,{orgId:id}).subscribe(
       { next: (response) => {
         this.createForm.patchValue(response?.data?.listData[0]);
+        if(this.pageTitle==='View'){
+          this.createForm.disable();
+        }
         },
         error: (err) => {
         }
@@ -64,13 +67,8 @@ export class OrgCreateComponent implements OnInit {
     name:this.createForm.value.name,   
      phone:this.createForm.value.phone,
      address:this.createForm.value.address,
+     remarks:this.createForm.value.remarks
   } 
-
-console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-console.log(org);
-
-
-
 
     this.commmonService.sendPostPutReq<any>(api, org,"post").subscribe({
       next: (response: any) => {
@@ -78,7 +76,6 @@ console.log(org);
           this.router.navigate(['/base/organization/list']);
         } else {
           alert(response.message);
-          this.router.navigate(['/base/organization/list']);
         }
       }
     });
