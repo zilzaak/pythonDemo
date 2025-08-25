@@ -21,6 +21,7 @@ export class UserCreateComponent implements OnInit {
   roleList: any[]=[];
   selectedRole:any[]=[];
   loading = false;
+  editModeOrgData:any[]=[];
 
 
   loadingDropdown = false;
@@ -29,11 +30,21 @@ export class UserCreateComponent implements OnInit {
   hasMore = true;  
   menuOptions:any[]=[];
   private debounceTimer: any;
+  crudApi:any;
+  crudMethod:any;
 
   ngOnInit(): void {
     this.initializeForm();
     this.fetchRoles();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
+    if(this.pageTitle==='Create'){
+      this.crudApi = this.baseUrl + "/base/user/create";
+      this.crudMethod="post";
+    }
+    if(this.pageTitle==='Edit'){
+      this.crudApi = this.baseUrl + "/base/user/edit";
+      this.crudMethod="put";
+    }
     if(this.pageTitle==='View' || this.pageTitle==='Edit'){
     this.getFormData(this.activeRouter.snapshot.params.id);
     }
@@ -54,8 +65,19 @@ export class UserCreateComponent implements OnInit {
     let api=this.baseUrl+"/base/user/get"
     this.commmonService.getWithToken(api,{id:id}).subscribe(
       { next: (response) => {
-        this.createForm.patchValue(response);
-        this.selectedRole=response.roles;
+          this.createForm.patchValue(response.data.user);
+          this.selectedRole=response.data.user.roles;
+          this.menuOptions=[];
+          let orgIds:any[]=[];
+          this.editModeOrgData=response.data.userOrg;
+        for(let k of response.data.userOrg){
+                let v:any={
+                  id:k.orgId, orgName:k.orgName
+                };
+                this.menuOptions.push(v);
+                orgIds.push(k.orgId);
+            }
+            this.createForm.controls['org'].setValue(orgIds);
         },
         error: (err) => {
         }
@@ -133,7 +155,7 @@ export class UserCreateComponent implements OnInit {
     this.currentPage++;
     this.loadingDropdown = true;
    let params: any={ menu: term, 
-    menuSearch:"menuSearch", 
+    dropDown:"gggggg", 
     pageNum: this.currentPage.toString(), 
     pageSize: this.pageSize.toString()
     }
@@ -154,10 +176,10 @@ export class UserCreateComponent implements OnInit {
 
   private performSearch(term: string,menu:any): void {
       this.loadingDropdown = true;
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/organization/list";
     let params: any={
       menu: term,
-      menuSearch:"menuSearch",
+      dropDown:"gggggg",
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString()
     }
@@ -175,20 +197,34 @@ export class UserCreateComponent implements OnInit {
   }
 
 
-
-
   onSubmit() {
     this.loading=true;
-    const api = this.baseUrl + "/base/user/create";
     const user = { ...this.createForm.value };
     user.roles = this.selectedRole.map(x => x.authority);  
-    this.commmonService.sendPostPutReq<any>(api, user,"post").subscribe({
+
+    let orgIdList:any=this.createForm.value.org;
+    let userOrgs:any[]=[];
+    for(let x of orgIdList){
+        let obj:any={
+          id:null,
+          org:x
+        };
+        for(let n of this.editModeOrgData){
+           if(n.orgId===x){
+            obj.id=n.id;
+            break;
+           }
+        }
+        userOrgs.push(obj);
+    }
+    user.userOrgs=userOrgs;
+
+    this.commmonService.sendPostPutReq<any>(this.crudApi, user,this.crudMethod).subscribe({
       next: (response: any) => {
         if (response.success) {
           this.router.navigate(['/base/user/list']);
         } else {
           alert(response.message);
-          this.router.navigate(['/base/user/list']);
         }
       }
     });

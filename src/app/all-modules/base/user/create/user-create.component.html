@@ -106,8 +106,8 @@
           <label for="name-f" >Organization</label>
           <ng-select
           [items]="menuOptions"
-          bindLabel="moduleName"
-          bindValue="moduleName"
+          bindLabel="orgName"
+          bindValue="id"
           formControlName="org"
           (search)="onSearch($event,'menu')"
           (scrollToEnd)="loadMore('menu')"
@@ -116,9 +116,9 @@
           [closeOnSelect]="true"
           [editableSearchTerm]="false"
           [addTag]="false" 
+          [multiple]="true"
           class="form-control-patch">
-        </ng-select>
-  
+        </ng-select> 
         </div>
     
         <!-- Enabled Checkbox -->
