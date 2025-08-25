@@ -17,6 +17,32 @@
        <i class="fas fa-plus-circle"></i>Create</button> <br/>
     <!-- Table Container -->
 
+        <!---- search div start -->
+<div class="card mb-2 mt-2" style="background-color:transparent;margin-left:23%;margin-right:24%;">
+  <div class="card-body p-3">
+     <form novalidate [formGroup]="searchForm">
+          <div class="row filter-row" >
+            <div class="col-sm-6 col-md-3">
+              <div class="form-group form-focus">
+                <label class="focus-label">Name/Phone/Address</label>
+                <input type="text" class="form-control"  formControlName="commonField"/> 
+                
+              </div>
+          </div>
+
+              <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus">
+                    <button class="btn btn-md btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
+                </div>
+            </div> 
+          </div>
+      </form>
+
+  </div>
+</div>
+<!---- search div ended-->
+
+
     <div class="pagination-container mt-3">
       <ul class="pagination">
         <!-- Previous Button -->
@@ -46,33 +72,6 @@
         Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} total items)
       </div>
     </div>
-
-
-
-    <!---- search div start -->
-<div class="card mb-2 mt-2" style="background-color:transparent;margin-left:23%;margin-right:24%;">
-  <div class="card-body p-3">
-     <form novalidate [formGroup]="searchForm">
-          <div class="row filter-row" >
-            <div class="col-sm-6 col-md-3">
-              <div class="form-group form-focus">
-                <label class="focus-label">Name/Phone/Address</label>
-                <input type="text" class="form-control"  formControlName="commonField"/> 
-                
-              </div>
-          </div>
-
-              <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus">
-                    <button class="btn btn-md btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
-                </div>
-            </div> 
-          </div>
-      </form>
-
-  </div>
-</div>
-<!---- search div ended-->
 
 
     <div class="table-container">
