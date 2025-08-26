@@ -32,11 +32,11 @@
               </div>
           </div>
              
-          <div class="col-sm-6 col-md-3">
+          <div class="col-sm-6 col-md-4">
             <div class="form-group form-focus">
               <input type="text" class="form-control form-control-sm" id="email"
               formControlName="commonField"
-              placeholder="Phone/Email/Address"
+              placeholder="Owner Name/Organization/Phone/Email/Address"
             /> </div>
         </div>
 
@@ -56,9 +56,10 @@
         <thead>
           <tr>
             <th>SL</th>
-            <th>User</th>
-            <th>Email</th>
+            <th>User Name</th>
+            <th>Owner Name</th>
             <th>Phone</th>
+            <th>Email</th>
             <th>Organization</th>
             <th>Address</th>
             <th>Roles</th>
@@ -73,9 +74,10 @@
           <tr *ngFor="let user of listData; index as i">
             <td>{{ i + 1 }}</td>
             <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
+            <td>{{ user.displayName }}</td>
             <td>{{ user.phone}}</td>
-            <td>{{ user.orgNames}}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.orgName}}</td>
             <td>{{ user.address }}</td>
             <td>{{ user.roles}}</td>
             <td>{{ user?.enabled}}</td>
