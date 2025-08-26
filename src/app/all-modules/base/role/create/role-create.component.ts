@@ -36,12 +36,9 @@ export class RoleCreateComponent implements OnInit {
       this.formData(this.activeRouter.snapshot.params.id);
     }
     if(this.pageTitle==='Role View'){
-      this.api= this.baseUrl + "/base/role/view";
       this.opMode="view";
-      this.createForm.controls['authority'].disable();
-      this.createForm.controls['remarks'].disable();
       this.showSaveBtn=false;
-      
+      this.formData(this.activeRouter.snapshot.params.id);      
     }
   }
 
@@ -52,6 +49,9 @@ export class RoleCreateComponent implements OnInit {
     this.commmonService.getWithToken(api,para).subscribe(
       { next: (response) => {
            this.createForm.patchValue(response);
+           if(this.pageTitle==='Role View'){
+            this.createForm.disable();
+           }
         },
         error: (err) => {
         }

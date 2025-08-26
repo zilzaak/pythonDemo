@@ -6,9 +6,6 @@ import { AllModulesComponent } from './all-modules.component';
 import { HttpClientModule } from '@angular/common/http';
 import { Sidebar2Component } from './sidebar2/sidebar2.component';
 import { ItemMenuComponent } from './sidebar2/item-menu.component';
-import { OrgCreateComponent } from './common/organization/create/org-create.component';
-import { OrgEditComponent } from './common/organization/edit/org-edit.component';
-import { OrgListComponent } from './common/organization/list/org-list.component';
 import { ProductCreateComponent } from './common/product/create/product-create.component';
 import { ProductListComponent } from './common/product/list/product-list.component';
 import { ProducteditComponent } from './common/product/edit/productedit.component';
@@ -22,9 +19,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
     AllModulesComponent,
     Sidebar2Component,
     ItemMenuComponent,
-    OrgCreateComponent,
-    OrgEditComponent,
-    OrgListComponent,
     ProductCreateComponent,
     ProductListComponent,
     ProducteditComponent,
