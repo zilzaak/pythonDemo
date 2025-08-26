@@ -10,7 +10,6 @@ import { ProductCreateComponent } from './common/product/create/product-create.c
 import { ProductListComponent } from './common/product/list/product-list.component';
 import { ProducteditComponent } from './common/product/edit/productedit.component';
 import { ProductCritCreateComponent } from './common/productCriteria/create/product-crit-create.component';
-import { ProductCritEditComponent } from './common/productCriteria/edit/product-crit-edit.component';
 import { ProductCritComponent } from './common/productCriteria/list/product-crit.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -23,7 +22,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ProductListComponent,
     ProducteditComponent,
     ProductCritCreateComponent,
-    ProductCritEditComponent,
     ProductCritComponent,
   
   ],
