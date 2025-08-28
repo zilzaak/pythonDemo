@@ -35,7 +35,8 @@ export class ProductCritComponent implements OnInit {
 
     this.searchForm=this.formBuilder.group({
       name:[''],
-      orgId:['']
+      orgId:[''],
+      entity:['']
     })
   }
 
@@ -61,15 +62,19 @@ export class ProductCritComponent implements OnInit {
     pageNum: page.toString(),
     pageSize: this.pageSize.toString()
   };
-  console.log("form value is ");
-  console.log( this.searchForm.value);
 
   if(this.searchForm.value.orgId && this.searchForm.value.orgId!=null 
     && this.searchForm.value.orgId!==''
   ){
     params.orgId=this.searchForm.value.orgId;
   }
-  params.entity='Brand';
+
+  if(this.searchForm.value.entity && this.searchForm.value.entity!=null 
+    && this.searchForm.value.entity!==''
+  ){
+    params.entity=this.searchForm.value.entity;
+  }
+
 
     this.commonService.getWithToken('http://localhost:8000/setting/productCriteria/list', params)
       .subscribe({

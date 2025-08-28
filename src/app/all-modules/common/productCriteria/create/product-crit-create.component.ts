@@ -73,6 +73,7 @@ export class ProductCritCreateComponent implements OnInit {
       entity: [''],
       name: ['',Validators.required],
       orgId: [''],
+      brandId:['']
     });
   }
 

@@ -59,6 +59,28 @@
                                       </ng-select>
                                 
                                       </div>
+
+
+                                      <div class="col-md-3 form-group"
+                                       *ngIf="createForm.value.entity==='ProductModel'">
+                                        <label for="name-f" >Brand</label>
+                                        <ng-select
+                                        (keyup)="setSearch($event.target)"
+                                        [items]="menuOptions"
+                                        bindLabel="brandId"
+                                        bindValue="id"
+                                        formControlName="orgId"
+                                        (search)="onSearch($event)"
+                                        (scrollToEnd)="loadMore()"
+                                         [loading]="loadingDropdown"
+                                        [clearable]="true"
+                                        [closeOnSelect]="true"
+                                        [editableSearchTerm]="false"
+                                        [addTag]="false" 
+                                        class="form-control-patch">
+                                      </ng-select>
+                                
+                                      </div>
                                     
   
                                     <div class="col-md-3 form-group">

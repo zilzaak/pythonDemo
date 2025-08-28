@@ -22,7 +22,17 @@
     <div class="card-body p-3">
        <form novalidate [formGroup]="searchForm">
             <div class="row filter-row" >
-  
+
+              <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                  <label class="focus-label">Entity</label>
+                  <ng-select [items]="entities" formControlName="entity"
+                  (change)="getList()"
+                  [closeOnSelect]="true" class="form-control-patch">
+                 </ng-select>                  
+                </div>
+             </div>
+
               <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
                   <label class="focus-label">Name</label>
@@ -89,13 +99,12 @@
           <tbody>
             <tr *ngFor="let x of listData; index as i">
               <td>{{ i + 1 }}</td>
-              <td>{{ x.moduleName}} {{ x.modulename}}</td>
-              <td>{{ x.parentModule}} {{ x.parentmodule}}</td>
-              <td>{{ x.apiSeq}} {{ x.apiseq}}</td>
-              <td>{{ x.apiPattern}} {{ x.apipattern}}</td>
-              <td>{{ x.frontUrl}} {{x.fronturl}}</td>
+              <td>{{ x.orgName}}</td>
+              <td>{{ x.name}}</td>
               <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
               <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ x.apiSeq}} {{ x.apiseq}}</td>
+              <td>{{ x.apiPattern}} {{ x.apipattern}}</td>
               <td>
                 <ul style="list-style-type:none">
                   <li><a  routerLink="/setting/productCrit/edit/{{x.id}}"><i class="fas fa-edit"></i></a></li>
