@@ -1,4 +1,12 @@
 
+.logOut{
+border-radius:3px;
+text-transform: capitalize;
+text-shadow: #7f7092;
+color:white;
+background-color: rgb(196, 112, 112);
+padding:2px;
+}
 
 .customCard {
 	border-radius: 10px;

@@ -1,18 +1,32 @@
-<div class="page-container">
-  <div class="sidebar-container">
-    <div *ngIf="loading" class="loading-message">Loading menu...</div>
-    <nav *ngIf="!loading">
-      <ul class="main-menu">
-        <app-item-menu 
-          *ngFor="let menuItem of menuList"
-          [menu]="menuItem"
-          [level]="0">
-        </app-item-menu>
-      </ul>
-    </nav>
+ <div id="topbar" class="row">
+  <div class="col-md-10">
   </div>
-  
-  <div class="content-container">
-    <router-outlet></router-outlet>
-  </div>
+  <div class="col-md-2">
+    <div class="row">
+<div class="col-sm-8">
 </div>
+<div class="col-sm-4" style="padding:3px;">  
+  <button class="logOut">Log Out</button>
+</div>
+    </div>
+
+  </div>
+ </div>
+ <div class="page-container">
+    <div class="sidebar-container">
+      <div *ngIf="loading" class="loading-message">Loading menu...</div>
+      <nav *ngIf="!loading">
+        <ul class="main-menu">
+          <app-item-menu 
+            *ngFor="let menuItem of menuList"
+            [menu]="menuItem"
+            [level]="0">
+          </app-item-menu>
+        </ul>
+      </nav>
+    </div>
+    
+    <div class="content-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
