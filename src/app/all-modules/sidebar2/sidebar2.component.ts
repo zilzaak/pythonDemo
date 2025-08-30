@@ -27,7 +27,9 @@ export class Sidebar2Component implements OnInit {
   organizations:any[]=[];
   loading = true;
 
-  constructor(private loginService: LoginServiceService) {}
+  constructor(private loginService: LoginServiceService,
+    private router : Router
+  ) {}
 
     async ngOnInit():  Promise<void> {
      await this.getMenu();
@@ -39,6 +41,13 @@ export class Sidebar2Component implements OnInit {
     this.menuList=userData.menuList;
     this.organizations=userData.orgList;
     this.loading = false;
+  }
+
+  logOutUser(){
+    localStorage.clear();
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userData');
+    this.router.navigate(['/auth/login']);  
   }
 
 }
