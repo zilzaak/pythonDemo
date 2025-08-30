@@ -63,12 +63,8 @@ export class ProductCritComponent implements OnInit {
     pageSize: this.pageSize.toString()
   };
 
-  if(this.searchForm.value.orgId && this.searchForm.value.orgId!=null 
-    && this.searchForm.value.orgId!==''
-  ){
-    params.orgId=this.searchForm.value.orgId;
-  }
-
+  params.orgId=localStorage.getItem('orgId');
+  params.orgName=localStorage.getItem('orgName');
   if(this.searchForm.value.entity && this.searchForm.value.entity!=null 
     && this.searchForm.value.entity!==''
   ){

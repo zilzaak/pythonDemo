@@ -12,6 +12,14 @@ const routes: Routes = [ {
       path: 'productCrit/list', component: ProductCritComponent,
       data: { title: 'List' },
     },
+    {
+      path: 'productCrit/edit/:entity/:id', component: ProductCritCreateComponent,
+      data: { title: 'Edit' },
+    },
+    {
+      path: 'productCrit/view/:entity/:id', component: ProductCritCreateComponent,
+      data: { title: 'View' },
+    },
 ];
 
 @NgModule({

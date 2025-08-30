@@ -47,19 +47,37 @@ export class ProductCritCreateComponent implements OnInit {
     } else if (this.pageTitle === 'Edit') {
       this.opMode = 'edit';
       this.api = this.baseUrl + '/setting/productCriteria/update';
-      this.formData(this.activeRouter.snapshot.params.id);
+      this.formData(this.activeRouter.snapshot.params.id,this.activeRouter.snapshot.params.entity);
     } else if (this.pageTitle === 'View') {
       this.opMode = 'view';
       this.api = this.baseUrl + '/setting/productCriteria/list';
-      this.formData(this.activeRouter.snapshot.params.id);
+      this.formData(this.activeRouter.snapshot.params.id,this.activeRouter.snapshot.params.entity);
     }
   }
 
 
-  formData(id: any) {
-    const para = { moduleId :id , menuDetails:"menuDetails"};
-    this.commmonService.getWithToken(this.baseUrl + '/base/module/list', para).subscribe({
+  formData(id: any,entity:any) {
+    let org:any=localStorage.getItem('orgId');
+    const para = { id :id , entity:entity,orgId:org};
+    this.commmonService.getWithToken(this.baseUrl + '/setting/productCriteria/list', para).subscribe({
       next: (response) => {
+        this.menuOptions=[
+          { id:localStorage.getItem('orgId'),orgName:localStorage.getItem('orgName')
+          }
+        ];
+         this.createForm.patchValue(response.data.listData[0]);
+         this.createForm.controls['entity'].setValue(entity);
+         this.createForm.controls['orgId'].setValue(localStorage.getItem('orgId'));
+         this.brandOptions=[
+          {
+            id:response.data.listData[0]?.brandId,
+            name:response.data.listData[0]?.brandName,
+          }
+         ]
+         
+         if(this.opMode==='view'){
+          this.createForm.disable();
+         }
 
       },
       error: (err) => {

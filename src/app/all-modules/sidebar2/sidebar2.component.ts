@@ -26,7 +26,7 @@ export class Sidebar2Component implements OnInit {
   menuList: MenuItem[] = [];
   organizations:any[]=[];
   loading = true;
-
+  org:any;
   constructor(private loginService: LoginServiceService,
     private router : Router
   ) {}
@@ -42,6 +42,14 @@ export class Sidebar2Component implements OnInit {
     this.organizations=userData.orgList;
     this.loading = false;
   }
+
+  setOrg(orgv:any){  
+  localStorage.setItem('orgId',orgv.id.toString());
+  localStorage.setItem('orgName',orgv.name);
+  console.log(orgv);
+  console.log(localStorage.getItem('orgName'));
+  }
+
 
   logOutUser(){
     localStorage.clear();
