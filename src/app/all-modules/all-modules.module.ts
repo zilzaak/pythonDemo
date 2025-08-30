@@ -8,6 +8,7 @@ import { Sidebar2Component } from './sidebar2/sidebar2.component';
 import { ItemMenuComponent } from './sidebar2/item-menu.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -21,7 +22,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     AllModulesRoutingModule,
     HttpClientModule,
     NgxPaginationModule,
-    NgSelectModule
+    NgSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class AllModulesModule {

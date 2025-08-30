@@ -1,5 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuItem } from 'src/app/login-module/models/menuItem';
 import { LoginServiceService } from 'src/app/login-module/service/login-service.service';
@@ -27,11 +28,15 @@ export class Sidebar2Component implements OnInit {
   organizations:any[]=[];
   loading = true;
   org:any;
+  createForm!:FormGroup;
+
   constructor(private loginService: LoginServiceService,
-    private router : Router
+    private router : Router,
+    private formBuilder:FormBuilder
   ) {}
 
     async ngOnInit():  Promise<void> {
+      this.createForm = this.formBuilder.group({org: ['']});
      await this.getMenu();
   }
 
@@ -41,6 +46,7 @@ export class Sidebar2Component implements OnInit {
     this.menuList=userData.menuList;
     this.organizations=userData.orgList;
     this.loading = false;
+    this.createForm.controls['org'].setValue(Number(localStorage.getItem('orgId')));
   }
 
   setOrg(orgv:any){  

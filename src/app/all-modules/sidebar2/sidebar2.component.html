@@ -6,13 +6,16 @@
 <div class="col-sm-6">
 </div>
 <div class="col-sm-3" style="padding:3px;background-color: white;">  
-  <ng-select
-  [items]="organizations"
-  bindLabel="name"
-  bindValue="id"
-  (change)="setOrg($event)"
-  class="form-control-patch">
-</ng-select> 
+  <form [formGroup]="createForm">
+    <ng-select
+    [items]="organizations"
+    bindLabel="name"
+    bindValue="id"
+    formControlName="org"
+    (change)="setOrg($event)"
+    class="form-control-patch">
+  </ng-select> 
+  </form>
 </div>
 <div class="col-sm-3" style="padding:3px;">  
   <button class="logOut" (click)="logOutUser()">Log Out</button>

@@ -241,7 +241,8 @@ return;
     entity: 'Brand',
     pageNum: this.currentPage.toString(),
     pageSize: this.pageSize.toString(),
-    name:this.searchItem
+    name:this.searchItem,
+    orgId:this.createForm.value.orgId
   }
   this.commmonService.getWithToken(uri, params).subscribe({
     next: (response) => {
