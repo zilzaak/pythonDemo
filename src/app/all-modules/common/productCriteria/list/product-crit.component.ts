@@ -36,7 +36,7 @@ export class ProductCritComponent implements OnInit {
     this.searchForm=this.formBuilder.group({
       name:[''],
       orgId:[''],
-      entity:['']
+      entity:['Brand']
     })
   }
 
@@ -73,6 +73,11 @@ export class ProductCritComponent implements OnInit {
     && this.searchForm.value.entity!==''
   ){
     params.entity=this.searchForm.value.entity;
+  }
+  if(this.searchForm.value.name && this.searchForm.value.name!=null 
+    && this.searchForm.value.name!==''
+  ){
+    params.name=this.searchForm.value.name;
   }
 
 

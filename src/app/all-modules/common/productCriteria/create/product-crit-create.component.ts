@@ -20,11 +20,13 @@ export class ProductCritCreateComponent implements OnInit {
   listData:any[]=[];
   entities:any[]=['Brand','ProductCat','ProductModel','ProductColor','ProductSize','MadeWith','UnitOfMeasure'];
   loadingDropdown = false;
+  barndLoadingDropDown=false;
   currentPage = 1; 
   pageSize = 10; 
   hasMore = true;   
+  brandHasMore = true; 
   menuOptions:any[]=[];
-  menuParents:any[]=[];
+  brandOptions:any[]=[];
   private debounceTimer: any;
   searchItem:any;
 
@@ -92,6 +94,7 @@ return;
           alert(response.message);
           this.router.navigate(['/common/productCrit/list']);
         } else {
+          this.loading = false;
           alert(response.message);
         }
       },
@@ -169,6 +172,71 @@ return;
       }
     });
   }
+
+  onBrandSearch(event: any): void {
+    const term = event.term?.trim();
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+    if (!term || term.length === 0) {
+        this.brandOptions = [];
+
+     return;
+    }
+    this.debounceTimer = setTimeout(() => {
+       this.currentPage = 1;
+        this.brandHasMore = true;
+      this.brandPerformSearch(term);
+    }, 300);
+  }
+
+  brandLoadMore(): void {
+    if (!this.brandHasMore || this.barndLoadingDropDown) return;
+
+    const term = this.searchItem;
+    if (!term || typeof term !== 'string') return;
+    this.currentPage++;
+    this.barndLoadingDropDown = true;
+   let params: any={ 
+    name: term, 
+    entity:"Brand", 
+    pageNum: this.currentPage.toString(), 
+    pageSize: this.pageSize.toString()
+    }
+
+    let uri=this.baseUrl+"/setting/productCriteria/list";
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+          this.brandOptions = response?.data?.listData || [];
+        this.barndLoadingDropDown = false;
+      },
+      error: (err) => {
+        this.barndLoadingDropDown = false; 
+      }
+    });
+  }
+
+  private brandPerformSearch(term: string): void {
+    this.barndLoadingDropDown = true;
+  let uri=this.baseUrl+"/setting/productCriteria/list";
+  let params: any={
+    entity: 'Brand',
+    pageNum: this.currentPage.toString(),
+    pageSize: this.pageSize.toString(),
+    name:this.searchItem
+  }
+  this.commmonService.getWithToken(uri, params).subscribe({
+    next: (response) => {
+         this.brandOptions = response?.data?.listData || [];
+        this.brandHasMore = this.brandOptions.length === this.pageSize;
+        this.barndLoadingDropDown = false; 
+      
+    },
+    error: (err) => {
+      this.barndLoadingDropDown = false; 
+    }
+  });
+}
 
 
 }

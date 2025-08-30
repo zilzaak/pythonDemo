@@ -24,26 +24,21 @@ import { LoginServiceService } from 'src/app/login-module/service/login-service.
 })
 export class Sidebar2Component implements OnInit {
   menuList: MenuItem[] = [];
+  organizations:any[]=[];
   loading = true;
 
   constructor(private loginService: LoginServiceService) {}
 
-  ngOnInit(): void {
-    this.getMenu();
-
+    async ngOnInit():  Promise<void> {
+     await this.getMenu();
   }
 
-  getMenu() {
-    this.loginService.getMenu().subscribe({
-      next: (menus: any) => {
-        this.menuList = menus.data;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Failed to load menus', err);
-        this.loading = false;
-      }
-    });
+ async getMenu() {
+    let userData:any;
+    userData = await this.loginService.userInfo();
+    this.menuList=userData.menuList;
+    this.organizations=userData.orgList;
+    this.loading = false;
   }
 
 }

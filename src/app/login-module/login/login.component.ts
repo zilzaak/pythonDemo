@@ -52,15 +52,13 @@ export class LoginComponent implements OnInit{
 
      this.loginService.generateToken(loginData).subscribe(
       (response: any) => {
-         this.loginService.saveToken(response.token);  
+         this.loginService.saveToken(response.token); 
+         localStorage.removeItem('userData'); 
          this.router.navigate(['/dashboard']);  
       },
       (error) => {
         alert('Invalid username or password');
       });     
-
-  
-
   }
 
 

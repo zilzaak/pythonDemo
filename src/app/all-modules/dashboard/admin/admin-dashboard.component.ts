@@ -12,7 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AdminDashboardComponent implements OnInit {
 
   constructor(private actveRouter:ActivatedRoute,
-    private router:Router
+    private router:Router,
+    private loginService :LoginServiceService
   ){
 
   }
@@ -22,8 +23,8 @@ export class AdminDashboardComponent implements OnInit {
     this.checkLogin();
   }
 
-
   checkLogin(){
+    localStorage.removeItem('userData');
     let jwtToken:any;
     jwtToken=localStorage.getItem('jwtToken');
     if(!jwtToken || jwtToken===undefined || jwtToken==null){
