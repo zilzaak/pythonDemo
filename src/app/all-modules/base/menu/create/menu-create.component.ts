@@ -280,14 +280,14 @@ return;
     } 
   }
 
-  navigateToEdit(x:any){alert(x);
+  navigateToEdit(x:any){
     this.initializeForm();
     this.pageTitle = 'Edit'
     this.opMode = 'edit';
     this.api = this.baseUrl + '/base/module/update';
     this.formData(x);
   }
-  navigateToView(x:any){alert(x);
+  navigateToView(x:any){
     this.initializeForm();
     this.pageTitle = 'View'
     this.opMode = 'view';
