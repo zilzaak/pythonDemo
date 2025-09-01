@@ -156,7 +156,7 @@
             <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
             <td><a  routerLink="/base/menu/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
             <td> <a  routerLink="/base/menu/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
-            <td> <a ><i class="fas fa-delete"></i></a></td>
+            <td> <button  (click)="deleteMenu(x.id)">Del</button></td>
 
           </tr>
   

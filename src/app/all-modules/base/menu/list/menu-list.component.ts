@@ -291,4 +291,23 @@ error: (err) => {
     }
       }
 
+      deleteMenu(x:any){
+        let formData:any={
+          id:x
+        };
+          this.commonService.sendDeleteRequest(this.baseUrl+"/base/module/delete",formData).subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              alert(response.message);
+              this.ngOnInit();
+            } else {
+              alert(response.message);
+            }
+          },
+          error: () => {
+          }
+        });
+
+      }
+
 }
