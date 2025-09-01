@@ -103,4 +103,24 @@ export class ProductCritComponent implements OnInit {
    this.loadPage(this.currentPage);
   }
 
+  deleteCrit(x:any){
+    let formData:any={
+      id:x,
+      entity:this.searchForm.value.entity,
+      orgId:Number(localStorage.getItem('orgId'))
+    };
+       this.commonService.sendDeleteRequest(this.baseUrl+"/setting/productCriteria/delete",formData).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          alert(response.message);
+          this.loadPage(1);
+        } else {
+          alert(response.message);
+        }
+      },
+      error: () => {
+      }
+    });
+  }
+
 }

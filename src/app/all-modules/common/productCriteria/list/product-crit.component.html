@@ -108,11 +108,12 @@
               <td>{{ x.createBy}}</td>
               <td>{{ x.updateBy}}</td>
               <td>
-                <ul style="list-style-type:none">
-                  <li><a  routerLink="/common/productCrit/edit/{{searchForm.value.entity}}/{{x.id}}"><i class="fas fa-edit"></i></a></li>
-                  <li><a  routerLink="/common/productCrit/view/{{searchForm.value.entity}}/{{x.id}}"><i class="fas fa-eye"></i></a></li>
-                  <li><a><i class="fas fa-delete"></i></a></li>
-                </ul>
+   
+                  <span>
+                    <a  routerLink="/common/productCrit/edit/{{searchForm.value.entity}}/{{x.id}}"><i class="fas fa-edit"></i></a>
+                    <a  routerLink="/common/productCrit/view/{{searchForm.value.entity}}/{{x.id}}"><i class="fas fa-eye"></i></a>
+                    <a><button (click)="deleteCrit(x.id)">Del</button></a>
+                  </span>                
               </td>
   
             </tr>

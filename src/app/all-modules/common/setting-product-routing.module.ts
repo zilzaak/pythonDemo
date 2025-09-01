@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductCritComponent } from './productCriteria/list/product-crit.component';
 import { ProductCritCreateComponent } from './productCriteria/create/product-crit-create.component';
+import { ProductListComponent } from './product/list/product-list.component';
+import { ProductCreateComponent } from './product/create/product-create.component';
 
 
 const routes: Routes = [ {
@@ -17,8 +19,20 @@ const routes: Routes = [ {
       data: { title: 'Edit' },
     },
     {
-      path: 'productCrit/view/:entity/:id', component: ProductCritCreateComponent,
+      path: 'product/view/:id', component: ProductCreateComponent,
       data: { title: 'View' },
+    },
+    {
+    path: 'product/create',component: ProductCreateComponent,
+    data: { title: 'Create' },
+    },
+    {
+      path: 'product/edit/:id', component: ProductCreateComponent,
+      data: { title: 'Edit' },
+    },
+    {
+      path: 'product/list', component: ProductListComponent,
+      data: { title: 'List' },
     },
 ];
 

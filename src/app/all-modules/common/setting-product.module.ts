@@ -8,12 +8,16 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SettingProductComponent } from './setting-product.component';
 import { ProductCritComponent } from './productCriteria/list/product-crit.component';
 import { ProductCritCreateComponent } from './productCriteria/create/product-crit-create.component';
+import { ProductCreateComponent } from './product/create/product-create.component';
+import { ProductListComponent } from './product/list/product-list.component';
 
 @NgModule({
   declarations: [
     SettingProductComponent,
     ProductCritComponent,
     ProductCritCreateComponent,
+    ProductCreateComponent,
+    ProductListComponent
 
   ],
   imports: [
