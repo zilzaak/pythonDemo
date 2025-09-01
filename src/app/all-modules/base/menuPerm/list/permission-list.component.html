@@ -149,11 +149,10 @@
           <tr>
             <th>SL</th>
             <th>Menu</th>
-            <th>Front Url</th>
             <th>Backend Url</th>
             <th>Method</th>
-            <th>Permitted User</th>
-            <th>Permitted Role</th>
+            <th>Permitted Users</th>
+            <th>Permitted Role's</th>
             <th>Created</th>
             <th>Updated</th>
             <th>Action</th>
@@ -163,7 +162,6 @@
           <tr *ngFor="let x of listData; index as i">
             <td>{{ i + 1 }}</td>
             <td>{{ x.menu}}</td>
-            <td>{{ x.frontendUrl}}</td>
             <td>{{ x.backendUrl	}}</td>
             <td>{{ x.methodName	}}</td>
             <td>{{ x.username}}</td>
