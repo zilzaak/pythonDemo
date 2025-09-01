@@ -175,7 +175,7 @@
               <span>
                 <a  routerLink="/base/menuPerm/edit/{{x.id}}"><i class="fas fa-edit"></i></a>
                 <a  routerLink="/base/menuPerm/view/{{x.id}}"><i class="fas fa-eye"></i></a>
-               <a ><i class="fas fa-delete">delete</i></a>
+               <a ><i class="fas fa-delete" (click)="deleteData(x.id)">delete</i></a>
               </span></td>
 
           </tr>

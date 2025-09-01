@@ -60,10 +60,14 @@ else{
   }
 
 
-  public sendDeleteRequest(apiURL:any, formData:any){
-    console.log("@sendDeleteRequest");
-    return this.http.delete(apiURL, formData);
-
+  public sendDeleteRequest(apiURL: string, body: any) {
+    console.log("@sendDeleteRequest with body");
+    const headers = this.getHeaders();
+    
+    return this.http.request('DELETE', apiURL, {
+      headers: headers,
+      body: body
+    });
   }
 
 }

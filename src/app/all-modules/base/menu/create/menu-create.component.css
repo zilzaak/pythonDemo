@@ -114,7 +114,7 @@ table style
 .table-container {
   display: flex;
   justify-content: center;           /* Center horizontally */
-  margin-top: 50px;                  /* Exactly 50px from the top */
+  margin-top: 15px;                  /* Exactly 50px from the top */
   padding: 0 20px;
   box-sizing: border-box;
   width: 100%;

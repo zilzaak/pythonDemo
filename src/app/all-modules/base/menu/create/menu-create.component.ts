@@ -78,7 +78,7 @@ export class MenuCreateComponent implements OnInit {
         this.createForm.controls['methodName'].setValue(response?.data?.listData[0].methodName);
         this.createForm.controls['parentId'].setValue(response?.data?.parent?.id);
         this.childMenuDetails=response?.data?.childMenus;
-
+        this.parentMenuDetails=response.data.parent;
 
         console.log("======================================================");
         console.log(this.createForm.value);
@@ -278,5 +278,19 @@ return;
           break;
         } 
     } 
+  }
+
+  navigateToEdit(x:any){alert(x);
+    this.initializeForm();
+    this.pageTitle = 'Edit'
+    this.opMode = 'edit';
+    this.api = this.baseUrl + '/base/module/update';
+    this.formData(x);
+  }
+  navigateToView(x:any){alert(x);
+    this.initializeForm();
+    this.pageTitle = 'View'
+    this.opMode = 'view';
+    this.formData(x);
   }
 }

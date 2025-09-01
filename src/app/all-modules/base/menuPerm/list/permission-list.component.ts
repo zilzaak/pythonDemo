@@ -298,6 +298,25 @@ this.commonService.getWithToken(uri, params).subscribe({
 });
 }
 
+deleteData(x:any){
+  let formData:any={
+    id:x
+  };
+  
+  this.commonService.sendDeleteRequest(this.baseUrl+"/base/permittedModule/delete",formData).subscribe({
+    next: (response: any) => {
+      if (response.success) {
+        alert(response.message);
+        this.ngOnInit();
+      } else {
+        alert(response.message);
+      }
+    },
+    error: () => {
+      this.loading = false;
+    }
+  });
+}
 
   private performSearchUser(term: string): void {
     this.loadingDropdown3 = true;
