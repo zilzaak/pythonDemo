@@ -96,10 +96,11 @@ export class ProductCritCreateComponent implements OnInit {
   initializeForm() {
     this.createForm = this.formBuilder.group({
       id: [null],
-      entity: [''],
+      entity: ['',Validators.required],
       name: ['',Validators.required],
       orgId: [Number(localStorage.getItem('orgId'))],
-      brandId:['']
+      brandId:[''],
+      description:['',Validators.required]
     });
   }
 

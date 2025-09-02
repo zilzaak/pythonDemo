@@ -71,14 +71,14 @@ export class ProductCreateComponent implements OnInit {
         }
       ]
       this.opMode = 'create';
-      this.api = this.baseUrl + '/setting/productCriteria/create';
+      this.api = this.baseUrl + '/setting/product/create';
     } else if (this.pageTitle === 'Edit') {
       this.opMode = 'edit';
-      this.api = this.baseUrl + '/setting/productCriteria/update';
+      this.api = this.baseUrl + '/setting/product/update';
       this.formData(this.activeRouter.snapshot.params.id, this.activeRouter.snapshot.params.entity);
     } else if (this.pageTitle === 'View') {
       this.opMode = 'view';
-      this.api = this.baseUrl + '/setting/productCriteria/list';
+      this.api = this.baseUrl + '/setting/product/list';
       this.formData(this.activeRouter.snapshot.params.id, this.activeRouter.snapshot.params.entity);
     }
   }
@@ -147,7 +147,7 @@ export class ProductCreateComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           alert(response.message);
-          this.router.navigate(['/common/productCrit/list']);
+          this.router.navigate(['/common/product/list']);
         } else {
           this.loading = false;
           alert(response.message);
