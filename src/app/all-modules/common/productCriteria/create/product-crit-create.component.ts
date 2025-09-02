@@ -42,6 +42,12 @@ export class ProductCritCreateComponent implements OnInit {
     this.pageTitle = this.activeRouter.snapshot.data['title'];
 
     if (this.pageTitle === 'Create') {
+      this.menuOptions=[
+        {
+          id:Number(localStorage.getItem('orgId')),
+          orgName:localStorage.getItem('orgName')
+        }
+      ]
       this.opMode = 'create';
       this.api = this.baseUrl + '/setting/productCriteria/create';
     } else if (this.pageTitle === 'Edit') {
@@ -92,7 +98,7 @@ export class ProductCritCreateComponent implements OnInit {
       id: [null],
       entity: [''],
       name: ['',Validators.required],
-      orgId: [''],
+      orgId: [Number(localStorage.getItem('orgId'))],
       brandId:['']
     });
   }

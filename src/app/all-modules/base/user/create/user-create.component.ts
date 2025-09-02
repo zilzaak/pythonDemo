@@ -106,6 +106,14 @@ export class UserCreateComponent implements OnInit {
     this.commmonService.getWithToken(api,{}).subscribe(
       { next: (response) => {
         this.roleList = response?.data?.listData;
+        let index:any=-1;
+        for(let m of this.roleList){
+          index++;
+          if(m.authority==='PERMIT_ALL'){
+              break;
+          }
+        }
+        this.roleList.splice(index,1);
         console.log("==========================")
         console.log(this.roleList)
         },
