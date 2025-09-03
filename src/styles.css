@@ -1,4 +1,7 @@
-
+.text-danger,
+.dropdown-menu>li>a.text-danger {
+	color: #f62d51 !important;
+}
 
 .compact-cell {
 	white-space: nowrap;

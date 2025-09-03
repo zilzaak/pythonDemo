@@ -245,5 +245,57 @@
   </div>
   
   <!---- child menu details -->
+
+<!-- /Delete Modal -->
   <br/>
+
+  <!-- simple-modal.component.html -->
+ 
+  <!-- Button to trigger modal -->
+  <button #myButton  type="button" style="display:none;"class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+    Open Modal
+  </button>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Simple Modal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Similar product you may be creating which is already exist </p>
+          <p>Please recheck or be confirm before create</p>
+          <table class="data-table" style="font-size: smaller;">
+            <thead>
+              <tr>
+                <th>SL</th>
+                <th>Name</th>
+                <th>Full Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+              <tbody>
+                <tr *ngFor="let x of similarProduct; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ x.name}}</td>
+                  <td>{{ x.fullName}}</td>
+                  <td>{{ x.description}}</td>
+                </tr>
+              </tbody>
+
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dont create</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmit()">I Confirm</button>
+        </div>
+      </div>
     </div>
+  </div>
+
+
+    </div>
+
+    
+  <!-- Delete Modal -->

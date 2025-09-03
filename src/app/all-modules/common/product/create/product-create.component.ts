@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
@@ -9,8 +9,11 @@ import { environment } from 'src/environments/environment';
   templateUrl: './product-create.component.html',
   styleUrls: ['./product-create.component.css']
 })
-export class ProductCreateComponent implements OnInit {
+export class ProductCreateComponent implements OnInit, AfterViewInit {
 
+  @ViewChild('myButton') myButton!: ElementRef;
+
+  similarProduct:any;
   createForm!: FormGroup;
   pageTitle!: any;
   opMode!: any;
@@ -24,7 +27,6 @@ export class ProductCreateComponent implements OnInit {
   modelLoadingDropDown = false;
   catLoadingDropDown = false;
   colorLoadingDropDown = false;
-
   sizeLoadingDropDown = false;
   madeLoadingDropDown = false;
   uomLoadingDropDown = false;
@@ -69,7 +71,7 @@ export class ProductCreateComponent implements OnInit {
           id: Number(localStorage.getItem('orgId')),
           orgName: localStorage.getItem('orgName')
         }
-      ]
+      ];
       this.opMode = 'create';
       this.api = this.baseUrl + '/setting/product/create';
     } else if (this.pageTitle === 'Edit') {
@@ -83,32 +85,38 @@ export class ProductCreateComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    console.log('Button element:', this.myButton.nativeElement);
+  }
 
   formData(id: any) {
     let org: any = localStorage.getItem('orgId');
     const para = { id: id, orgId: org };
     this.commmonService.getWithToken(this.baseUrl + '/setting/product/list', para).subscribe({
       next: (response) => {
-        this.menuOptions = [{id: Number(localStorage.getItem('orgId')), orgName: localStorage.getItem('orgName')}];
-        let resp:any=response.data.listData[0];
-        this.brandOptions = [ {id: resp.brandId,name: resp.brandName,}];
-        this.catOptions=[{id:resp.catId, name:resp.categoryName}];
-        this.modelOptions=[{id:resp.modelId, name:resp.modelName}];
-        this.sizeOptions=[{id:resp.sizeId, name:resp.sizeName}];
-        this.oumOptions=[{id:resp.uomId, name:resp.uomName}];
-        this.colorOptions=[{id:resp.colorId, name:resp.colorName}];
+        this.menuOptions = [
+          {
+            id: Number(localStorage.getItem('orgId')),
+            orgName: localStorage.getItem('orgName')
+          }
+        ];
+        let resp: any = response.data.listData[0];
+        this.brandOptions = [{ id: resp.brandId, name: resp.brandName }];
+        this.catOptions = [{ id: resp.catId, name: resp.categoryName }];
+        this.modelOptions = [{ id: resp.modelId, name: resp.modelName }];
+        this.sizeOptions = [{ id: resp.sizeId, name: resp.sizeName }];
+        this.oumOptions = [{ id: resp.uomId, name: resp.uomName }];
+        this.colorOptions = [{ id: resp.colorId, name: resp.colorName }];
         this.createForm.patchValue(resp);
         if (this.opMode === 'view') {
           this.createForm.disable();
         }
-
       },
       error: (err) => {
         console.error('Failed to load data', err);
       }
     });
   }
-
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
@@ -131,7 +139,7 @@ export class ProductCreateComponent implements OnInit {
   onSubmit() {
     if (this.opMode === 'view') return;
     if (this.createForm.invalid) {
-      alert("Invalid form");
+      alert('Invalid form');
       return;
     }
     this.loading = true;
@@ -144,7 +152,12 @@ export class ProductCreateComponent implements OnInit {
           this.router.navigate(['/common/product/list']);
         } else {
           this.loading = false;
-          alert(response.message);
+          if (response.message.includes('Similar')) {
+            this.similarProduct=response.data.existsData;
+            this.myButton.nativeElement.click();
+          }else{
+            alert(response.message);
+          }
         }
       },
       error: () => {
@@ -153,10 +166,10 @@ export class ProductCreateComponent implements OnInit {
     });
   }
 
-
   setSearch(x: any) {
     this.searchItem = x.value;
   }
+
   onSearch(event: any): void {
     const term = event.term?.trim();
     if (this.debounceTimer) {
@@ -164,7 +177,6 @@ export class ProductCreateComponent implements OnInit {
     }
     if (!term || term.length === 0) {
       this.menuOptions = [];
-
       return;
     }
     this.debounceTimer = setTimeout(() => {
@@ -183,12 +195,12 @@ export class ProductCreateComponent implements OnInit {
     this.loadingDropdown = true;
     let params: any = {
       commonField: term,
-      dropDown: "dropDown",
+      dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString()
-    }
+    };
 
-    let uri = this.baseUrl + "/base/organization/list";
+    let uri = this.baseUrl + '/base/organization/list';
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         this.menuOptions = response?.data?.listData || [];
@@ -200,22 +212,20 @@ export class ProductCreateComponent implements OnInit {
     });
   }
 
-
   private performSearch(term: string): void {
     this.loadingDropdown = true;
-    let uri = this.baseUrl + "/base/organization/list";
+    let uri = this.baseUrl + '/base/organization/list';
     let params: any = {
       commonField: term,
-      dropDown: "dropDown",
+      dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString()
-    }
+    };
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         this.menuOptions = response?.data?.listData || [];
         this.hasMore = this.menuOptions.length === this.pageSize;
         this.loadingDropdown = false;
-
       },
       error: (err) => {
         this.loadingDropdown = false;
@@ -233,20 +243,15 @@ export class ProductCreateComponent implements OnInit {
         this.brandOptions = [];
       } else if (entity === 'ProductModel') {
         this.modelOptions = [];
-      }
-      else if (entity === 'ProductCat') {
+      } else if (entity === 'ProductCat') {
         this.catOptions = [];
-      }
-      else if (entity === 'ProductColor') {
+      } else if (entity === 'ProductColor') {
         this.colorOptions = [];
-      }
-      else if (entity === 'ProductSize') {
+      } else if (entity === 'ProductSize') {
         this.sizeOptions = [];
-      }
-      else if (entity === 'MadeWith') {
+      } else if (entity === 'MadeWith') {
         this.madeWithOptions = [];
-      }
-      else if (entity === 'UnitOfMeasure') {
+      } else if (entity === 'UnitOfMeasure') {
         this.oumOptions = [];
       }
       return;
@@ -259,54 +264,27 @@ export class ProductCreateComponent implements OnInit {
   }
 
   brandLoadMore(entity: any): void {
-
     if (entity === 'Brand') {
-      if (!this.brandHasMore || this.barndLoadingDropDown) {
-        return;
-      } else {
-        this.barndLoadingDropDown = true;
-      }
+      if (!this.brandHasMore || this.barndLoadingDropDown) return;
+      this.barndLoadingDropDown = true;
     } else if (entity === 'ProductModel') {
-      if (!this.modelHasMore || this.modelLoadingDropDown) {
-        return;
-      } else {
-        this.modelLoadingDropDown = true;
-      }
-    }
-    else if (entity === 'ProductCat') {
-      if (!this.catHasMore || this.catLoadingDropDown) {
-        return;
-      } else {
-        this.catLoadingDropDown = true;
-      }
-    }
-    else if (entity === 'ProductColor') {
-      if (!this.colorHasMore || this.colorLoadingDropDown) {
-        return;
-      } else {
-        this.colorLoadingDropDown = true;
-      }
-    }
-    else if (entity === 'ProductSize') {
-      if (!this.sizeHasMore || this.sizeLoadingDropDown) {
-        return;
-      } else {
-        this.sizeLoadingDropDown = true;
-      }
-    }
-    else if (entity === 'MadeWith') {
-      if (!this.madeHasMore || this.madeLoadingDropDown) {
-        return;
-      } else {
-        this.madeLoadingDropDown = true;
-      }
-    }
-    else if (entity === 'UnitOfMeasure') {
-      if (!this.uomHasMore || this.uomLoadingDropDown) {
-        return;
-      } else {
-        this.uomLoadingDropDown = true;
-      }
+      if (!this.modelHasMore || this.modelLoadingDropDown) return;
+      this.modelLoadingDropDown = true;
+    } else if (entity === 'ProductCat') {
+      if (!this.catHasMore || this.catLoadingDropDown) return;
+      this.catLoadingDropDown = true;
+    } else if (entity === 'ProductColor') {
+      if (!this.colorHasMore || this.colorLoadingDropDown) return;
+      this.colorLoadingDropDown = true;
+    } else if (entity === 'ProductSize') {
+      if (!this.sizeHasMore || this.sizeLoadingDropDown) return;
+      this.sizeLoadingDropDown = true;
+    } else if (entity === 'MadeWith') {
+      if (!this.madeHasMore || this.madeLoadingDropDown) return;
+      this.madeLoadingDropDown = true;
+    } else if (entity === 'UnitOfMeasure') {
+      if (!this.uomHasMore || this.uomLoadingDropDown) return;
+      this.uomLoadingDropDown = true;
     }
 
     const term = this.searchItem;
@@ -318,9 +296,9 @@ export class ProductCreateComponent implements OnInit {
       entity: entity,
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString()
-    }
+    };
 
-    let uri = this.baseUrl + "/setting/productCriteria/list";
+    let uri = this.baseUrl + '/setting/productCriteria/list';
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         if (entity === 'Brand') {
@@ -329,24 +307,19 @@ export class ProductCreateComponent implements OnInit {
         } else if (entity === 'ProductModel') {
           this.modelOptions = response?.data?.listData;
           this.modelLoadingDropDown = false;
-        }
-        else if (entity === 'ProductCat') {
+        } else if (entity === 'ProductCat') {
           this.catOptions = response?.data?.listData;
           this.catLoadingDropDown = false;
-        }
-        else if (entity === 'ProductColor') {
+        } else if (entity === 'ProductColor') {
           this.colorOptions = response?.data?.listData;
           this.colorLoadingDropDown = false;
-        }
-        else if (entity === 'ProductSize') {
+        } else if (entity === 'ProductSize') {
           this.sizeOptions = response?.data?.listData;
           this.sizeLoadingDropDown = false;
-        }
-        else if (entity === 'MadeWith') {
+        } else if (entity === 'MadeWith') {
           this.madeWithOptions = response?.data?.listData;
           this.madeLoadingDropDown = false;
-        }
-        else if (entity === 'UnitOfMeasure') {
+        } else if (entity === 'UnitOfMeasure') {
           this.oumOptions = response?.data?.listData;
           this.uomLoadingDropDown = false;
         }
@@ -354,24 +327,17 @@ export class ProductCreateComponent implements OnInit {
       error: (err) => {
         if (entity === 'Brand') {
           this.barndLoadingDropDown = false;
-
         } else if (entity === 'ProductModel') {
           this.modelLoadingDropDown = false;
-        }
-        else if (entity === 'ProductCat') {
+        } else if (entity === 'ProductCat') {
           this.catLoadingDropDown = false;
-        }
-        else if (entity === 'ProductColor') {
+        } else if (entity === 'ProductColor') {
           this.colorLoadingDropDown = false;
-        }
-        else if (entity === 'ProductSize') {
+        } else if (entity === 'ProductSize') {
           this.sizeLoadingDropDown = false;
-
-        }
-        else if (entity === 'MadeWith') {
+        } else if (entity === 'MadeWith') {
           this.madeLoadingDropDown = false;
-        }
-        else if (entity === 'UnitOfMeasure') {
+        } else if (entity === 'UnitOfMeasure') {
           this.uomLoadingDropDown = false;
         }
       }
@@ -383,31 +349,26 @@ export class ProductCreateComponent implements OnInit {
       this.barndLoadingDropDown = true;
     } else if (entity === 'ProductModel') {
       this.modelLoadingDropDown = true;
-    }
-    else if (entity === 'ProductCat') {
+    } else if (entity === 'ProductCat') {
       this.catLoadingDropDown = true;
-    }
-    else if (entity === 'ProductColor') {
+    } else if (entity === 'ProductColor') {
       this.colorLoadingDropDown = true;
-    }
-    else if (entity === 'ProductSize') {
+    } else if (entity === 'ProductSize') {
       this.sizeLoadingDropDown = true;
-    }
-    else if (entity === 'MadeWith') {
+    } else if (entity === 'MadeWith') {
       this.madeLoadingDropDown = true;
-    }
-    else if (entity === 'UnitOfMeasure') {
+    } else if (entity === 'UnitOfMeasure') {
       this.uomLoadingDropDown = true;
     }
 
-    let uri = this.baseUrl + "/setting/productCriteria/list";
+    let uri = this.baseUrl + '/setting/productCriteria/list';
     let params: any = {
       entity: entity,
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString(),
       name: this.searchItem,
       orgId: this.createForm.value.orgId
-    }
+    };
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         if (entity === 'Brand') {
@@ -418,28 +379,23 @@ export class ProductCreateComponent implements OnInit {
           this.modelOptions = response?.data?.listData;
           this.modelHasMore = this.modelOptions.length === this.pageSize;
           this.modelLoadingDropDown = false;
-        }
-        else if (entity === 'ProductCat') {
+        } else if (entity === 'ProductCat') {
           this.catOptions = response?.data?.listData;
           this.catHasMore = this.catOptions.length === this.pageSize;
           this.catLoadingDropDown = false;
-        }
-        else if (entity === 'ProductColor') {
+        } else if (entity === 'ProductColor') {
           this.colorOptions = response?.data?.listData;
           this.colorHasMore = this.colorOptions.length === this.pageSize;
           this.colorLoadingDropDown = false;
-        }
-        else if (entity === 'ProductSize') {
+        } else if (entity === 'ProductSize') {
           this.sizeOptions = response?.data?.listData;
           this.sizeHasMore = this.sizeOptions.length === this.pageSize;
           this.sizeLoadingDropDown = false;
-        }
-        else if (entity === 'MadeWith') {
+        } else if (entity === 'MadeWith') {
           this.madeWithOptions = response?.data?.listData;
           this.madeHasMore = this.madeWithOptions.length === this.pageSize;
           this.madeLoadingDropDown = false;
-        }
-        else if (entity === 'UnitOfMeasure') {
+        } else if (entity === 'UnitOfMeasure') {
           this.oumOptions = response?.data?.listData;
           this.uomHasMore = this.oumOptions.length === this.pageSize;
           this.uomLoadingDropDown = false;
@@ -453,11 +409,7 @@ export class ProductCreateComponent implements OnInit {
         this.sizeLoadingDropDown = false;
         this.madeLoadingDropDown = false;
         this.uomLoadingDropDown = false;
-
       }
     });
   }
-
-
 }
-
