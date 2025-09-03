@@ -46,7 +46,15 @@ export class Sidebar2Component implements OnInit {
     this.menuList=userData.menuList;
     this.organizations=userData.orgList;
     this.loading = false;
-    this.createForm.controls['org'].setValue(Number(localStorage.getItem('orgId')));
+    let param:any={
+      org:Number(localStorage.getItem('orgId')),
+    };
+    this.createForm.patchValue(param);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    console.log(this.organizations);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    console.log(this.createForm.value.org);
+
   }
 
   setOrg(orgv:any){  
@@ -58,7 +66,6 @@ export class Sidebar2Component implements OnInit {
 
 
   logOutUser(){
-    localStorage.clear();
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('userData');
     this.router.navigate(['/auth/login']);  
