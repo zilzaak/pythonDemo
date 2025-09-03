@@ -23,61 +23,93 @@
        <form novalidate [formGroup]="searchForm">
             <div class="row filter-row" >
   
-  
+          
                    <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus">
-                      <label class="focus-label">Parent Menu</label>
-                      <ng-select
-                      (keyup)="setValm($event.target)"
-                      [items]="menuOptions"
-                      bindLabel="moduleName"
+                      <label class="focus-label">Organization</label>
+                      <ng-select  [items]="menuOptions"
+                      bindLabel="name"
                       bindValue="id"
-                      formControlName="parentMenuId"
-                      (search)="onSearchm()"
-                      (scrollToEnd)="loadMorem()"
-                       [loading]="loadingDropdownm"
-                      [clearable]="true"
-                      [closeOnSelect]="true"
-                      [editableSearchTerm]="false"
-                      [addTag]="false" 
+                      formControlName="orgId"
                       class="form-control-patch">
-                    </ng-select> 
+                    </ng-select>
                       
                     </div>
+                </div>
+
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus">
+                    <label class="focus-label">Product Name</label>
+                    <input type="text" class="form-control"  formControlName="name"/> 
+                    
+                  </div>
                 </div>
   
                 <div class="col-sm-6 col-md-3">
                   <div class="form-group form-focus">
-                    <label class="focus-label">Backend Url</label>
+                    <label class="focus-label">Brand</label>
                     <ng-select
-                    (keyup)="setValu($event.target)"
-                    [items]="urlOptions"
-                    bindLabel="urlCode"
+                    (keyup)="setSearch($event.target)"
+                    [items]="brandOptions"
+                    bindLabel="name"
                     bindValue="id"
-                    formControlName="backendUrl"
-                    (search)="onSearchu()"
-                    (scrollToEnd)="loadMoreu()"
-                     [loading]="loadingDropdownu"
+                    formControlName="brandId"
+                    (search)="onBrandSearch($event,'Brand')"
+                    (scrollToEnd)="brandLoadMore('Brand')"
+                     [loading]="barndLoadingDropDown"
                     [clearable]="true"
                     [closeOnSelect]="true"
                     [editableSearchTerm]="false"
                     [addTag]="false" 
                     class="form-control-patch">
-                  </ng-select> 
+                  </ng-select>
                     
                   </div>
               </div>
   
-  
-  
-              <div class="col-sm-6 col-md-3">
-                <div class="form-group form-focus">
-                  <label class="focus-label">Frontend Url</label>
-                  <input type="text" class="form-control"  formControlName="frontendUrl"/> 
-                  
-                </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="form-group form-focus">
+                <label class="focus-label">Model</label>
+                <ng-select
+                (keyup)="setSearch($event.target)"
+                [items]="modelOptions"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="modelId"
+                (search)="onBrandSearch($event,'ProductModel')"
+                (scrollToEnd)="brandLoadMore('ProductModel')"
+                 [loading]="modelLoadingDropDown"
+                [clearable]="true"
+                [closeOnSelect]="true"
+                [editableSearchTerm]="false"
+                [addTag]="false" 
+                class="form-control-patch">
+              </ng-select>
+                
+              </div>
+          </div>  
+
+          <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus">
+              <label class="focus-label">Category</label>
+              <ng-select
+              (keyup)="setSearch($event.target)"
+              [items]="catOptions"
+              bindLabel="name"
+              bindValue="id"
+              formControlName="catId"
+              (search)="onBrandSearch($event,'ProductCat')"
+              (scrollToEnd)="brandLoadMore('ProductCat')"
+               [loading]="catLoadingDropDown"
+              [clearable]="true"
+              [closeOnSelect]="true"
+              [editableSearchTerm]="false"
+              [addTag]="false" 
+              class="form-control-patch">
+            </ng-select> 
+              
             </div>
-  
+        </div>
                 <div class="col-sm-6 col-md-2">
                   <div class="form-group form-focus">
                       <button class="btn btn-md btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
