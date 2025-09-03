@@ -1,4 +1,14 @@
 
+
+.compact-cell {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 200px;
+	cursor: help;
+	font-size: 12px;
+  }
+
 .logOut{
 border-radius:3px;
 text-transform: capitalize;

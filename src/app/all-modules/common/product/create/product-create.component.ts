@@ -75,35 +75,29 @@ export class ProductCreateComponent implements OnInit {
     } else if (this.pageTitle === 'Edit') {
       this.opMode = 'edit';
       this.api = this.baseUrl + '/setting/product/update';
-      this.formData(this.activeRouter.snapshot.params.id, this.activeRouter.snapshot.params.entity);
+      this.formData(this.activeRouter.snapshot.params.id);
     } else if (this.pageTitle === 'View') {
       this.opMode = 'view';
       this.api = this.baseUrl + '/setting/product/list';
-      this.formData(this.activeRouter.snapshot.params.id, this.activeRouter.snapshot.params.entity);
+      this.formData(this.activeRouter.snapshot.params.id);
     }
   }
 
 
-  formData(id: any, entity: any) {
+  formData(id: any) {
     let org: any = localStorage.getItem('orgId');
-    const para = { id: id, entity: entity, orgId: org };
-    this.commmonService.getWithToken(this.baseUrl + '/setting/productCriteria/list', para).subscribe({
+    const para = { id: id, orgId: org };
+    this.commmonService.getWithToken(this.baseUrl + '/setting/product/list', para).subscribe({
       next: (response) => {
-        this.menuOptions = [
-          {
-            id: localStorage.getItem('orgId'), orgName: localStorage.getItem('orgName')
-          }
-        ];
-        this.createForm.patchValue(response.data.listData[0]);
-        this.createForm.controls['entity'].setValue(entity);
-        this.createForm.controls['orgId'].setValue(localStorage.getItem('orgId'));
-        this.brandOptions = [
-          {
-            id: response.data.listData[0]?.brandId,
-            name: response.data.listData[0]?.brandName,
-          }
-        ]
-
+        this.menuOptions = [{id: Number(localStorage.getItem('orgId')), orgName: localStorage.getItem('orgName')}];
+        let resp:any=response.data.listData[0];
+        this.brandOptions = [ {id: resp.brandId,name: resp.brandName,}];
+        this.catOptions=[{id:resp.catId, name:resp.categoryName}];
+        this.modelOptions=[{id:resp.modelId, name:resp.modelName}];
+        this.sizeOptions=[{id:resp.sizeId, name:resp.sizeName}];
+        this.oumOptions=[{id:resp.uomId, name:resp.uomName}];
+        this.colorOptions=[{id:resp.colorId, name:resp.colorName}];
+        this.createForm.patchValue(resp);
         if (this.opMode === 'view') {
           this.createForm.disable();
         }

@@ -101,7 +101,9 @@ export class ProductListComponent implements OnInit {
     params.frontendUrl=this.searchForm.value.frontendUrl;
   }
 
-    this.commonService.getWithToken('http://localhost:8000/base/module/list', params)
+  params.orgId=Number(localStorage.getItem('orgId'));
+
+    this.commonService.getWithToken('http://localhost:8000/setting/product/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];
@@ -125,6 +127,15 @@ export class ProductListComponent implements OnInit {
 
   getList(){
    this.loadPage(this.currentPage);
+  }
+
+  getCrud(x: any): string {
+    const text = `Create By:${x.createBy} Update By: ${x.updateBy}`;
+    return text.length > 40 ? text.substring(0, 30) + '...' : text;
+  }
+  getCrud2(x: any): string {
+    const text = `Org:${x.orgName} Create date :${x.created} Update Date: ${x.updated}`;
+    return text.length > 30 ? text.substring(0, 30) + '...' : text;
   }
 
   onSearchu(): void {

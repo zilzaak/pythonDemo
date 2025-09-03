@@ -5,15 +5,10 @@
       <div class="row align-items-center">
           <div class="col">
              <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Base</a></li>
-                  <li class="breadcrumb-item active">Menu</li>
+                  <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Setting</a></li>
+                  <li class="breadcrumb-item active">Product</li>
                   <li class="breadcrumb-item active">List</li>
               </ul>
-          </div>
-          <div class="col-auto float-right ml-auto">
-            <a id="backBtn"   [routerLink]="['/base/menuPerm/list']" class="btn btn-sm btn-outline-secondary"> 
-              <i class="fas fa-times me-1"></i> Back
-            </a>
           </div>
       </div>
        </div>
@@ -130,34 +125,46 @@
           <thead>
             <tr>
               <th>SL</th>
-              <th>Menu</th>
-              <th>Parent Menu</th>
-              <th>Api Seq</th>
-              <th>Backend Url</th>
-              <th>Front Url</th>
-              <th>Method</th>
-              <th>Created</th>
-              <th>Updated</th>
-              <th>Edit</th>
-              <th>View</th>
-              <th>Delete</th>
+              <th>Name</th>
+              <th>Full Name</th>
+              <th>Category</th>
+              <th>Brand</th>
+              <th>Model</th>
+              <th>Color</th>
+              <th>Size</th>
+              <th>Measure By</th>
+              <th>Made With</th>
+              <th>Description</th>
+              <th>Others</th>
+              <th>Operation</th>
+
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let x of listData; index as i">
               <td>{{ i + 1 }}</td>
-              <td>{{ x.moduleName}} {{ x.modulename}}</td>
-              <td>{{ x.parentModule}} {{ x.parentmodule}}</td>
-              <td>{{ x.apiSeq}} {{ x.apiseq}}</td>
-              <td>{{ x.apiPattern}} {{ x.apipattern}}</td>
-              <td>{{ x.frontUrl}} {{x.fronturl}}</td>
-              <td>{{ x.methodName}} {{x.methodname}}</td>
-              <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
-              <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
-              <td><a  routerLink="/base/menu/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
-              <td> <a  routerLink="/base/menu/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
-              <td> <button  (click)="deleteMenu(x.id)">Del</button></td>
-  
+              <td>{{ x.name}}</td>
+              <td>{{ x.fullName}}</td>
+              <td>{{ x.categoryName}}</td>
+              <td>{{ x.brandName}}</td>
+              <td>{{ x.modelName}}</td>
+
+              <td>{{ x.colorName}}</td>
+              <td>{{ x.sizeName}}</td>
+              <td>{{ x.uomName}}</td>
+              <td>{{ x.madeWithName}}</td>
+              <td>{{ x.description}}</td>
+              <td class="compact-cell">
+            {{ getCrud(x) }} <br/>
+            {{ getCrud2(x) }}
+          </td>      
+              <td class="compact-cell">
+                <span> 
+                  <a  routerLink="/common/product/edit/{{x.id}}"><i class="fas fa-edit"></i></a> &nbsp;
+                  <a  routerLink="/common/product/view/{{x.id}}"><i class="fas fa-eye"></i></a>&nbsp;
+                  <button  (click)="deleteMenu(x.id)">Del</button>
+                </span>
+              </td>
             </tr>
     
             <tr *ngIf="listData.length === 0">
