@@ -25,6 +25,27 @@
   <div class="card-body p-3">
      <form novalidate [formGroup]="searchForm">
           <div class="row filter-row" >
+
+            <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus" *ngIf="entity==='Branch'">
+              <label for="name-f" >Organization</label>
+              <ng-select
+              (keyup)="setSearch($event.target)"
+              [items]="menuOptions"
+              bindLabel="orgName"
+              bindValue="id"
+              formControlName="orgId"
+              (search)="onSearch($event)"
+              (scrollToEnd)="loadMore()"
+               [loading]="loadingDropdown"
+              [clearable]="true"
+              [closeOnSelect]="true"
+              [editableSearchTerm]="false"
+              [addTag]="false" 
+              class="form-control-patch">
+            </ng-select>
+            </div></div>
+
             <div class="col-sm-6 col-md-3">
               <div class="form-group form-focus">
                 <label class="focus-label">Name/Phone/Address</label>

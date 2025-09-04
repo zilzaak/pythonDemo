@@ -93,6 +93,64 @@
       .data-table td:nth-child(2)::before { content: "User"; }
       .data-table td:nth-child(3)::before { content: "Roles"; }
     }
+
+
+
+
+
+
+
+
+    /* --- ng-select Dropdown Panel: Make it Visible & Floating --- */
+::ng-deep .ng-dropdown-panel {
+  z-index: 2000 !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+  background: white !important;
+  border: 1px solid #ddd !important;
+  border-top: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  display: block !important; /* 🔥 Critical: ensures it shows */
+}
+
+/* --- Dropdown Options --- */
+::ng-deep .ng-dropdown-panel .ng-option {
+  padding: 8px 12px;
+  background-color: white !important;
+  color: #212529 !important;
+}
+
+::ng-deep .ng-dropdown-panel .ng-option:hover,
+::ng-deep .ng-dropdown-panel .ng-option.ng-option-marked {
+  background-color: #e9ecef !important;
+}
+
+/* --- Ensure the trigger container doesn't clip --- */
+::ng-deep ng-select.form-control-patch {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Optional: Add space below dropdown trigger */
+::ng-deep ng-select.form-control-patch .ng-select-container {
+  min-height: 38px;
+  border: 1px solid #ced4da !important;
+  border-radius: 0.25rem !important;
+  font-size: 1rem;
+}
+
+::ng-deep ng-select.form-control-patch.ng-select-focused .ng-select-container {
+  border-color: #80bdff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+/* Fix dropdown overlapping form fields */
   
   
   
