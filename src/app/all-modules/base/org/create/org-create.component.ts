@@ -10,7 +10,13 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./org-create.component.css']
 })
 export class OrgCreateComponent implements OnInit {
-
+  loadingDropdown: boolean=false;
+  menuOptions: any;
+  hasMore: boolean=false;
+  searchItem: any;
+  private debounceTimer: any;
+  currentPage = 1;
+  pageSize = 10;
   constructor(private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,
     private activeRouter: ActivatedRoute,
@@ -18,6 +24,7 @@ export class OrgCreateComponent implements OnInit {
   ) { }
   createForm!: FormGroup;
   pageTitle!: any;
+  entity!:any;
   baseUrl = environment.baseUrl;
   loading = false;
 
@@ -25,6 +32,7 @@ export class OrgCreateComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
+    this.entity = this.activeRouter.snapshot.data['entity'];
     if(this.pageTitle==='View' || this.pageTitle==='Edit'){
     this.getFormData(this.activeRouter.snapshot.params.id);
     }
@@ -54,11 +62,80 @@ export class OrgCreateComponent implements OnInit {
       phone: [''],
       address: ['', Validators.required],
       remarks: ['', Validators.required],
+      location:[''],
+      orgId:['']
     });
   }
 
 
+  setSearch(x: any) {
+    this.searchItem = x.value;
+  }
 
+  onSearch(event: any): void {
+    const term = event.term?.trim();
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+    if (!term || term.length === 0) {
+      this.menuOptions = [];
+      return;
+    }
+    this.debounceTimer = setTimeout(() => {
+      this.currentPage = 1;
+      this.hasMore = true;
+      this.performSearch(term);
+    }, 300);
+  }
+
+  loadMore(): void {
+    if (!this.hasMore || this.loadingDropdown) return;
+
+    const term = this.searchItem;
+    if (!term || typeof term !== 'string') return;
+    this.currentPage++;
+    this.loadingDropdown = true;
+    let params: any = {
+      commonField: term,
+      dropDown: 'dropDown',
+      pageNum: this.currentPage.toString(),
+      pageSize: this.pageSize.toString()
+    };
+
+    let uri = this.baseUrl + '/base/organization/list';
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+        this.menuOptions = response?.data?.listData || [];
+        this.loadingDropdown = false;
+      },
+      error: (err) => {
+        this.loadingDropdown = false;
+      }
+    });
+  }
+
+  private performSearch(term: string): void {
+    this.loadingDropdown = true;
+    let uri = this.baseUrl + '/base/organization/list';
+    let params: any = {
+      commonField: term,
+      dropDown: 'dropDown',
+      pageNum: this.currentPage.toString(),
+      pageSize: this.pageSize.toString(),
+      entity:'Organization'
+    };
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+        this.menuOptions = response?.data?.listData || [];
+        this.hasMore = this.menuOptions.length === this.pageSize;
+        this.loadingDropdown = false;
+      },
+      error: (err) => {
+        this.loadingDropdown = false;
+      }
+    });
+  }
+  
   onSubmit() {
     this.loading=true;
     const api = this.baseUrl + "/base/organization/create";
@@ -67,13 +144,21 @@ export class OrgCreateComponent implements OnInit {
     name:this.createForm.value.name,   
      phone:this.createForm.value.phone,
      address:this.createForm.value.address,
-     remarks:this.createForm.value.remarks
-  } 
+     remarks:this.createForm.value.remarks,
+     entity:this.entity,
+     location:this.createForm.value.location,
+     orgId:this.createForm.value.orgId,
+  } ;
 
     this.commmonService.sendPostPutReq<any>(api, org,"post").subscribe({
       next: (response: any) => {
         if (response.success) {
-          this.router.navigate(['/base/organization/list']);
+          if(this.entity==='Organization'){
+            this.router.navigate(['/base/organization/list']);
+          }else{
+            this.router.navigate(['/base/branch/list']);
+          }
+
         } else {
           alert(response.message);
         }

@@ -224,7 +224,8 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
       commonField: term,
       dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
-      pageSize: this.pageSize.toString()
+      pageSize: this.pageSize.toString(),
+      entity:'Organization'
     };
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {

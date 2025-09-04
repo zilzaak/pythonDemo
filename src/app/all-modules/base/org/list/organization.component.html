@@ -6,15 +6,18 @@
         <div class="col">
            <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Base</a></li>
-                <li class="breadcrumb-item active">Organization</li>
+                <li class="breadcrumb-item active">{{entity}}</li>
                 <li class="breadcrumb-item active">List</li>
             </ul>
         </div>
     </div>
      </div>
 
-    <button  class="btn btn-primary btn-sm" routerLink="/base/organization/create">
-       <i class="fas fa-plus-circle"></i>Create</button> <br/>
+    <button *ngIf="entity==='Organization'" class="btn btn-primary btn-sm" routerLink="/base/organization/create">
+       <i class="fas fa-plus-circle"></i>Create</button>
+   <button *ngIf="entity==='Branch'" class="btn btn-primary btn-sm" routerLink="/base/branch/create">
+        <i class="fas fa-plus-circle"></i>Create</button> <br/>
+        <br/>
     <!-- Table Container -->
 
         <!---- search div start -->
@@ -82,7 +85,9 @@
             <th>Name</th>
             <th>Phone</th>
             <th>Address</th>
-            <th>Remarks</th>
+            <th *ngIf="entity==='Organization'" >Remarks</th>
+            <th *ngIf="entity==='Branch'">Location</th>
+            <th *ngIf="entity==='Branch'">Organization</th>
             <th>Created</th>
             <th>Updated</th>
             <th>Create By</th>
@@ -98,13 +103,24 @@
             <td>{{ x.name}}</td>
             <td>{{ x.phone}}</td>
             <td>{{ x.address}}</td>
-            <td>{{ x.remarks}}</td>
+            <td>
+              <span *ngIf="entity==='Branch'">
+                {{ x.location}}
+              </span>
+              <span *ngIf="entity==='Organization'">
+                {{ x.remarks}}
+              </span>
+
+            </td>
+            <td *ngIf="entity==='Branch'">{{x.orgName}}</td>
             <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
             <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
             <td>{{ x.createBy}}</td>
             <td>{{ x.updateBy }}</td>
-            <td><a  routerLink="/base/organization/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
-            <td> <a  routerLink="/base/organization/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
+            <td *ngIf="entity==='Organization'"><a  routerLink="/base/organization/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
+            <td *ngIf="entity==='Organization'"> <a  routerLink="/base/organization/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
+            <td *ngIf="entity==='Branch'"><a  routerLink="/base/branch/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
+            <td *ngIf="entity==='Branch'"> <a  routerLink="/base/branch/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
             <td> <a ><i class="fas fa-delete"></i></a></td>
 
           </tr>

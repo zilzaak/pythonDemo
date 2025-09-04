@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -18,10 +19,16 @@ export class OrganizationComponent implements OnInit {
   totalPages = 0;
   currentPage = 1;
   pageSize = 10;
+  pageTitle: any;
+  entity: any;
 
-  constructor(private commonService:CommonServiceService,    private formBuilder: FormBuilder,) { }
+  constructor(private commonService:CommonServiceService, 
+        private activeRouter: ActivatedRoute, 
+      private formBuilder: FormBuilder,) { }
 
  ngOnInit(): void {
+  this.pageTitle = this.activeRouter.snapshot.data['title'];
+  this.entity = this.activeRouter.snapshot.data['entity'];
  this.initForm();
  this.loadPage(1);
   }
@@ -54,7 +61,8 @@ export class OrganizationComponent implements OnInit {
   let params:any;
   params = {
     pageNum: page.toString(),
-    pageSize: this.pageSize.toString()
+    pageSize: this.pageSize.toString(),
+    entity:this.entity,
   };
   console.log("form value is ");
   console.log( this.searchForm.value);
@@ -62,6 +70,10 @@ export class OrganizationComponent implements OnInit {
     && this.searchForm.value.commonField!==''
   ){
     params.commonField=this.searchForm.value.commonField;
+  }
+
+  if(this.entity==='Branch'){
+    params.orgId=Number(localStorage.getItem('orgId'))
   }
 
     this.commonService.getWithToken('http://localhost:8000/base/organization/list', params)

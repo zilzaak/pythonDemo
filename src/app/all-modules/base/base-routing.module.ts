@@ -95,20 +95,37 @@ const routes: Routes = [
   },
   {
     path: 'organization/create', component: OrgCreateComponent,
-    data: { title: 'Create' },
+    data: { title: 'Create',entity:'Organization' },
   },
   {
     path: 'organization/view/:id', component: OrgCreateComponent,
-    data: { title: 'View' },
+    data: { title: 'View',entity:'Organization' },
   },
 
   {
     path: 'organization/edit/:id', component: OrgCreateComponent,
-    data: { title: 'Edit' },
+    data: { title: 'Edit' ,entity:'Organization'},
   },
   {
     path: 'organization/list', component: OrganizationComponent,
-    data: { title: 'List' },
+    data: { title: 'List' ,entity:'Organization'},
+  },
+  {
+    path: 'branch/create', component: OrgCreateComponent,
+    data: { title: 'Create' , entity:'Branch'},
+  },
+  {
+    path: 'branch/view/:id', component: OrgCreateComponent,
+    data: { title: 'View' , entity:'Branch'},
+  },
+
+  {
+    path: 'branch/edit/:id', component: OrgCreateComponent,
+    data: { title: 'Edit' , entity:'Branch'},
+  },
+  {
+    path: 'branch/list', component: OrganizationComponent,
+    data: { title: 'List' , entity:'Branch' },
   },
 
 ];
