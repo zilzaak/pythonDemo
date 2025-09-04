@@ -4,9 +4,12 @@
       <div class="row align-items-center">
           <div class="col">
              <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/irecruitment/vacancy/list">Setting</a></li>
+                  <li class="breadcrumb-item">Setting</li>
                   <li class="breadcrumb-item active">Product</li>
                   <li class="breadcrumb-item active">{{pageTitle}}</li>
+                  <li *ngIf="pageTitle==='Edit'"class="breadcrumb-item active">     
+                     <span routerLink="/common/product/create" style="color:blue;">
+                    <i class="fas fa-plus-circle"></i>(Create)</span> <br/></li>
               </ul>
           </div>
           <div class="col-auto float-right ml-auto">
