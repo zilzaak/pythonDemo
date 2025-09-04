@@ -122,7 +122,7 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
     this.createForm = this.formBuilder.group({
       id: [null],
       name: ['', [Validators.required, Validators.maxLength(100)]],
-      orgId: [Number(localStorage.getItem('orgId'))],
+      orgId: [Number(localStorage.getItem('orgId')),[Validators.required, Validators.maxLength(100)]],
       catId: [null],
       brandId: [null],
       modelId: [null],
@@ -132,10 +132,15 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
       uomId: [null],
       qtyPerUnit: [null, [Validators.min(0)]],
       unitName: ['', [Validators.maxLength(50)]],
-      description: ['', [Validators.maxLength(500)]]
+      description: ['', [Validators.maxLength(500)]],
+      confirmSimilarity:[false]
     });
   }
 
+  confirmSimilarity(){
+    this.createForm.controls['confirmSimilarity'].setValue(true);
+    this.onSubmit();
+  }
   onSubmit() {
     if (this.opMode === 'view') return;
     if (this.createForm.invalid) {
