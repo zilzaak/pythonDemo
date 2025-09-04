@@ -41,9 +41,24 @@ export class OrgCreateComponent implements OnInit {
 
   getFormData(id:any){
     let api=this.baseUrl+"/base/organization/list"
-    this.commmonService.getWithToken(api,{orgId:id}).subscribe(
+    let params:any={ };
+    if(this.entity==='Organization'){
+        params.id=id,
+        params.entity=this.entity
+    };
+    if(this.entity==='Branch'){
+      params.id=id,
+      params.orgId=Number(localStorage.getItem('orgId')),
+      params.entity=this.entity
+  };
+  
+    this.commmonService.getWithToken(api,params).subscribe(
       { next: (response) => {
         this.createForm.patchValue(response?.data?.listData[0]);
+        if(this.entity==='Branch'){
+        this.menuOptions=[{orgName:response?.data?.listData[0].orgName ,
+           id:response?.data?.listData[0].orgId}];
+        }
         if(this.pageTitle==='View'){
           this.createForm.disable();
         }
@@ -155,7 +170,8 @@ export class OrgCreateComponent implements OnInit {
         if (response.success) {
           if(this.entity==='Organization'){
             this.router.navigate(['/base/organization/list']);
-          }else{
+          }
+          else{
             this.router.navigate(['/base/branch/list']);
           }
 
