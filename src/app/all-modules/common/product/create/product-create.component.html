@@ -225,18 +225,121 @@
                                             <label for="name-f" class="val-required">*Description</label>
                                             <input type="text" class="form-control"  formControlName="description">
                                             </div>
-                                    
   
+                            </div></form>
+                          </div>
+                            </div>
 
-  
-                                          <div class="d-flex gap-2 mt-2" *ngIf="opMode==='edit' || opMode==='create'">
+               <!-----------------------------------Selling price settings---------------------------------->
+               <div class="card customCard">
+                <div class="card-body">
+                  <h3 class="card-title">Selling Price </h3>
+                  <form  [formGroup]="sellForm">
+        
+                    <div class="table-responsive">
+                      <table class="table table-striped custom-table">
+                        <thead>
+                          <!-- <th>SL</th> -->
+                          <th>SL</th>
+                          <th>Branch</th>
+                          <th>Price</th>    
+                          <th>Action</th>   
+                        </thead>
+                        <tbody formArrayName="sellPrices">
+                          <tr *ngFor="let itemrow of allSells.controls; let i=index;let l=last" [formGroupName]="i">
+                            <td>{{i+1}}</td>
+                           <td>
+                            <ng-select
+                            [items]="branchList"
+                            bindLabel="name"
+                            bindValue="id"
+                            formControlName="branchId"
+                            [closeOnSelect]="true"
+                            [addTag]="false" 
+                            class="form-control-patch">
+                          </ng-select>
+        
+                            </td>
+        
+                            <td>
+                              <input formControlName="price" class="form-control" type="number">
+                            </td>
+                    
+                            <td>
+                              <button  (click)="removeSell(i)"
+                                class="btn btn-danger btn-sm">Delete</button>
+                            </td>
+                            <td>
+                              <button  (click)="addSell()"
+                                class="btn btn-danger btn-sm">Add</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>              
+                  </form>                         
+                            </div>
+                             </div>
+
+
+                             <!----------------------Cost price settings--------------------------->
+                             <div class="card customCard">
+                              <div class="card-body">
+                                <h3 class="card-title">Cost Price </h3>
+                                <form  [formGroup]="costForm">
+                      
+                                  <div class="table-responsive">
+                                    <table class="table table-striped custom-table">
+                                      <thead>
+                                        <!-- <th>SL</th> -->
+                                        <th>SL</th>
+                                        <th>Branch</th>
+                                        <th>Price</th>  
+                                        <th>Action</th>      
+                                      </thead>
+                                      <tbody formArrayName="costPrices">
+                                        <tr *ngFor="let itemrow of allCosts.controls; let i=index;let l=last" [formGroupName]="i">
+                                          <td>{{i+1}}</td>
+                                         <td>
+                                          <ng-select
+                                          [items]="branchList"
+                                          bindLabel="name"
+                                          bindValue="id"
+                                          formControlName="branchId"
+                                          [closeOnSelect]="true"
+                                          [addTag]="false" 
+                                          class="form-control-patch">
+                                        </ng-select>
+                      
+                                          </td>
+                      
+                                          <td>
+                                            <input formControlName="price" class="form-control" type="number">
+                                          </td>
+                                  
+                                          <td>
+                                            <button  (click)="removeCost(i)"
+                                              class="btn btn-danger btn-sm">Delete</button>
+                                          </td>
+                                          <td>
+                                            <button  (click)="addCost()"
+                                              class="btn btn-danger btn-sm">Add</button>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>                           
+                                </form>                                        
+                                          </div>
+                                           </div>
+                                         <br/>
+                                           <div class="d-flex gap-2 mt-2" *ngIf="opMode==='edit' || opMode==='create'">
                                             <button type="submit" class="btn btn-sm btn-primary" (click)="onSubmit()">
                                               <i class="fas fa-save me-1"></i> Save
                                             </button>
                                           </div>
-  
-                            </div></form></div>
-                            </div>
+
+
                             </div>
                             </div>
                             

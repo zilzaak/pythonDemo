@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
 import { environment } from 'src/environments/environment';
@@ -14,6 +14,8 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
   @ViewChild('myButton') myButton!: ElementRef;
 
   similarProduct:any;
+  sellForm!: FormGroup;
+  costForm!:FormGroup;
   createForm!: FormGroup;
   pageTitle!: any;
   opMode!: any;
@@ -53,6 +55,9 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
   sizeOptions: any[] = [];
   oumOptions: any[] = [];
   madeWithOptions: any[] = [];
+  branchList:any[]=[];
+  sellPriceId:any;
+  costPriceId:any;
 
   constructor(
     private commmonService: CommonServiceService,
@@ -63,6 +68,7 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.initializeForm();
+    this.loadAllBranch();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
 
     if (this.pageTitle === 'Create') {
@@ -83,6 +89,19 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
       this.api = this.baseUrl + '/setting/product/list';
       this.formData(this.activeRouter.snapshot.params.id);
     }
+  }
+
+  loadAllBranch(){
+    let org: any = localStorage.getItem('orgId');
+    const para = { entity:'Branch',orgId: org ,pageNum:1,pageSize:50};
+    this.commmonService.getWithToken(this.baseUrl + '/base/organization/list', para).subscribe({
+      next: (response) => {
+        this.branchList=response.data.listData;
+      },
+      error: (err) => {
+        console.error('Failed to load data', err);
+      }
+    }); 
   }
 
   ngAfterViewInit() {
@@ -135,7 +154,59 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
       description: ['', [Validators.maxLength(500)]],
       confirmSimilarity:[false]
     });
+    this.sellForm= this.formBuilder.group(
+      {
+        sellPrices:this.formBuilder.array([this.sellPriceCreate()])
+      }
+    );
+    this.costForm= this.formBuilder.group(
+      {
+        costPrices:this.formBuilder.array([this.costPriceCreate()])
+      }
+    )
   }
+
+
+  sellPriceCreate():FormGroup{
+      return this.formBuilder.group({
+        branchId:[''],
+        price:[''],
+      })
+  }
+
+  costPriceCreate():FormGroup{
+    return this.formBuilder.group({
+      branchId:[''],
+      price:[''],
+    })
+  }
+
+  get allSells():FormArray{
+    return this.sellForm.get("sellPrices") as FormArray;
+  }
+
+  get allCosts():FormArray{
+    return this.costForm.get("costPrices") as FormArray;
+  }
+
+  addSell():void{
+ this.allSells.push(this.sellPriceCreate());
+  }
+  addCost():void{
+    this.allCosts.push(this.costPriceCreate());
+     }
+  removeSell(index:any):void{
+    if(Number(index)<1){
+      return;
+    }
+   this.allSells.removeAt(index);
+  }
+  removeCost(index:any):void{
+    if(Number(index)<1){
+      return;
+    }
+    this.allCosts.removeAt(index);
+   }
 
   confirmSimilarity(){
     this.createForm.controls['confirmSimilarity'].setValue(true);
@@ -149,6 +220,35 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
     }
     this.loading = true;
     let payload: any = { ...this.createForm.value };
+
+
+    let spi:any={
+      sellPrices:null,branchIds:null
+    };
+    for (let hb of this.sellForm.value.sellPrices) {
+    if(spi.branchIds==null){
+        spi.branchIds=hb.branchId.toString();
+        spi.sellPrices=hb.price.toString();
+      }else{
+        spi.branchIds=spi.branchIds.toString()+","+hb.branchId.toString();
+        spi.sellPrices=spi.sellPrices.toString()+","+hb.price.toString();
+      }
+    }
+
+        let cpi:any={
+          costPrices:null,branchIds:null
+        };
+        for (let hb of this.costForm.value.costPrices) {
+          if(cpi.branchIds==null){
+            cpi.branchIds=hb.branchId.toString();
+            cpi.costPrices=hb.price.toString();
+          }else{
+            cpi.branchIds=cpi.branchIds.toString()+","+hb.branchId.toString();
+            cpi.costPrices=cpi.costPrices.toString()+","+hb.price.toString();
+          }
+        }
+
+
     let method = this.opMode === 'create' ? 'post' : 'put';
     this.commmonService.sendPostPutReq<any>(this.api.toString(), payload, method).subscribe({
       next: (response: any) => {
