@@ -16,6 +16,8 @@ export class OrgCreateComponent implements OnInit {
   searchItem: any;
   private debounceTimer: any;
   currentPage = 1;
+  method:any;
+  api:any;
   pageSize = 10;
   constructor(private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,
@@ -36,6 +38,17 @@ export class OrgCreateComponent implements OnInit {
     if(this.pageTitle==='View' || this.pageTitle==='Edit'){
     this.getFormData(this.activeRouter.snapshot.params.id);
     }
+
+    if(this.pageTitle==='Edit'){
+      this.api="/base/organization/update";
+      this.method="put";
+      }
+
+      if(this.pageTitle==='Create'){
+        this.api="/base/organization/create";
+        this.method="post";
+        }
+
   }
 
 
@@ -153,7 +166,7 @@ export class OrgCreateComponent implements OnInit {
   
   onSubmit() {
     this.loading=true;
-    const api = this.baseUrl + "/base/organization/create";
+    let apiUrl:any=this.baseUrl+this.api;
   let org:any={
     id:this.createForm.value.id,    
     name:this.createForm.value.name,   
@@ -165,13 +178,13 @@ export class OrgCreateComponent implements OnInit {
      orgId:this.createForm.value.orgId,
   } ;
 
-    this.commmonService.sendPostPutReq<any>(api, org,"post").subscribe({
+    this.commmonService.sendPostPutReq<any>(apiUrl, org,this.method).subscribe({
       next: (response: any) => {
         if (response.success) {
           if(this.entity==='Organization'){
             this.router.navigate(['/base/organization/list']);
           }
-          else{
+          if(this.entity==='Branch'){
             this.router.navigate(['/base/branch/list']);
           }
 
