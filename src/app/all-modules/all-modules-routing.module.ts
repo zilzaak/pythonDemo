@@ -24,10 +24,6 @@ const routes: Routes = [
         path: 'common',
         loadChildren: () => import('./common/setting-product.module').then(m => m.SettingProductModule)
       },
-            {
-        path: 'pricing',
-        loadChildren: () => import('./pricing/pricing.module').then(m => m.PricingModule)
-      },
     ]
   }
 ];
