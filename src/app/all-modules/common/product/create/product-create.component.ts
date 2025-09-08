@@ -129,6 +129,45 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
         this.oumOptions = [{ id: resp.uomId, name: resp.uomName }];
         this.colorOptions = [{ id: resp.colorId, name: resp.colorName }];
         this.createForm.patchValue(resp);
+        this.sellPrice=resp.defaultSellPrice;
+        this.costPrice=resp.defaultCostPrice;
+
+        let sellBranchIds:any[]=[];let sellPrices:any[]=[];
+        let costBranchIds:any[]=[];let costPrices:any[]=[];
+        if(resp.sellBranchIds && resp.sellBranchIds!=null){
+          this.allSells.removeAt(0);
+          sellBranchIds=resp.sellBranchIds.toString().split(',');
+          sellPrices=resp.sellPrices.toString().split(',');
+        }
+        if(resp.costBranchIds && resp.costBranchIds!=null){
+          this.allCosts.removeAt(0);
+          costBranchIds=resp.costBranchIds.toString().split(',');
+          costPrices=resp.costPrices.toString().split(',');
+        }
+        let bi:number=-1;
+        for(let b of sellBranchIds){
+          bi++;
+          this.allSells.push(
+            this.formBuilder.group({
+              branchId:[Number(b.toString())],
+              price:[Number(sellPrices[bi].toString())],
+            })
+          );
+        }
+
+        let ci:number=-1;
+        for(let b of costBranchIds){
+          ci++;
+          this.allCosts.push(
+            this.formBuilder.group({
+              branchId:[Number(b.toString())],
+              price:[Number(costPrices[ci].toString())],
+            })
+          );
+        }
+
+
+
         if (this.opMode === 'view') {
           this.createForm.disable();
         }
@@ -223,7 +262,6 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
     this.loading = true;
     let payload: any = { ...this.createForm.value };
 
-
     let spi:any={
       sellPrices:null,
       sellBranchIds:null,
@@ -234,17 +272,17 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
     };
 
     for (let hb of this.sellForm.value.sellPrices) {
-    if(spi.branchIds==null){
-        spi.costBranchIds=hb.branchId.toString();
+    if(spi.sellBranchIds==null){
+        spi.sellBranchIds=hb.branchId.toString();
         spi.sellPrices=hb.price.toString();
       }else{
-        spi.costBranchIds=spi.costBranchIds.toString()+","+hb.branchId.toString();
+        spi.sellBranchIds=spi.sellBranchIds.toString()+","+hb.branchId.toString();
         spi.sellPrices=spi.sellPrices.toString()+","+hb.price.toString();
       }
     }
 
         for (let hb of this.costForm.value.costPrices) {
-          if(spi.branchIds==null){
+          if(spi.costBranchIds==null){
             spi.costBranchIds=hb.branchId.toString();
             spi.costPrices=hb.price.toString();
           }else{
@@ -254,6 +292,8 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
         }
 
           payload.price=spi;
+          console.log("ggggggggggggggggggggggggggggggggggg");
+          console.log(payload);
 
     let method = this.opMode === 'create' ? 'post' : 'put';
     this.commmonService.sendPostPutReq<any>(this.api.toString(), payload, method).subscribe({
