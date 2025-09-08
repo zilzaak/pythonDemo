@@ -295,10 +295,10 @@
             </td>
     
             <td>
-              <button  (click)="removeSell(i)"
+              <button *ngIf="opMode!=='view'" (click)="removeSell(i)"
                 class="btn btn-danger btn-sm">Delete</button>
                 &nbsp;
-                <button  (click)="addSell()"class="btn btn-danger btn-sm">Add</button>
+                <button *ngIf="opMode!=='view'" (click)="addSell()"class="btn btn-danger btn-sm">Add</button>
             </td>
                      
           </tr>
@@ -338,10 +338,10 @@
             </td>
     
             <td>
-              <button  (click)="removeCost(i)"
+              <button  (click)="removeCost(i)" *ngIf="opMode!=='view'"
                 class="btn btn-danger btn-sm">Delete</button>
                 &nbsp;
-                <button  (click)="addCost()"
+                <button  (click)="addCost()" *ngIf="opMode!=='view'"
                 class="btn btn-danger btn-sm">Add</button>
             </td>
                       

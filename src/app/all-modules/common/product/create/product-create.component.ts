@@ -170,6 +170,8 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
 
         if (this.opMode === 'view') {
           this.createForm.disable();
+          this.sellForm.disable();
+          this.costForm.disable();
         }
       },
       error: (err) => {
