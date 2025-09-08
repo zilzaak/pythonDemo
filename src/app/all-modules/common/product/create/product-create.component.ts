@@ -58,6 +58,8 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
   branchList:any[]=[];
   sellPriceId:any;
   costPriceId:any;
+  sellPrice:any;
+  costPrice:any;
 
   constructor(
     private commmonService: CommonServiceService,
@@ -67,8 +69,8 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.initializeForm();
     this.loadAllBranch();
+    this.initializeForm();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
 
     if (this.pageTitle === 'Create') {
@@ -223,31 +225,35 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
 
 
     let spi:any={
-      sellPrices:null,branchIds:null
+      sellPrices:null,
+      sellBranchIds:null,
+      defaultSellPrice:this.sellPrice,
+      costPrices:null,
+      costBranchIds:null,
+      defaultCostPrice:this.costPrice
     };
+
     for (let hb of this.sellForm.value.sellPrices) {
     if(spi.branchIds==null){
-        spi.branchIds=hb.branchId.toString();
+        spi.costBranchIds=hb.branchId.toString();
         spi.sellPrices=hb.price.toString();
       }else{
-        spi.branchIds=spi.branchIds.toString()+","+hb.branchId.toString();
+        spi.costBranchIds=spi.costBranchIds.toString()+","+hb.branchId.toString();
         spi.sellPrices=spi.sellPrices.toString()+","+hb.price.toString();
       }
     }
 
-        let cpi:any={
-          costPrices:null,branchIds:null
-        };
         for (let hb of this.costForm.value.costPrices) {
-          if(cpi.branchIds==null){
-            cpi.branchIds=hb.branchId.toString();
-            cpi.costPrices=hb.price.toString();
+          if(spi.branchIds==null){
+            spi.costBranchIds=hb.branchId.toString();
+            spi.costPrices=hb.price.toString();
           }else{
-            cpi.branchIds=cpi.branchIds.toString()+","+hb.branchId.toString();
-            cpi.costPrices=cpi.costPrices.toString()+","+hb.price.toString();
+            spi.costBranchIds=spi.costBranchIds.toString()+","+hb.branchId.toString();
+            spi.costPrices=spi.costPrices.toString()+","+hb.price.toString();
           }
         }
 
+          payload.price=spi;
 
     let method = this.opMode === 'create' ? 'post' : 'put';
     this.commmonService.sendPostPutReq<any>(this.api.toString(), payload, method).subscribe({
