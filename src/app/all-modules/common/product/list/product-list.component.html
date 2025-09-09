@@ -31,6 +31,7 @@
                       bindLabel="name"
                       bindValue="id"
                       formControlName="orgId"
+                      (change)="getList()"
                       class="form-control-patch">
                     </ng-select>
                       
@@ -61,6 +62,7 @@
                     [closeOnSelect]="true"
                     [editableSearchTerm]="false"
                     [addTag]="false" 
+                    (change)="getList()"
                     class="form-control-patch">
                   </ng-select>
                     
@@ -83,6 +85,7 @@
                 [closeOnSelect]="true"
                 [editableSearchTerm]="false"
                 [addTag]="false" 
+                (change)="getList()"
                 class="form-control-patch">
               </ng-select>
                 
@@ -105,6 +108,7 @@
               [closeOnSelect]="true"
               [editableSearchTerm]="false"
               [addTag]="false" 
+              (change)="getList()"
               class="form-control-patch">
             </ng-select> 
               
@@ -158,12 +162,7 @@
             <tr>
               <th>SL</th>
               <th>Full Name</th>
-              <th>Category</th>
-              <th>Brand</th>
-              <th>Model</th>
-              <th>Color</th>
-              <th>Size</th>
-              <th>Made With</th>
+              <th>Criteria</th>
               <th>Description</th>
               <th>Price</th>
               <th>Others</th>
@@ -175,12 +174,17 @@
             <tr *ngFor="let x of listData; index as i">
               <td>{{ i + 1 }}</td>
               <td>{{ x.fullName}}</td>
-              <td>{{ x.categoryName}}</td>
-              <td>{{ x.brandName}}</td>
-              <td>{{ x.modelName}}</td>
-              <td>{{ x.colorName}}</td>
-              <td>{{ x.sizeName}}</td>
-              <td>{{ x.madeWithName}}</td>
+
+              <td>
+                <div style="width:250px;">
+                  <p style="color:rgb(25, 108, 25)">Category->{{ x.categoryName}} ,
+                  Brand->{{ x.brandName}},
+                  Model->{{ x.modelName}},
+                  Color->{{ x.colorName}},
+                 Size->{{ x.sizeName}},
+                 Made With->{{ x.madeWithName}}</p>
+              </div>
+                </td>
               <td>{{ x.description}}</td>
               <td>
                 <div style="width:120px;">
