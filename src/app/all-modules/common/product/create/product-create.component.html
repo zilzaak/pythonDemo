@@ -10,6 +10,9 @@
                   <li *ngIf="pageTitle==='Edit'"class="breadcrumb-item active">     
                      <span routerLink="/common/product/create" style="color:blue;">
                     <i class="fas fa-plus-circle"></i>(Create)</span> <br/></li>
+                    <li *ngIf="pageTitle==='View'"class="breadcrumb-item active">     
+                      <span routerLink="/common/product/edit/{{id}}" style="color:blue;">
+                     <i class="fas fa-plus-circle"></i>(Edit)</span> <br/></li>
               </ul>
           </div>
           <div class="col-auto float-right ml-auto">
@@ -141,7 +144,7 @@
                                       </div>
 
                                       <div class="col-md-3 form-group">
-                                        <label for="name-f" >Size</label>
+                                        <label for="name-f" >Size/Dimension/Volume</label>
                                         <ng-select
                                         (keyup)="setSearch($event.target)"
                                         [items]="sizeOptions"
@@ -180,7 +183,7 @@
                                 
                                       </div>
 
-                                      <div class="col-md-3 form-group">
+                                      <!-- <div class="col-md-3 form-group">
                                         <label for="name-f" >Measure By</label>
                                         <ng-select
                                         (keyup)="setSearch($event.target)"
@@ -198,7 +201,7 @@
                                         class="form-control-patch">
                                       </ng-select>
                                 
-                                      </div>
+                                      </div> -->
 
 
                                       <div class="col-md-3 form-group">

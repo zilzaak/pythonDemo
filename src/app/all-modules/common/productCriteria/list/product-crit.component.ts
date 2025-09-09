@@ -21,8 +21,12 @@ export class ProductCritComponent implements OnInit {
   roleList: any;
   username:any;
   entity:any;
-
-  entities:any[]=['Brand','ProductCat','ProductModel','ProductColor','ProductSize','MadeWith','UnitOfMeasure'];
+  entities:any[]=[{id:'Brand',title:'Brand'},
+    {id:'ProductCat',title:'Category'},
+    {id:'ProductModel',title:'Model'},
+    {id:'ProductColor',title:'Color'},
+    {id:'ProductSize',title:'Size/Dimension/Volume'},
+    {id:'MadeWith',title:'Made With'}];
 
   constructor(private commonService:CommonServiceService,    private formBuilder: FormBuilder,) { }
 

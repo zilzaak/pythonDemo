@@ -32,8 +32,12 @@
 
                                <div class="col-md-3 form-group">
                                 <label for="name-f" class="val-required">Create</label>
-                                    <ng-select [items]="entities" formControlName="entity"
-                                    [closeOnSelect]="true" class="form-control-patch">
+                                    <ng-select [items]="entities"
+                                     formControlName="entity"
+                                     bindLabel="title"
+                                     bindValue="id"
+                                    [closeOnSelect]="true" 
+                                    class="form-control-patch">
                                    </ng-select>
                                     
                                 </div>

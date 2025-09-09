@@ -26,7 +26,10 @@
               <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
                   <label class="focus-label">Entity</label>
-                  <ng-select [items]="entities" formControlName="entity"
+                  <ng-select [items]="entities" 
+                  bindLabel="title"
+                  bindValue="id"
+                  formControlName="entity"
                   (change)="getList()"
                   [closeOnSelect]="true" class="form-control-patch">
                  </ng-select>                  
@@ -36,7 +39,7 @@
               <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
                   <label class="focus-label">Name</label>
-                  <input type="text" class="form-control"  formControlName="name"/>                   
+                  <input type="text" class="form-control"  formControlName="name" (keyup.enter)="getList()"/>                   
                 </div>
              </div>
   
@@ -90,6 +93,7 @@
               <th>Organization</th>
               <th *ngIf="searchForm.value.entity==='ProductModel'">Brand</th>
               <th>Name</th>
+              <th>Description</th>
               <th>Created</th>
               <th>Updated</th>
               <th>Create By</th>
@@ -103,6 +107,7 @@
               <td>{{ x.orgName}}</td>
               <td *ngIf="searchForm.value.entity==='ProductModel'" >{{ x.brandName}}</td>
               <td>{{ x.name}}</td>
+              <td>{{ x.description}}</td>
               <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
               <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
               <td>{{ x.createBy}}</td>

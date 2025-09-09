@@ -60,6 +60,7 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
   costPriceId:any;
   sellPrice:any;
   costPrice:any;
+  id:any;
 
   constructor(
     private commmonService: CommonServiceService,
@@ -111,6 +112,7 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
   }
 
   formData(id: any) {
+    this.id=id;
     let org: any = localStorage.getItem('orgId');
     const para = { id: id, orgId: org };
     this.commmonService.getWithToken(this.baseUrl + '/setting/product/list', para).subscribe({

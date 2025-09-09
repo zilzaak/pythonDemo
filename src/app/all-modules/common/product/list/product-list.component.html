@@ -40,7 +40,7 @@
                 <div class="col-sm-6 col-md-3">
                   <div class="form-group form-focus">
                     <label class="focus-label">Product Name</label>
-                    <input type="text" class="form-control"  formControlName="name"/> 
+                    <input type="text" class="form-control"  formControlName="name" (keyup.enter)="getList()"  /> 
                     
                   </div>
                 </div>
@@ -157,16 +157,15 @@
           <thead>
             <tr>
               <th>SL</th>
-              <th>Name</th>
               <th>Full Name</th>
               <th>Category</th>
               <th>Brand</th>
               <th>Model</th>
               <th>Color</th>
               <th>Size</th>
-              <th>Measure By</th>
               <th>Made With</th>
               <th>Description</th>
+              <th>Price</th>
               <th>Others</th>
               <th>Operation</th>
 
@@ -175,17 +174,20 @@
           <tbody>
             <tr *ngFor="let x of listData; index as i">
               <td>{{ i + 1 }}</td>
-              <td>{{ x.name}}</td>
               <td>{{ x.fullName}}</td>
               <td>{{ x.categoryName}}</td>
               <td>{{ x.brandName}}</td>
               <td>{{ x.modelName}}</td>
-
               <td>{{ x.colorName}}</td>
               <td>{{ x.sizeName}}</td>
-              <td>{{ x.uomName}}</td>
               <td>{{ x.madeWithName}}</td>
               <td>{{ x.description}}</td>
+              <td>
+                <div style="width:120px;">
+                  Sell Price:{{x.defaultSellPrice}} <br/>
+                  Cost Price:{{x.defaultCostPrice}}
+                </div>
+               </td>
               <td class="compact-cell">
             {{ getCrud(x) }} <br/>
             {{ getCrud2(x) }}
