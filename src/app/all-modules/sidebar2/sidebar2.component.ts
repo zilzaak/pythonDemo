@@ -46,15 +46,21 @@ export class Sidebar2Component implements OnInit {
     this.menuList=userData.menuList;
     this.organizations=userData.orgList;
     this.loading = false;
-    let param:any={
-      org:Number(localStorage.getItem('orgId')),
-    };
-    this.createForm.patchValue(param);
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    console.log(this.organizations);
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    console.log(this.createForm.value.org);
 
+    let param:any={
+      org:null
+    };
+
+    if(localStorage.getItem('orgId') 
+      && localStorage.getItem('orgId')!=='' 
+      && localStorage.getItem('orgId')!=null){
+        param.org=Number(localStorage.getItem('orgId'));
+    }else{
+      param.org=Number(this.organizations[0].id.toString());
+      localStorage.setItem('orgId',this.organizations[0].id.toString());
+      localStorage.setItem('orgName',this.organizations[0].name.toString());
+    }
+    this.createForm.patchValue(param);
   }
 
   setOrg(orgv:any){  
