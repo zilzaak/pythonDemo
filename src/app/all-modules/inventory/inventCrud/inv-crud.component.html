@@ -2,12 +2,19 @@
     <div class="row align-items-center">
         <div class="col">
            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a routerLink="/base/user/list">Base</a></li>
-                <li class="breadcrumb-item active">{{entity}}</li>
+                <li class="breadcrumb-item"><a routerLink="/base/user/list">Inventory</a></li>
                 <li class="breadcrumb-item active">{{pageTitle}}</li>
+                <li *ngIf="pageTitle==='View'" class="breadcrumb-item active"><a routerLink="/inventory/edit/{{id}}">Edit</a></li>
+                <li *ngIf="pageTitle==='Edit'" class="breadcrumb-item active">Create</li>
             </ul>
         </div>
+        <div class="col col-md-3" >
+            <a id="backBtn"   [routerLink]="['/inventory/list']" class="btn btn-sm btn-outline-secondary"> 
+                <i class="fas fa-times me-1"></i> Back
+              </a>
+       </div>
     </div>
+
      </div>
   
   
@@ -34,40 +41,51 @@
   <div class="col col-8" style="text-align:right;">
       <form  [formGroup]="createForm" class="bg-light p-3 rounded shadow-sm" style="max-width: 600px; margin: 0 auto;">
     
-        <div class="mb-2" *ngIf="entity==='Branch'" >
-          <label for="name-f" >Organization</label>
+        <div class="mb-2">
+          <label for="name-f" >Organization*</label>
           <ng-select
           (keyup)="setSearch($event.target)"
+          (click)="setSearch($event.target)"
           [items]="menuOptions"
           bindLabel="orgName"
           bindValue="id"
           formControlName="orgId"
-          (search)="onSearch($event)"
+          (search)="onSearch()"
+          (click)="onSearch()"
           (scrollToEnd)="loadMore()"
-           [loading]="loadingDropdown"
+           [loading]="loadDropdown"
           [clearable]="true"
           [closeOnSelect]="true"
           [editableSearchTerm]="false"
           [addTag]="false" 
           class="form-control-patch">
         </ng-select>
-  
-        </div>
+          </div>
 
-        <div class="mb-2" *ngIf="entity==='Branch'">
-          <label for="email" class="form-label small">Location</label>
-          <input
-            type="text"
-            class="form-control form-control-sm"
-            id="name"
-            formControlName="location"
-            placeholder="Enter name"
-          />
-        </div>
+          <div class="mb-2">
+            <label for="name-f" >Branch*</label>
+            <ng-select
+            (keyup)="setBranchId($event.target)"
+            (click)="setBranchId($event.target)"
+            [items]="branchOptions"
+            bindLabel="name"
+            bindValue="id"
+            formControlName="branchId"
+            (search)="onSearchBranch()"
+            (click)="onSearchBranch()"
+            (scrollToEnd)="loadMoreBranch()"
+             [loading]="loadDropdownBranch"
+            [clearable]="true"
+            [closeOnSelect]="true"
+            [editableSearchTerm]="false"
+            [addTag]="false" 
+            class="form-control-patch">
+          </ng-select>
+            </div>
 
          <!-- Email -->
           <div class="mb-2">
-            <label for="email" class="form-label small">Name</label>
+            <label for="email" class="form-label small">Name*</label>
             <input
               type="text"
               class="form-control form-control-sm"
@@ -90,26 +108,13 @@
           </div>
       
           <!-- Address -->
-          <div class="mb-2">
-            <label for="address" class="form-label small">Address</label>
-            <textarea
-              class="form-control form-control-sm"
-              id="address"
-              formControlName="address"
-              rows="2"
-              placeholder="Enter address"
-            ></textarea>
-          </div>
-
-
-                    <!-- Address -->
-          <div class="mb-2" *ngIf="entity==='Organization'" >
-            <label for="displayName" class="form-label small">Remarks</label>
+          <div class="mb-2"  >
+            <label for="displayName" class="form-label small">Others</label>
             <input
               type="text"
               class="form-control form-control-sm"
               id="remarks"
-              formControlName="remarks"
+              formControlName="others"
               placeholder="Enter Remarks "
             />
           </div>

@@ -91,11 +91,11 @@
           <thead>
             <tr>
               <th>SL</th>
-              <th>Full Name</th>
-              <th>Code</th>
-              <th>Criteria</th>
-              <th>Description</th>
-              <th>Price</th>
+              <th>Inventory</th>
+              <th>Phone</th>
+              <th>Branch</th>
+              <th>Branch Address</th>
+              <th>Organization</th>
               <th>Others</th>
               <th>Operation</th>
 
@@ -104,9 +104,12 @@
           <tbody>
             <tr *ngFor="let x of listData; index as i">
               <td>{{ i + 1 }}</td>
-              <td>{{ x.fullName}}</td>
-              <td>{{x.code}}</td>
-              <td>
+              <td>{{ x.name}}</td>
+              <td>{{x.phone}}</td>
+              <td>{{ x.branch.name}}</td>
+              <td>{{ x.branch.address}}</td>
+              <td>{{ x.org.name}}</td>
+              <!-- <td>
                 <div style="width:250px;">
                   <p style="color:rgb(25, 108, 25)">Category->{{ x.categoryName}} ,
                   Brand->{{ x.brandName}},
@@ -115,18 +118,8 @@
                  Size->{{ x.sizeName}},
                  Made With->{{ x.madeWithName}}</p>
               </div>
-                </td>
-              <td>{{ x.description}}</td>
-              <td>
-                <div style="width:120px;">
-                  Sell Price:{{x.defaultSellPrice}} <br/>
-                  Cost Price:{{x.defaultCostPrice}}
-                </div>
-               </td>
-              <td class="compact-cell">
-            {{ getCrud(x) }} <br/>
-            {{ getCrud2(x) }}
-          </td>      
+                </td> -->
+              <td>{{ x.others}}</td>    
               <td class="compact-cell">
                 <span> 
                   <a  routerLink="/inventory/edit/{{x.id}}"><i class="fas fa-edit"></i></a> &nbsp;

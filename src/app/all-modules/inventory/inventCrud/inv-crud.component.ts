@@ -11,9 +11,12 @@ import { CommonServiceService } from '../../commonService/common-service.service
 })
 export class InvCrudComponent implements OnInit {
 
-  loadingDropdown: boolean=false;
+  loadDropdown: boolean=false;
+  loadDropdownBranch: boolean=false;
   menuOptions: any;
+  branchOptions:any;
   hasMore: boolean=false;
+  hasMoreBranch: boolean=false;
   searchItem: any;
   private debounceTimer: any;
   currentPage = 1;
@@ -30,26 +33,33 @@ export class InvCrudComponent implements OnInit {
   entity!:any;
   baseUrl = environment.baseUrl;
   loading = false;
-
+   id:any;
 
   ngOnInit(): void {
+    this.menuOptions=[
+      {
+        id:Number(localStorage.getItem('orgId')),
+        orgName:localStorage.getItem('orgName')
+      }
+    ];
+
     this.initializeForm();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
     this.entity = this.activeRouter.snapshot.data['entity'];
     if(this.pageTitle==='View' || this.pageTitle==='Edit'){
+      this.id=this.activeRouter.snapshot.params.id;
     this.getFormData(this.activeRouter.snapshot.params.id);
     }
 
     if(this.pageTitle==='Edit'){
-      this.api="/base/organization/update";
+      this.api="/inventory/update";
       this.method="put";
       }
 
       if(this.pageTitle==='Create'){
-        this.api="/base/organization/create";
+        this.api="/inventory/create";
         this.method="post";
         }
-
   }
 
 
@@ -89,10 +99,9 @@ export class InvCrudComponent implements OnInit {
       id:[''],
       name:['',Validators.required],
       phone: [''],
-      address: ['', Validators.required],
-      remarks: ['', Validators.required],
-      location:[''],
-      orgId:['']
+      others:[''],
+      orgId:[Number(localStorage.getItem('orgId'))],
+      branchId:['', Validators.required]
     });
   }
 
@@ -101,15 +110,16 @@ export class InvCrudComponent implements OnInit {
     this.searchItem = x.value;
   }
 
-  onSearch(event: any): void {
-    const term = event.term?.trim();
+  setBranchId(x: any) {
+    this.searchItem = x.value;
+  }
+
+  onSearch(): void {
+    const term = this.searchItem;
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
     }
-    if (!term || term.length === 0) {
-      this.menuOptions = [];
-      return;
-    }
+
     this.debounceTimer = setTimeout(() => {
       this.currentPage = 1;
       this.hasMore = true;
@@ -117,13 +127,25 @@ export class InvCrudComponent implements OnInit {
     }, 300);
   }
 
+  onSearchBranch(): void {
+    const term = this.searchItem;
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+
+    this.debounceTimer = setTimeout(() => {
+      this.currentPage = 1;
+      this.hasMore = true;
+      this.performSearchBranch(term);
+    }, 300);
+  }
+
   loadMore(): void {
-    if (!this.hasMore || this.loadingDropdown) return;
+    if (!this.hasMore || this.loadDropdown) return;
 
     const term = this.searchItem;
-    if (!term || typeof term !== 'string') return;
     this.currentPage++;
-    this.loadingDropdown = true;
+    this.loadDropdown = true;
     let params: any = {
       commonField: term,
       dropDown: 'dropDown',
@@ -135,16 +157,66 @@ export class InvCrudComponent implements OnInit {
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         this.menuOptions = response?.data?.listData || [];
-        this.loadingDropdown = false;
+        this.loadDropdown = false;
       },
       error: (err) => {
-        this.loadingDropdown = false;
+        this.loadDropdown = false;
+      }
+    });
+  }
+
+  loadMoreBranch(): void {
+    if (!this.hasMoreBranch || this.loadDropdownBranch) return;
+
+    const term = this.searchItem;
+    this.currentPage++;
+    this.loadDropdownBranch = true;
+    let params: any = {
+      commonField: term,
+      orgId:this.createForm.value.orgId,
+      dropDown: 'dropDown',
+      pageNum: this.currentPage.toString(),
+      pageSize: this.pageSize.toString()
+    };
+
+    let uri = this.baseUrl + '/base/organization/list';
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+        this.branchOptions = response?.data?.listData || [];
+        this.loadDropdownBranch = false;
+      },
+      error: (err) => {
+        this.loadDropdownBranch = false;
+      }
+    });
+  }
+
+  private performSearchBranch(term: string): void {
+    this.loadDropdownBranch = true;
+    let uri = this.baseUrl + '/base/organization/list';
+    let params: any = {
+      commonField: term,
+      orgId:this.createForm.value.orgId,
+      dropDown: 'dropDown',
+      pageNum: this.currentPage.toString(),
+      pageSize: this.pageSize.toString(),
+      entity:'Branch'
+    };
+
+    this.commmonService.getWithToken(uri, params).subscribe({
+      next: (response) => {
+        this.branchOptions = response?.data?.listData || [];
+        this.hasMoreBranch = this.branchOptions.length === this.pageSize;
+        this.loadDropdownBranch = false;
+      },
+      error: (err) => {
+        this.loadDropdownBranch = false;
       }
     });
   }
 
   private performSearch(term: string): void {
-    this.loadingDropdown = true;
+    this.loadDropdown = true;
     let uri = this.baseUrl + '/base/organization/list';
     let params: any = {
       commonField: term,
@@ -157,10 +229,10 @@ export class InvCrudComponent implements OnInit {
       next: (response) => {
         this.menuOptions = response?.data?.listData || [];
         this.hasMore = this.menuOptions.length === this.pageSize;
-        this.loadingDropdown = false;
+        this.loadDropdown = false;
       },
       error: (err) => {
-        this.loadingDropdown = false;
+        this.loadDropdown = false;
       }
     });
   }
@@ -168,33 +240,23 @@ export class InvCrudComponent implements OnInit {
   onSubmit() {
     this.loading=true;
     let apiUrl:any=this.baseUrl+this.api;
-  let org:any={
-    id:this.createForm.value.id,    
-    name:this.createForm.value.name,   
+    let org:any={
+     id:this.createForm.value.id,    
+     name:this.createForm.value.name,   
      phone:this.createForm.value.phone,
-     address:this.createForm.value.address,
-     remarks:this.createForm.value.remarks,
-     entity:this.entity,
-     location:this.createForm.value.location,
-     orgId:this.createForm.value.orgId,
-  } ;
+     others:this.createForm.value.others,
+     branchId:this.createForm.value.branchId
+     };
 
     this.commmonService.sendPostPutReq<any>(apiUrl, org,this.method).subscribe({
       next: (response: any) => {
         if (response.success) {
-          if(this.entity==='Organization'){
-            this.router.navigate(['/base/organization/list']);
-          }
-          if(this.entity==='Branch'){
-            this.router.navigate(['/base/branch/list']);
-          }
-
+            this.router.navigate(['/inventory/list']);     
         } else {
           alert(response.message);
         }
       }
     });
   }
-
 
 }
