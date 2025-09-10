@@ -60,11 +60,13 @@
                                             <label for="name-f" >Category * </label>
                                             <ng-select
                                             (keyup)="setSearch($event.target)"
+                                            (click)="setSearch($event.target)"
                                             [items]="catOptions"
                                             bindLabel="name"
                                             bindValue="id"
                                             formControlName="catId"
                                             (search)="onBrandSearch($event,'ProductCat')"
+                                            (click)="onBrandSearch($event,'ProductCat')"
                                             (scrollToEnd)="brandLoadMore('ProductCat')"
                                              [loading]="catLoadingDropDown"
                                             [clearable]="true"
@@ -85,11 +87,13 @@
                                         <label for="name-f" >Brand</label>
                                         <ng-select
                                         (keyup)="setSearch($event.target)"
+                                        (click)="setSearch($event.target)"
                                         [items]="brandOptions"
                                         bindLabel="name"
                                         bindValue="id"
                                         formControlName="brandId"
                                         (search)="onBrandSearch($event,'Brand')"
+                                        (click)="onBrandSearch($event,'Brand')"
                                         (scrollToEnd)="brandLoadMore('Brand')"
                                          [loading]="barndLoadingDropDown"
                                         [clearable]="true"
@@ -107,11 +111,13 @@
                                         <label for="name-f" >Model</label>
                                         <ng-select
                                         (keyup)="setSearch($event.target)"
+                                        (click)="setSearch($event.target)"
                                         [items]="modelOptions"
                                         bindLabel="name"
                                         bindValue="id"
                                         formControlName="modelId"
                                         (search)="onBrandSearch($event,'ProductModel')"
+                                        (click)="onBrandSearch($event,'ProductModel')"
                                         (scrollToEnd)="brandLoadMore('ProductModel')"
                                          [loading]="modelLoadingDropDown"
                                         [clearable]="true"
@@ -127,11 +133,13 @@
                                         <label for="name-f" >Color</label>
                                         <ng-select
                                         (keyup)="setSearch($event.target)"
+                                        (click)="setSearch($event.target)"
                                         [items]="colorOptions"
                                         bindLabel="name"
                                         bindValue="id"
                                         formControlName="colorId"
                                         (search)="onBrandSearch($event,'ProductColor')"
+                                        (click)="onBrandSearch($event,'ProductColor')"
                                         (scrollToEnd)="brandLoadMore('ProductColor')"
                                          [loading]="colorLoadingDropDown"
                                         [clearable]="true"
@@ -147,11 +155,13 @@
                                         <label for="name-f" >Size/Dimension/Volume</label>
                                         <ng-select
                                         (keyup)="setSearch($event.target)"
+                                        (click)="setSearch($event.target)"
                                         [items]="sizeOptions"
                                         bindLabel="name"
                                         bindValue="id"
                                         formControlName="sizeId"
                                         (search)="onBrandSearch($event,'ProductSize')"
+                                        (click)="onBrandSearch($event,'ProductSize')"
                                         (scrollToEnd)="brandLoadMore('ProductSize')"
                                          [loading]="sizeLoadingDropDown"
                                         [clearable]="true"
@@ -167,11 +177,13 @@
                                         <label for="name-f" >Made With</label>
                                         <ng-select
                                         (keyup)="setSearch($event.target)"
+                                        (click)="setSearch($event.target)"
                                         [items]="madeWithOptions"
                                         bindLabel="name"
                                         bindValue="id"
                                         formControlName="madeWithId"
                                         (search)="onBrandSearch($event,'MadeWith')"
+                                        (click)="onBrandSearch($event,'MadeWith')"
                                         (scrollToEnd)="brandLoadMore('MadeWith')"
                                          [loading]="madeLoadingDropDown"
                                         [clearable]="true"

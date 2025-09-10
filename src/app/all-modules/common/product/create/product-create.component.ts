@@ -390,27 +390,9 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
   }
 
   onBrandSearch(event: any, entity: any): void {
-    const term = event.term?.trim();
+    const term = this.searchItem;
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
-    }
-    if (!term || term.length === 0) {
-      if (entity === 'Brand') {
-        this.brandOptions = [];
-      } else if (entity === 'ProductModel') {
-        this.modelOptions = [];
-      } else if (entity === 'ProductCat') {
-        this.catOptions = [];
-      } else if (entity === 'ProductColor') {
-        this.colorOptions = [];
-      } else if (entity === 'ProductSize') {
-        this.sizeOptions = [];
-      } else if (entity === 'MadeWith') {
-        this.madeWithOptions = [];
-      } else if (entity === 'UnitOfMeasure') {
-        this.oumOptions = [];
-      }
-      return;
     }
     this.debounceTimer = setTimeout(() => {
       this.currentPage = 1;
@@ -444,7 +426,6 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
     }
 
     const term = this.searchItem;
-    if (!term || typeof term !== 'string') return;
     this.currentPage++;
 
     let params: any = {
