@@ -24,6 +24,10 @@ const routes: Routes = [
         path: 'common',
         loadChildren: () => import('./common/setting-product.module').then(m => m.SettingProductModule)
       },
+      {
+        path: 'inventory',
+        loadChildren: () => import('./inventory/inventory.module').then(m => m.InventoryModule)
+      },
     ]
   }
 ];
