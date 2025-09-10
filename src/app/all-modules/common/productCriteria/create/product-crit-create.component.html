@@ -118,4 +118,52 @@
   
   <!---- child menu details -->
   <br/>
+
+    <!-- simple-modal.component.html -->
+ 
+  <!-- Button to trigger modal -->
+  <button #mButton  type="button" style="display:none;"class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mModal" >
+    Open Modal
+  </button>
+  <!-- Modal -->
+  <div class="modal fade" id="mModal" tabindex="-1" aria-labelledby="mModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mModalLabel">Simple Modal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Similar Product Createria you may be creating which is already exist </p>
+          <p>Please recheck or be confirm before create/update</p>
+          <table class="data-table" style="font-size: smaller;">
+            <thead>
+              <tr>
+                <th>SL</th>
+                <th>Criteria</th>
+                <th>Criteria Value</th>
+                <th>Description</th>
+                <th>Create Date</th>
+              </tr>
+            </thead>
+              <tbody>
+                <tr *ngFor="let x of similarCrit; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ x.name}}</td>
+                  <td>{{createForm.value.entity}}</td>
+                  <td>{{ x.description}}</td>
+                  <td>{{ x.created | date }}</td>
+                </tr>
+              </tbody>
+
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="confirmSimilarity()">I Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     </div>

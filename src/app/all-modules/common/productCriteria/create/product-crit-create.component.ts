@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
@@ -9,8 +9,9 @@ import { environment } from 'src/environments/environment';
   templateUrl: './product-crit-create.component.html',
   styleUrls: ['./product-crit-create.component.css']
 })
-export class ProductCritCreateComponent implements OnInit {
-
+export class ProductCritCreateComponent implements OnInit, AfterViewInit {
+  @ViewChild('mButton') mButton!: ElementRef;
+  similarCrit:any;
   createForm!: FormGroup;
   pageTitle!: any;
   opMode!: any;
@@ -105,15 +106,26 @@ export class ProductCritCreateComponent implements OnInit {
       name: ['',Validators.required],
       orgId: [Number(localStorage.getItem('orgId'))],
       brandId:[''],
-      description:['',Validators.required]
+      description:['',Validators.required],
+      confirmSimilarity:[false]
     });
+  }
+
+
+  ngAfterViewInit() {
+    console.log('Button element:', this.mButton.nativeElement);
+  }
+
+  confirmSimilarity(){
+    this.createForm.controls['confirmSimilarity'].setValue(true);
+    this.onSubmit();
   }
 
   onSubmit() {
     if (this.opMode === 'view') return;
     if(this.createForm.invalid){
       alert("Invalid form");
-return;
+    return;
     }
     this.loading = true;
     let payload:any={ ...this.createForm.value};
@@ -124,8 +136,13 @@ return;
           alert(response.message);
           this.router.navigate(['/common/productCrit/list']);
         } else {
-          this.loading = false;
           alert(response.message);
+          this.loading = false;
+            if(response.message.includes("Similar")){
+              this.similarCrit=response.data.productCrit;
+            this.mButton.nativeElement.click();
+            }
+
         }
       },
       error: () => {
@@ -271,3 +288,5 @@ return;
 
 
 }
+
+
