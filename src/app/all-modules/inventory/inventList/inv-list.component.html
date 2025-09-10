@@ -37,6 +37,27 @@
                 </div>
 
                 <div class="col-sm-6 col-md-3">
+                  <label for="name-f" >Branch</label>
+                  <ng-select
+                  (keyup)="setBranchId($event.target)"
+                  (click)="setBranchId($event.target)"
+                  [items]="branchOptions"
+                  bindLabel="name"
+                  bindValue="id"
+                  formControlName="branchId"
+                  (search)="onSearchBranch()"
+                  (click)="onSearchBranch()"
+                  (scrollToEnd)="loadMoreBranch()"
+                   [loading]="loadDropdownBranch"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  [editableSearchTerm]="false"
+                  [addTag]="false" 
+                  class="form-control-patch">
+                </ng-select>
+                  </div>
+
+                <div class="col-sm-6 col-md-3">
                   <div class="form-group form-focus">
                     <label class="focus-label">Product Name/Code</label>
                     <input type="text" class="form-control"  formControlName="name" (keyup.enter)="getList()"  /> 
