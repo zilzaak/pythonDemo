@@ -109,21 +109,11 @@
               <td>{{ x.branch.name}}</td>
               <td>{{ x.branch.address}}</td>
               <td>{{ x.org.name}}</td>
-              <!-- <td>
-                <div style="width:250px;">
-                  <p style="color:rgb(25, 108, 25)">Category->{{ x.categoryName}} ,
-                  Brand->{{ x.brandName}},
-                  Model->{{ x.modelName}},
-                  Color->{{ x.colorName}},
-                 Size->{{ x.sizeName}},
-                 Made With->{{ x.madeWithName}}</p>
-              </div>
-                </td> -->
               <td>{{ x.others}}</td>    
               <td class="compact-cell">
                 <span> 
                   <a  routerLink="/inventory/edit/{{x.id}}"><i class="fas fa-edit"></i></a> &nbsp;
-                  <a  routerLink="/invenntory/view/{{x.id}}"><i class="fas fa-eye"></i></a>&nbsp;
+                  <a  routerLink="/inventory/view/{{x.id}}"><i class="fas fa-eye"></i></a>&nbsp;
                   <button  (click)="deleteMenu(x.id)">Del</button>
                 </span>
               </td>

@@ -11,81 +11,80 @@ import { CommonServiceService } from '../../commonService/common-service.service
 })
 export class InvCrudComponent implements OnInit {
 
-  loadDropdown: boolean=false;
-  loadDropdownBranch: boolean=false;
+  loadDropdown: boolean = false;
+  loadDropdownBranch: boolean = false;
   menuOptions: any;
-  branchOptions:any;
-  hasMore: boolean=false;
-  hasMoreBranch: boolean=false;
+  branchOptions: any;
+  hasMore: boolean = false;
+  hasMoreBranch: boolean = false;
   searchItem: any;
   private debounceTimer: any;
   currentPage = 1;
-  method:any;
-  api:any;
+  method: any;
+  api: any;
   pageSize = 10;
   constructor(private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,
     private activeRouter: ActivatedRoute,
-    private router:Router
+    private router: Router
   ) { }
   createForm!: FormGroup;
   pageTitle!: any;
-  entity!:any;
+  entity!: any;
   baseUrl = environment.baseUrl;
   loading = false;
-   id:any;
+  id: any;
 
   ngOnInit(): void {
-    this.menuOptions=[
+    this.menuOptions = [
       {
-        id:Number(localStorage.getItem('orgId')),
-        orgName:localStorage.getItem('orgName')
+        id: Number(localStorage.getItem('orgId')),
+        orgName: localStorage.getItem('orgName')
       }
     ];
 
     this.initializeForm();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
     this.entity = this.activeRouter.snapshot.data['entity'];
-    if(this.pageTitle==='View' || this.pageTitle==='Edit'){
-      this.id=this.activeRouter.snapshot.params.id;
-    this.getFormData(this.activeRouter.snapshot.params.id);
+    if (this.pageTitle === 'View' || this.pageTitle === 'Edit') {
+      this.id = this.activeRouter.snapshot.params.id;
+      this.getFormData(this.activeRouter.snapshot.params.id);
     }
 
-    if(this.pageTitle==='Edit'){
-      this.api="/inventory/update";
-      this.method="put";
-      }
+    if (this.pageTitle === 'Edit') {
+      this.api = "/inventory/update";
+      this.method = "put";
+    }
 
-      if(this.pageTitle==='Create'){
-        this.api="/inventory/create";
-        this.method="post";
-        }
+    if (this.pageTitle === 'Create') {
+      this.api = "/inventory/create";
+      this.method = "post";
+    }
   }
 
 
-  getFormData(id:any){
-    let api=this.baseUrl+"/base/organization/list"
-    let params:any={ };
-    if(this.entity==='Organization'){
-        params.id=id,
-        params.entity=this.entity
-    };
-    if(this.entity==='Branch'){
-      params.id=id,
-      params.orgId=Number(localStorage.getItem('orgId')),
-      params.entity=this.entity
-  };
-  
-    this.commmonService.getWithToken(api,params).subscribe(
-      { next: (response) => {
-        this.createForm.patchValue(response?.data?.listData[0]);
-        if(this.entity==='Branch'){
-        this.menuOptions=[{orgName:response?.data?.listData[0].orgName ,
-           id:response?.data?.listData[0].orgId}];
-        }
-        if(this.pageTitle==='View'){
-          this.createForm.disable();
-        }
+  getFormData(id: any) {
+    let api = this.baseUrl + "/inventory/list"
+    let params: any = {};
+    params.id = id;
+
+    this.commmonService.getWithToken(api, params).subscribe(
+      {
+        next: (response) => {
+          this.createForm.patchValue(response?.data?.listData[0]);
+          let resp: any = response?.data?.listData[0];
+          this.menuOptions = [{
+            orgName: resp.org.name,
+            id: resp.org.id
+          }];
+          this.branchOptions = [
+            { id: resp.branch.id, name: resp.branch.name }
+          ];
+          this.createForm.controls['branchId'].setValue(resp.branch.id);
+
+          if (this.pageTitle === 'View') {
+            this.createForm.disable();
+          }
         },
         error: (err) => {
         }
@@ -96,12 +95,12 @@ export class InvCrudComponent implements OnInit {
 
   initializeForm() {
     this.createForm = this.formBuilder.group({
-      id:[''],
-      name:['',Validators.required],
+      id: [''],
+      name: ['', Validators.required],
       phone: [''],
-      others:[''],
-      orgId:[Number(localStorage.getItem('orgId'))],
-      branchId:['', Validators.required]
+      others: [''],
+      orgId: [Number(localStorage.getItem('orgId'))],
+      branchId: ['', Validators.required]
     });
   }
 
@@ -173,7 +172,7 @@ export class InvCrudComponent implements OnInit {
     this.loadDropdownBranch = true;
     let params: any = {
       commonField: term,
-      orgId:this.createForm.value.orgId,
+      orgId: this.createForm.value.orgId,
       dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString()
@@ -196,11 +195,11 @@ export class InvCrudComponent implements OnInit {
     let uri = this.baseUrl + '/base/organization/list';
     let params: any = {
       commonField: term,
-      orgId:this.createForm.value.orgId,
+      orgId: this.createForm.value.orgId,
       dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString(),
-      entity:'Branch'
+      entity: 'Branch'
     };
 
     this.commmonService.getWithToken(uri, params).subscribe({
@@ -223,7 +222,7 @@ export class InvCrudComponent implements OnInit {
       dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString(),
-      entity:'Organization'
+      entity: 'Organization'
     };
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
@@ -236,22 +235,22 @@ export class InvCrudComponent implements OnInit {
       }
     });
   }
-  
-  onSubmit() {
-    this.loading=true;
-    let apiUrl:any=this.baseUrl+this.api;
-    let org:any={
-     id:this.createForm.value.id,    
-     name:this.createForm.value.name,   
-     phone:this.createForm.value.phone,
-     others:this.createForm.value.others,
-     branchId:this.createForm.value.branchId
-     };
 
-    this.commmonService.sendPostPutReq<any>(apiUrl, org,this.method).subscribe({
+  onSubmit() {
+    this.loading = true;
+    let apiUrl: any = this.baseUrl + this.api;
+    let org: any = {
+      id: this.createForm.value.id,
+      name: this.createForm.value.name,
+      phone: this.createForm.value.phone,
+      others: this.createForm.value.others,
+      branchId: this.createForm.value.branchId
+    };
+
+    this.commmonService.sendPostPutReq<any>(apiUrl, org, this.method).subscribe({
       next: (response: any) => {
         if (response.success) {
-            this.router.navigate(['/inventory/list']);     
+          this.router.navigate(['/inventory/list']);
         } else {
           alert(response.message);
         }
