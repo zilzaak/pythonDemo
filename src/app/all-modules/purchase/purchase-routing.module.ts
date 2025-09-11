@@ -4,19 +4,19 @@ import { PurchListComponent } from './purchList/purch-list.component';
 import { PurchCrudComponent } from './purchCrud/purch-crud.component';
 
 const routes: Routes = [
-     { path: 'list',component: PurchListComponent,
+     { path: 'product/list',component: PurchListComponent,
       data: { title: 'Purchase List'},
     },
       {
-        path: 'create', component: PurchCrudComponent,
+        path: 'product/create', component: PurchCrudComponent,
         data: { title: 'Create' },
       },
       {
-        path: 'edit/:id', component: PurchCrudComponent,
+        path: 'product/edit/:id', component: PurchCrudComponent,
         data: { title: 'Edit' },
       },
       {
-        path: 'view/:id', component: PurchCrudComponent,
+        path: 'product/view/:id', component: PurchCrudComponent,
         data: { title: 'View' },
       }];
 
