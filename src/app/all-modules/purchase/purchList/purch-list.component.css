@@ -1,0 +1,149 @@
+/* --- ng-select Dropdown Panel: Make it Visible & Floating --- */
+::ng-deep .ng-dropdown-panel {
+    z-index: 2000 !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    background: white !important;
+    border: 1px solid #ddd !important;
+    border-top: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    display: block !important; /* 🔥 Critical: ensures it shows */
+  }
+  
+  /* --- Dropdown Options --- */
+  ::ng-deep .ng-dropdown-panel .ng-option {
+    padding: 8px 12px;
+    background-color: white !important;
+    color: #212529 !important;
+  }
+  
+  ::ng-deep .ng-dropdown-panel .ng-option:hover,
+  ::ng-deep .ng-dropdown-panel .ng-option.ng-option-marked {
+    background-color: #e9ecef !important;
+  }
+  
+  /* --- Ensure the trigger container doesn't clip --- */
+  ::ng-deep ng-select.form-control-patch {
+    position: relative !important;
+    overflow: visible !important;
+  }
+  
+  /* Optional: Add space below dropdown trigger */
+  ::ng-deep ng-select.form-control-patch .ng-select-container {
+    min-height: 38px;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.25rem !important;
+    font-size: 1rem;
+  }
+  
+  ::ng-deep ng-select.form-control-patch.ng-select-focused .ng-select-container {
+    border-color: #80bdff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+  }
+  /* Fix dropdown overlapping form fields *
+  
+  
+  
+  /* Container: starts 50px from the top, horizontally centered */
+  .table-container {
+      display: flex;
+      justify-content: center;           /* Center horizontally */
+      margin-top: 10px;                  /* Exactly 50px from the top */
+      padding: 0 20px;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    
+    /* Responsive Table */
+    .data-table {
+      width: 100%;
+      max-width: 800px;
+      border-collapse: collapse;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 14px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .data-table th,
+    .data-table td {
+      padding: 8px 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .data-table th {
+      background-color: #2c3e50; /* Solid black */
+      color: white;           /* Text color (white for contrast) */
+      font-weight: 600;       /* Bold text */
+      padding: 8px 8px;     /* Padding for spacing */
+      text-align: left; 
+    }
+    
+    .data-table tr:hover {
+      background-color: #f1f5ff;
+    }
+    
+    /* Responsive Design for Mobile */
+    @media (max-width: 600px) {
+      .table-container {
+        margin-top: 30px;
+        padding: 0 10px;
+      }
+    
+      .data-table {
+        font-size: 13px;
+      }
+    
+      .data-table th,
+      .data-table td {
+        padding: 10px 8px;
+      }
+    
+      /* Stacked card-style layout on small screens */
+      .data-table thead {
+        display: none;
+      }
+    
+      .data-table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+      }
+    
+      .data-table tbody td {
+        display: block;
+        text-align: right;
+        position: relative;
+        padding-left: 100px;
+        white-space: nowrap;
+      }
+    
+      .data-table tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 80px;
+        text-align: left;
+        font-weight: bold;
+        color: #333;
+      }
+    
+      .data-table td:nth-child(1)::before { content: "SL"; }
+      .data-table td:nth-child(2)::before { content: "User"; }
+      .data-table td:nth-child(3)::before { content: "Roles"; }
+    }
+  
+  
