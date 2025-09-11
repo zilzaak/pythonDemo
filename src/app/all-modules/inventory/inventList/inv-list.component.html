@@ -53,17 +53,10 @@
                   [closeOnSelect]="true"
                   [editableSearchTerm]="false"
                   [addTag]="false" 
+                  (change)="getList()"
                   class="form-control-patch">
                 </ng-select>
                   </div>
-
-                <div class="col-sm-6 col-md-3">
-                  <div class="form-group form-focus">
-                    <label class="focus-label">Product Name/Code</label>
-                    <input type="text" class="form-control"  formControlName="name" (keyup.enter)="getList()"  /> 
-                    
-                  </div>
-                </div>
   
                 <div class="col-sm-6 col-md-2">
                   <div class="form-group form-focus">
