@@ -28,11 +28,9 @@ export class PurchListComponent implements OnInit {
   username:any;
   menuOptions:any;
   loadingDropdownm = false;
-  
   loadingDropdown = false;
   hasMore = true;
   searchItem:any;
-
 
   constructor(private commonService:CommonServiceService,  
       private formBuilder: FormBuilder,
