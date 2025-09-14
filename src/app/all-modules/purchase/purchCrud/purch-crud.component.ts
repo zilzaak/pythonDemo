@@ -10,10 +10,10 @@ import { CommonServiceService } from '../../commonService/common-service.service
   styleUrls: ['./purch-crud.component.css']
 })
 export class PurchCrudComponent implements OnInit {
-    @ViewChild('myButton') myButton!: ElementRef;
-    
-  similarProduct:any;
-  sellForm!: FormGroup;
+  @ViewChild('myButton') myButton!: ElementRef;
+
+  similarProduct: any;
+  purchaseForm!: FormGroup;
   createForm!: FormGroup;
   pageTitle!: any;
   opMode!: any;
@@ -22,20 +22,20 @@ export class PurchCrudComponent implements OnInit {
   loading = false;
   listData: any[] = [];
   loadDropOrg = false;
-  loadDropSupp=false;
+  loadDropSupp = false;
   currentPage = 1;
   pageSize = 10;
   hasMore = true;
   hasMoreSupp = true;
   menuOptions: any[] = [];
-  suppList:any[]=[];
+  suppList: any[] = [];
   private debounceTimer: any;
   searchItem: any;
-  invList:any[]=[];
+  invList: any[] = [];
   madeWithOptions: any[] = [];
-  branchList:any[]=[];
+  branchList: any[] = [];
 
-  id:any;
+  id: any;
 
   constructor(
     private commmonService: CommonServiceService,
@@ -69,31 +69,31 @@ export class PurchCrudComponent implements OnInit {
     }
   }
 
-  loadAllBranch(){
+  loadAllBranch() {
     let org: any = this.createForm.value.orgId;
-    const para = { entity:'Branch',orgId: org ,pageNum:1,pageSize:50};
+    const para = { entity: 'Branch', orgId: org, pageNum: 1, pageSize: 50 };
     this.commmonService.getWithToken(this.baseUrl + '/base/organization/list', para).subscribe({
       next: (response) => {
-        this.branchList=response.data.listData;
+        this.branchList = response.data.listData;
       },
       error: (err) => {
         console.error('Failed to load data', err);
       }
-    }); 
+    });
   }
 
-  loadInventory(){
+  loadInventory() {
     let org: any = this.createForm.value.orgId;
-    let branch:any=this.createForm.value.branchId;
-    const para = {orgId: org ,branchId:branch , dropDown:"need" , pageNum:1,pageSize:50};
+    let branch: any = this.createForm.value.branchId;
+    const para = { orgId: org, branchId: branch, dropDown: "need", pageNum: 1, pageSize: 50 };
     this.commmonService.getWithToken(this.baseUrl + '/inventory/list', para).subscribe({
       next: (response) => {
-        this.invList=response.data.listData;
+        this.invList = response.data.listData;
       },
       error: (err) => {
         console.error('Failed to load data', err);
       }
-    }); 
+    });
   }
 
   ngAfterViewInit() {
@@ -101,7 +101,7 @@ export class PurchCrudComponent implements OnInit {
   }
 
   formData(id: any) {
-    this.id=id;
+    this.id = id;
     let org: any = localStorage.getItem('orgId');
     const para = { id: id, orgId: org };
     this.commmonService.getWithToken(this.baseUrl + '/purchase/product/list', para).subscribe({
@@ -116,7 +116,7 @@ export class PurchCrudComponent implements OnInit {
         this.createForm.patchValue(resp);
         if (this.opMode === 'view') {
           this.createForm.disable();
-          this.sellForm.disable();
+          this.purchaseForm.disable();
         }
       },
       error: (err) => {
@@ -129,43 +129,53 @@ export class PurchCrudComponent implements OnInit {
     this.createForm = this.formBuilder.group({
       id: [null],
       name: ['', [Validators.required, Validators.maxLength(100)]],
-      orgId: [Number(localStorage.getItem('orgId')),[Validators.required, Validators.maxLength(100)]],
+      orgId: [Number(localStorage.getItem('orgId')), [Validators.required, Validators.maxLength(100)]],
       branchId: [null],
-      inventoryId:[''],
-      supplierId:[''],
+      inventoryId: [''],
+      supplierId: [''],
       description: ['', [Validators.maxLength(500)]],
-      confirmSimilarity:[false]
+      confirmSimilarity: [false]
     });
-    this.sellForm= this.formBuilder.group(
+    this.purchaseForm = this.formBuilder.group(
       {
-        sellPrices:this.formBuilder.array([this.sellPriceCreate()])
+        purchPrices: this.formBuilder.array([this.sellPriceCreate()])
       }
     );
   }
 
-  sellPriceCreate():FormGroup{
-      return this.formBuilder.group({
-        branchId:[''],
-        price:[''],
-      })
+  sellPriceCreate(): FormGroup {
+    return this.formBuilder.group({
+       quantity:['',Validators.required],
+       productId:['',Validators.required],
+       productType:[''],
+       unitPrice:['',Validators.required],
+       purchaseId:[''],
+      //for view purpose added below two field
+       productName:[''],
+       productCode:[''],
+       disAmount:[''],
+       disPct:[''],
+       vatAmount:[''],
+       totalAmount:['',Validators.required],
+    })
   }
-  get allSells():FormArray{
-    return this.sellForm.get("sellPrices") as FormArray;
+  get allPurchs(): FormArray {
+    return this.purchaseForm.get("purchPrices") as FormArray;
   }
 
-  addSell():void{
- this.allSells.push(this.sellPriceCreate());
+  addSell(): void {
+    this.allPurchs.push(this.sellPriceCreate());
   }
 
-  removeSell(index:any):void{
-    if(Number(index)<1){
+  removeSell(index: any): void {
+    if (Number(index) < 1) {
       return;
     }
-   this.allSells.removeAt(index);
+    this.allPurchs.removeAt(index);
   }
 
 
-  confirmSimilarity(){
+  confirmSimilarity() {
     this.createForm.controls['confirmSimilarity'].setValue(true);
     this.onSubmit();
   }
@@ -179,20 +189,20 @@ export class PurchCrudComponent implements OnInit {
     this.loading = true;
     let payload: any = { ...this.createForm.value };
 
-    let spi:any={
-      sellPrices:null,
-      sellBranchIds:null,
-      costPrices:null,
-      costBranchIds:null,
+    let spi: any = {
+      purchPrices: null,
+      sellBranchIds: null,
+      costPrices: null,
+      costBranchIds: null,
     };
 
-    for (let hb of this.sellForm.value.sellPrices) {
-    if(spi.sellBranchIds==null){
-        spi.sellBranchIds=hb.branchId.toString();
-        spi.sellPrices=hb.price.toString();
-      }else{
-        spi.sellBranchIds=spi.sellBranchIds.toString()+","+hb.branchId.toString();
-        spi.sellPrices=spi.sellPrices.toString()+","+hb.price.toString();
+    for (let hb of this.purchaseForm.value.purchPrices) {
+      if (spi.sellBranchIds == null) {
+        spi.sellBranchIds = hb.branchId.toString();
+        spi.purchPrices = hb.price.toString();
+      } else {
+        spi.sellBranchIds = spi.sellBranchIds.toString() + "," + hb.branchId.toString();
+        spi.purchPrices = spi.purchPrices.toString() + "," + hb.price.toString();
       }
     }
 
@@ -205,9 +215,9 @@ export class PurchCrudComponent implements OnInit {
         } else {
           this.loading = false;
           if (response.message.includes('Similar')) {
-            this.similarProduct=response.data.existsData;
+            this.similarProduct = response.data.existsData;
             this.myButton.nativeElement.click();
-          }else{
+          } else {
             alert(response.message);
           }
         }
@@ -222,7 +232,7 @@ export class PurchCrudComponent implements OnInit {
     this.searchItem = x.value;
   }
 
-  onSearch(entity:any): void {
+  onSearch(entity: any): void {
     const term = this.searchItem;
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
@@ -231,26 +241,26 @@ export class PurchCrudComponent implements OnInit {
 
     this.debounceTimer = setTimeout(() => {
       this.currentPage = 1;
-      if(entity==='Organization'){
+      if (entity === 'Organization') {
         this.hasMore = true;
       }
-      if(entity==='Supplier'){
+      if (entity === 'Supplier') {
         this.hasMoreSupp = true;
       }
 
-      this.performSearch(term,entity);
+      this.performSearch(term, entity);
     }, 300);
   }
 
-  loadMore(entity:any): void {
+  loadMore(entity: any): void {
     const term = this.searchItem;
     this.currentPage++;
-    let uri:string='';
-    if(entity==='Organization'){
+    let uri: string = '';
+    if (entity === 'Organization') {
       this.loadDropOrg = true;
       uri = this.baseUrl + '/base/organization/list';
     }
-    if(entity==='Supplier'){
+    if (entity === 'Supplier') {
       this.loadDropSupp = true;
       uri = this.baseUrl + '/purchase/supplier/list';
     }
@@ -258,18 +268,18 @@ export class PurchCrudComponent implements OnInit {
     let params: any = {
       commonField: term,
       dropDown: 'dropDown',
-      entity:entity,
+      entity: entity,
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString()
     };
 
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
-        if(entity==='Organization'){
+        if (entity === 'Organization') {
           this.menuOptions = response?.data?.listData || [];
           this.loadDropOrg = false;
         }
-        if(entity==='Supplier'){
+        if (entity === 'Supplier') {
           this.suppList = response?.data?.listData || [];
           this.loadDropSupp = false;
         }
@@ -282,15 +292,15 @@ export class PurchCrudComponent implements OnInit {
     });
   }
 
-  private performSearch(term: string,entity:any): void {
-    let uri:string='';
-    if(entity==='Organization'){
+  private performSearch(term: string, entity: any): void {
+    let uri: string = '';
+    if (entity === 'Organization') {
       this.loadDropOrg = true;
-      uri= this.baseUrl + '/base/organization/list';
+      uri = this.baseUrl + '/base/organization/list';
     }
-    if(entity==='Supplier'){
+    if (entity === 'Supplier') {
       this.loadDropSupp = true;
-      uri= this.baseUrl + '/purchase/supplier/list';
+      uri = this.baseUrl + '/purchase/supplier/list';
     }
 
     let params: any = {
@@ -298,24 +308,24 @@ export class PurchCrudComponent implements OnInit {
       dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString(),
-      entity:entity
+      entity: entity
     };
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
-        if(entity==='Organization'){
+        if (entity === 'Organization') {
           this.menuOptions = response?.data?.listData || [];
           this.hasMore = this.menuOptions.length === this.pageSize;
           this.loadDropOrg = false;
         }
-        if(entity==='Supplier'){
+        if (entity === 'Supplier') {
           this.suppList = response?.data?.listData || [];
           this.hasMoreSupp = this.menuOptions.length === this.pageSize;
-          this.loadDropSupp= false;
+          this.loadDropSupp = false;
         }
       },
       error: (err) => {
         this.loadDropOrg = false;
-        this.loadDropSupp= false;
+        this.loadDropSupp = false;
       }
     });
   }

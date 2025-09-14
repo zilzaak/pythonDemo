@@ -1,197 +1,180 @@
 <div class="container-fluid mt-3">
 
-    <div class="page-header">
-      <div class="row align-items-center">
-          <div class="col">
-             <ul class="breadcrumb">
-                  <li class="breadcrumb-item">Purchase</li>
-                  <li class="breadcrumb-item active">Product</li>
-                  <li class="breadcrumb-item active">{{pageTitle}}</li>
-                  <li *ngIf="pageTitle==='Edit'"class="breadcrumb-item active">     
-                     <span routerLink="/common/product/create" style="color:blue;">
-                    <i class="fas fa-plus-circle"></i>(Create)</span> <br/></li>
-                    <li *ngIf="pageTitle==='View'"class="breadcrumb-item active">     
-                      <span routerLink="/common/product/edit/{{id}}" style="color:blue;">
-                     <i class="fas fa-plus-circle"></i>(Edit)</span> <br/></li>
-              </ul>
-          </div>
-          <div class="col-auto float-right ml-auto">
-            <a id="backBtn"   [routerLink]="['/common/product/list']" class="btn btn-sm btn-outline-secondary"> 
-              <i class="fas fa-times me-1"></i> Back
-            </a>
-          </div>
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">Purchase</li>
+          <li class="breadcrumb-item active">Product</li>
+          <li class="breadcrumb-item active">{{pageTitle}}</li>
+          <li *ngIf="pageTitle==='Edit'" class="breadcrumb-item active">
+            <span routerLink="/common/product/create" style="color:blue;">
+              <i class="fas fa-plus-circle"></i>(Create)</span> <br />
+          </li>
+          <li *ngIf="pageTitle==='View'" class="breadcrumb-item active">
+            <span routerLink="/common/product/edit/{{id}}" style="color:blue;">
+              <i class="fas fa-plus-circle"></i>(Edit)</span> <br />
+          </li>
+        </ul>
       </div>
-       </div>
-  
+      <div class="col-auto float-right ml-auto">
+        <a id="backBtn" [routerLink]="['/common/product/list']" class="btn btn-sm btn-outline-secondary">
+          <i class="fas fa-times me-1"></i> Back
+        </a>
+      </div>
+    </div>
+  </div>
+
   <span style="text-align:left;">
     <h3 class="card-title">Purchase {{pageTitle}}</h3>
   </span>
-         <br/>
-  
-    
-      <div class="row">
-        <div class="col-lg-12">
-            <div class="card customCard">
-               <div class="card-body">
-                    <form  [formGroup]="createForm">
-                        <div class="row">
-                                                                              
-                                    <div class="col-md-3 form-group">
-                                        <label for="name-f" >Organization *</label>
-                                        <ng-select
-                                        (change)="loadAllBranch()"
-                                        (keyup)="setSearch($event.target)"
-                                        [items]="menuOptions"
-                                        bindLabel="orgName"
-                                        bindValue="id"
-                                        formControlName="orgId"
-                                        (search)="onSearch('Organization')"
-                                        (scrollToEnd)="loadMore('Organization')"
-                                         [loading]="loadDropOrg"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                
-                                      </div>
-
-                                      <div class="col-md-3 form-group">
-                                        <label for="name-f" >Branch*</label>
-                                        <ng-select
-                                        (change)="loadInventory()"
-                                        [items]="branchList"
-                                        bindLabel="name"
-                                        bindValue="id"
-                                        formControlName="branchId"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                       </div>
-
-                                       <div class="col-md-3 form-group">
-                                        <label for="name-f" >Inventory*</label>
-                                        <ng-select
-                                        [items]="invList"
-                                        bindLabel="name"
-                                        bindValue="id"
-                                        formControlName="inventoryId"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                       </div>
-
-                                       <div class="col-md-3 form-group">
-                                        <label for="name-f" >Supplier*</label>
-                                        <ng-select
-                                        (keyup)="setSearch($event.target)"
-                                        [items]="suppList"
-                                        bindLabel="name"
-                                        bindValue="id"
-                                        formControlName="supplierId"
-                                        (search)="onSearch('Supplier')"
-                                        (scrollToEnd)="loadMore('Supplier')"
-                                         [loading]="loadDropSupp"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                       </div> 
-                            </div></form>
-                          </div>
-                            </div>
-                            &nbsp;&nbsp;
-               <!-----------------------------------Selling price settings---------------------------------->
-               <div class="card customCard">
-                <div class="card-body">
-                  <div class="row">
-<div class="col col-6">
-  <h5 class="card-title">Branch Wise Sell Price</h5>
-  <form  [formGroup]="sellForm">
-        
-    <div class="table-responsive">
-      <table class="table table-striped custom-table">
-        <thead>
-          <!-- <th>SL</th> -->
-          <th>SL</th>
-          <th>Branch</th>
-          <th>Price</th>    
-          <th>Action</th>   
-        </thead>
-        <tbody formArrayName="sellPrices">
-          <tr *ngFor="let itemrow of allSells.controls; let i=index;let l=last" [formGroupName]="i">
-            <td>{{i+1}}</td>
-           <td>
-            <ng-select style="width:250px;"
-            [items]="branchList"
-            bindLabel="name"
-            bindValue="id"
-            formControlName="branchId"
-            [closeOnSelect]="true"
-            class="form-control-patch">
-          </ng-select>
-
-            </td>
-
-            <td>
-              <input formControlName="price" class="form-control" style="width:150px;" type="number">
-            </td>
-    
-            <td>
-              <button *ngIf="opMode!=='view'" (click)="removeSell(i)"
-                class="btn btn-danger btn-sm">Delete</button>
-                &nbsp;
-                <button *ngIf="opMode!=='view'" (click)="addSell()"class="btn btn-danger btn-sm">Add</button>
-            </td>
-                     
-          </tr>
-        </tbody>
-      </table>
-    </div>              
-  </form> 
-</div>
-
-                  </div>
-                        
-                            </div>
-                             </div>
-
-                                 &nbsp;&nbsp; 
-                                           <div class="d-flex gap-2 mt-2" *ngIf="opMode==='edit' || opMode==='create'">
-                                            <button type="submit" class="btn btn-sm btn-primary" (click)="onSubmit()">
-                                              <i class="fas fa-save me-1"></i> Save
-                                            </button>
-                                          </div>
+  <br />
 
 
-                            </div>
-                            </div>
-                            
-  
-  
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card customCard">
+        <div class="card-body">
+          <form [formGroup]="createForm">
+            <div class="row">
+
+              <div class="col-md-3 form-group">
+                <label for="name-f">Organization *</label>
+                <ng-select (change)="loadAllBranch()" (keyup)="setSearch($event.target)" [items]="menuOptions"
+                  bindLabel="orgName" bindValue="id" formControlName="orgId" (search)="onSearch('Organization')"
+                  (scrollToEnd)="loadMore('Organization')" [loading]="loadDropOrg" [clearable]="true"
+                  [closeOnSelect]="true" [editableSearchTerm]="false" [addTag]="false" class="form-control-patch">
+                </ng-select>
+
+              </div>
+
+              <div class="col-md-3 form-group">
+                <label for="name-f">Branch*</label>
+                <ng-select (change)="loadInventory()" [items]="branchList" bindLabel="name" bindValue="id"
+                  formControlName="branchId" [clearable]="true" [closeOnSelect]="true" [editableSearchTerm]="false"
+                  [addTag]="false" class="form-control-patch">
+                </ng-select>
+              </div>
+
+              <div class="col-md-3 form-group">
+                <label for="name-f">Inventory*</label>
+                <ng-select [items]="invList" bindLabel="name" bindValue="id" formControlName="inventoryId"
+                  [clearable]="true" [closeOnSelect]="true" [editableSearchTerm]="false" [addTag]="false"
+                  class="form-control-patch">
+                </ng-select>
+              </div>
+
+              <div class="col-md-3 form-group">
+                <label for="name-f">Supplier*</label>
+                <ng-select (keyup)="setSearch($event.target)" [items]="suppList" bindLabel="name" bindValue="id"
+                  formControlName="supplierId" (search)="onSearch('Supplier')" (scrollToEnd)="loadMore('Supplier')"
+                  [loading]="loadDropSupp" [clearable]="true" [closeOnSelect]="true" [editableSearchTerm]="false"
+                  [addTag]="false" class="form-control-patch">
+                </ng-select>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      &nbsp;&nbsp;
+      <!-----------------------------------Selling price settings---------------------------------->
+      <div class="card customCard">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h5 class="card-title">Branch Wise Sell Price</h5>
+              <form [formGroup]="purchaseForm">
+
+                <div class="table-responsive">
+                  <table class="table table-striped custom-table">
+                    <thead>
+                      <!-- <th>SL</th> -->
+                      <th>SL</th>
+                      <th>Product</th>
+                      <th style="width:100px;">Unit Price</th>
+                      <th style="width:160px;">Discount</th>
+                      <th>Vat</th>
+                      <th>Net amount</th>
+                      <th>Total amount</th>
+                    </thead>
+                    <tbody formArrayName="purchPrices">
+                      <tr *ngFor="let itemrow of allPurchs.controls; let i=index;let l=last" [formGroupName]="i">
+                        <td>{{i+1}}</td>
+                        <td>
+                          --
+                        </td>
+                        <td>
+                          <input formControlName="unitPrice" class="form-control"  type="text">
+                        </td>
+                        <td>
+              
+                            <input  formControlName="disAmount" class="form-control" type="text">
+                            <input  formControlName="disPct" class="form-control" type="text">
+                          </span>
+                        </td>
+
+                        <td>
+                          <span>
+                            <input formControlName="vatAmount" class="form-control" type="text">
+                            <input  formControlName="vatPct" class="form-control" type="text">
+                          </span>
+                        </td>
+
+                        <td>
+                          <input formControlName="netAmount" class="form-control"  type="number">
+                        </td>
+
+                        <td>
+                          <input formControlName="totalAmount" class="form-control"  type="number">
+                        </td>
+
+                        <td>
+                          <button *ngIf="opMode!=='view'" (click)="removeSell(i)"
+                            class="btn btn-danger btn-sm">Delete</button>
+                          &nbsp;
+                          <button *ngIf="opMode!=='view'" (click)="addSell()" class="btn btn-danger btn-sm">Add</button>
+                        </td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      &nbsp;&nbsp;
+      <div class="d-flex gap-2 mt-2" *ngIf="opMode==='edit' || opMode==='create'">
+        <button type="submit" class="btn btn-sm btn-primary" (click)="onSubmit()">
+          <i class="fas fa-save me-1"></i> Save
+        </button>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
   <div *ngIf="loading" class="loader-overlay">
     <div class="spinner"></div>
     <span>Saving user...</span>
   </div>
-  
+
   <!---- child menu details -->
 
-<!-- /Delete Modal -->
-  <br/>
+  <!-- /Delete Modal -->
+  <br />
 
   <!-- simple-modal.component.html -->
- 
+
   <!-- Button to trigger modal -->
-  <button #myButton  type="button" style="display:none;"class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+  <button #myButton type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal"
+    data-bs-target="#exampleModal">
     Open Modal
   </button>
   <!-- Modal -->
@@ -214,14 +197,14 @@
                 <th>Description</th>
               </tr>
             </thead>
-              <tbody>
-                <tr *ngFor="let x of similarProduct; index as i">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ x.name}}</td>
-                  <td>{{ x.fullName}}</td>
-                  <td>{{ x.description}}</td>
-                </tr>
-              </tbody>
+            <tbody>
+              <tr *ngFor="let x of similarProduct; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ x.name}}</td>
+                <td>{{ x.fullName}}</td>
+                <td>{{ x.description}}</td>
+              </tr>
+            </tbody>
 
           </table>
         </div>
@@ -234,7 +217,7 @@
   </div>
 
 
-    </div>
+</div>
 
-    
-  <!-- Delete Modal -->
+
+<!-- Delete Modal -->
