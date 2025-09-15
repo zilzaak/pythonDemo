@@ -13,6 +13,7 @@ export class PurchCrudComponent implements OnInit {
   @ViewChild('myButton') myButton!: ElementRef;
 
   similarProduct: any;
+  selectForm!: FormGroup;
   purchaseForm!: FormGroup;
   createForm!: FormGroup;
   pageTitle!: any;
@@ -23,18 +24,20 @@ export class PurchCrudComponent implements OnInit {
   listData: any[] = [];
   loadDropOrg = false;
   loadDropSupp = false;
+  loadDropPro = false;
   currentPage = 1;
   pageSize = 10;
   hasMore = true;
   hasMoreSupp = true;
+  hasMorePro = true;
   menuOptions: any[] = [];
+  products: any[] = [];
   suppList: any[] = [];
   private debounceTimer: any;
   searchItem: any;
   invList: any[] = [];
   madeWithOptions: any[] = [];
   branchList: any[] = [];
-
   id: any;
 
   constructor(
@@ -136,41 +139,61 @@ export class PurchCrudComponent implements OnInit {
       description: ['', [Validators.maxLength(500)]],
       confirmSimilarity: [false]
     });
+    this.selectForm=this.formBuilder.group({
+      product: ['']
+    });
     this.purchaseForm = this.formBuilder.group(
       {
-        purchPrices: this.formBuilder.array([this.sellPriceCreate()])
+        purchPrices: this.formBuilder.array([this.sellPriceCreate(null)])
       }
     );
   }
 
-  sellPriceCreate(): FormGroup {
-    return this.formBuilder.group({
-       quantity:['',Validators.required],
-       productId:['',Validators.required],
-       productType:[''],
-       unitPrice:['',Validators.required],
-       purchaseId:[''],
-      //for view purpose added below two field
-       productName:[''],
-       productCode:[''],
-       disAmount:[''],
-       disPct:[''],
-       vatAmount:[''],
-       totalAmount:['',Validators.required],
-    })
+  sellPriceCreate(obj:any): FormGroup {
+    if(obj==null){
+      return this.formBuilder.group({
+        quantity:['',Validators.required],
+        productId:['',Validators.required],
+        productType:[''],
+        unitPrice:['',Validators.required],
+        purchaseId:[''],
+        productName:[''],
+        productCode:[''],
+        disAmount:[''],
+        disPct:[''],
+        vatPct:[''],
+        vatAmount:[''],
+        netAmount:[''],
+        totalAmount:['',Validators.required],
+     })
+    }else{
+      return this.formBuilder.group({
+        quantity:['',Validators.required],
+        productId:[obj.id],
+        productType:[''],
+        unitPrice:[obj.unitPrice],
+        purchaseId:[''],
+        productName:[obj.productName],
+        productCode:[obj.code],
+        disAmount:[''],
+        disPct:[''],
+        vatPct:[''],
+        vatAmount:[''],
+        netAmount:[''],
+        totalAmount:['',Validators.required],
+     })
+    }
+
   }
   get allPurchs(): FormArray {
     return this.purchaseForm.get("purchPrices") as FormArray;
   }
 
   addSell(): void {
-    this.allPurchs.push(this.sellPriceCreate());
+    this.allPurchs.push(this.sellPriceCreate(null));
   }
 
   removeSell(index: any): void {
-    if (Number(index) < 1) {
-      return;
-    }
     this.allPurchs.removeAt(index);
   }
 
@@ -232,6 +255,43 @@ export class PurchCrudComponent implements OnInit {
     this.searchItem = x.value;
   }
 
+
+  setProductDetails(obj:any){
+    if(obj===undefined || obj==null){
+       return;
+    }
+
+    if(this.purchaseForm.value.purchPrices.length<1){
+      this.allPurchs.push(this.sellPriceCreate(obj));
+      return;
+    }
+
+    if(this.purchaseForm.value.purchPrices.length===1 && 
+      ( !this.purchaseForm.value.purchPrices[0].productId || 
+        this.purchaseForm.value.purchPrices[0].productId==null
+      )
+     ){
+      this.purchaseForm.value.purchPrices[0].productId=obj.id;
+      this.purchaseForm.value.purchPrices[0].unitPrice=obj.unitPrice;
+      this.purchaseForm.value.purchPrices[0].productCode=obj.code;
+      this.purchaseForm.value.purchPrices[0].productName=obj.productName;
+      return;
+    }
+
+    if(this.purchaseForm.value.purchPrices.length>0){        
+      for(let hb of this.purchaseForm.value.purchPrices){
+        if(hb.productId && hb.productId!=undefined && hb.productId!=null && hb.productId!=='' &&
+          obj.id && obj.id!=undefined && obj.id!=null && obj.id!==''
+          && Number(obj.id.toString())==Number(hb.productId.toString())){
+          return;
+         }   
+      }
+     this.allPurchs.push(this.sellPriceCreate(obj));
+    }
+  
+  }
+
+
   onSearch(entity: any): void {
     const term = this.searchItem;
     if (this.debounceTimer) {
@@ -247,6 +307,9 @@ export class PurchCrudComponent implements OnInit {
       if (entity === 'Supplier') {
         this.hasMoreSupp = true;
       }
+      if (entity === 'Product') {
+        this.hasMorePro = true;
+      }
 
       this.performSearch(term, entity);
     }, 300);
@@ -256,6 +319,15 @@ export class PurchCrudComponent implements OnInit {
     const term = this.searchItem;
     this.currentPage++;
     let uri: string = '';
+
+    let params: any = {
+      commonField: term, 
+      dropDown: 'dropDown',entity: entity,
+      name:term,
+      orgId:this.createForm.value.orgId,
+      pageNum: this.currentPage.toString(),pageSize: this.pageSize.toString()
+    };
+
     if (entity === 'Organization') {
       this.loadDropOrg = true;
       uri = this.baseUrl + '/base/organization/list';
@@ -264,14 +336,10 @@ export class PurchCrudComponent implements OnInit {
       this.loadDropSupp = true;
       uri = this.baseUrl + '/purchase/supplier/list';
     }
-
-    let params: any = {
-      commonField: term,
-      dropDown: 'dropDown',
-      entity: entity,
-      pageNum: this.currentPage.toString(),
-      pageSize: this.pageSize.toString()
-    };
+    if (entity === 'Product') {
+      this.loadDropPro = true;
+      uri = this.baseUrl + '/setting/product/list';
+    }
 
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
@@ -283,11 +351,16 @@ export class PurchCrudComponent implements OnInit {
           this.suppList = response?.data?.listData || [];
           this.loadDropSupp = false;
         }
+        if (entity === 'Product') {
+          this.products = response?.data?.listData || [];
+          this.loadDropPro = false;
+        }
 
       },
       error: (err) => {
         this.loadDropOrg = false;
         this.loadDropSupp = false;
+        this.loadDropPro = false;
       }
     });
   }
@@ -302,14 +375,21 @@ export class PurchCrudComponent implements OnInit {
       this.loadDropSupp = true;
       uri = this.baseUrl + '/purchase/supplier/list';
     }
+    if (entity === 'Product') {
+      this.loadDropPro = true;
+      uri = this.baseUrl + '/setting/product/list';
+    }
 
     let params: any = {
       commonField: term,
       dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString(),
-      entity: entity
+      entity: entity,
+      name:term,
+      orgId:this.createForm.value.orgId
     };
+
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         if (entity === 'Organization') {
@@ -322,10 +402,16 @@ export class PurchCrudComponent implements OnInit {
           this.hasMoreSupp = this.menuOptions.length === this.pageSize;
           this.loadDropSupp = false;
         }
+        if (entity === 'Product') {
+          this.products = response?.data?.listData || [];
+          this.hasMorePro = this.products.length === this.pageSize;
+          this.loadDropPro = false;
+        }
       },
       error: (err) => {
         this.loadDropOrg = false;
         this.loadDropSupp = false;
+        this.loadDropPro = false;
       }
     });
   }

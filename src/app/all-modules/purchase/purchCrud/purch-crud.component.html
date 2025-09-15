@@ -77,12 +77,33 @@
         </div>
       </div>
       &nbsp;&nbsp;
+
+      <!------------select product -------------------------------------------------------------->
+      <div class="card customCard">
+        <div class="card-body">
+          <form [formGroup]="selectForm">
+            <div class="row">
+             <div class="col-md-3 form-group">
+                <label for="name-f">Product </label>
+                <ng-select style="width: 500px;" (keyup)="setSearch($event.target)" [items]="products"
+                (click)="onSearch('Product')"
+                (change)="setProductDetails($event)"
+                  bindLabel="productName" bindValue="id" formControlName="product" (search)="onSearch('Product')"
+                  (scrollToEnd)="loadMore('Product')" [loading]="loadDropPro" [clearable]="true"
+                  [closeOnSelect]="true" [editableSearchTerm]="false" [addTag]="false" class="form-control-patch">
+                </ng-select>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      &nbsp;&nbsp;
       <!-----------------------------------Selling price settings---------------------------------->
       <div class="card customCard">
         <div class="card-body">
           <div class="row">
             <div class="col">
-              <h5 class="card-title">Branch Wise Sell Price</h5>
+              <h5 class="card-title">Product List</h5>
               <form [formGroup]="purchaseForm">
 
                 <div class="table-responsive">
@@ -91,41 +112,56 @@
                       <!-- <th>SL</th> -->
                       <th>SL</th>
                       <th>Product</th>
-                      <th style="width:100px;">Unit Price</th>
-                      <th style="width:160px;">Discount</th>
-                      <th>Vat</th>
-                      <th>Net amount</th>
-                      <th>Total amount</th>
+                      <th style="width:9%;">Unit Price</th>
+                      <th style="width:8%;">Quantity</th>
+                      <th style="width:13%;">Discount</th>
+                      <th style="width:180px;">Vat</th>
+                      <th style="width:15%;">Net Price<br/>
+                      <span style="font-size:0.6em;">(Unit Price*Quantity - discount)</span></th>
+                      <th style="width:15%;">Total Price<br/>
+                        <span style="font-size:0.6em;">(Net Price + vat)</span></th>
+                                          
                     </thead>
                     <tbody formArrayName="purchPrices">
                       <tr *ngFor="let itemrow of allPurchs.controls; let i=index;let l=last" [formGroupName]="i">
                         <td>{{i+1}}</td>
                         <td>
-                          --
+                          <input  style="font-size:0.89em;" formControlName="productName" class="form-control"  type="text">
                         </td>
                         <td>
                           <input formControlName="unitPrice" class="form-control"  type="text">
                         </td>
                         <td>
-              
-                            <input  formControlName="disAmount" class="form-control" type="text">
-                            <input  formControlName="disPct" class="form-control" type="text">
-                          </span>
+                          <input formControlName="quantity" class="form-control"  type="text">
+                        </td>
+                        <td>
+                          <div class="row g-0">
+                            <div class="col-7">
+                              <input formControlName="disAmount" class="form-control" type="text" placeholder="Amount">
+                            </div>
+                            <div class="col-5">
+                              <input formControlName="disPct" class="form-control" type="text" placeholder="%">
+                            </div>
+                          </div>
+                        </td>
+                        
+                        <td>
+                          <div class="row g-0">
+                            <div class="col-7">
+                              <input formControlName="vatAmount" class="form-control" type="text" placeholder="Amount">
+                            </div>
+                            <div class="col-5">
+                              <input formControlName="vatPct" class="form-control" type="text" placeholder="%">
+                            </div>
+                          </div>
                         </td>
 
                         <td>
-                          <span>
-                            <input formControlName="vatAmount" class="form-control" type="text">
-                            <input  formControlName="vatPct" class="form-control" type="text">
-                          </span>
+                          <input readonly formControlName="netAmount" class="form-control"  type="number">
                         </td>
 
                         <td>
-                          <input formControlName="netAmount" class="form-control"  type="number">
-                        </td>
-
-                        <td>
-                          <input formControlName="totalAmount" class="form-control"  type="number">
+                          <input readonly   formControlName="totalAmount" class="form-control"  type="number">
                         </td>
 
                         <td>
