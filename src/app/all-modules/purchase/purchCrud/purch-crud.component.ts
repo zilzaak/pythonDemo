@@ -271,10 +271,8 @@ export class PurchCrudComponent implements OnInit {
         this.purchaseForm.value.purchPrices[0].productId==null
       )
      ){
-      this.purchaseForm.value.purchPrices[0].productId=obj.id;
-      this.purchaseForm.value.purchPrices[0].unitPrice=obj.unitPrice;
-      this.purchaseForm.value.purchPrices[0].productCode=obj.code;
-      this.purchaseForm.value.purchPrices[0].productName=obj.productName;
+      this.removeSell(0);
+      this.allPurchs.push(this.sellPriceCreate(obj));
       return;
     }
 

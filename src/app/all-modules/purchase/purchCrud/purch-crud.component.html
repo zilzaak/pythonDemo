@@ -84,7 +84,7 @@
           <form [formGroup]="selectForm">
             <div class="row">
              <div class="col-md-3 form-group">
-                <label for="name-f">Product </label>
+                <label for="name-f">Select Product </label>
                 <ng-select style="width: 500px;" (keyup)="setSearch($event.target)" [items]="products"
                 (click)="onSearch('Product')"
                 (change)="setProductDetails($event)"
