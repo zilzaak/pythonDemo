@@ -57,7 +57,7 @@
               </div>
 
               <div class="col-md-3 form-group">
-                <label for="name-f">Inventory*</label>
+                <label for="name-f">Receiving Inventory*</label>
                 <ng-select [items]="invList" bindLabel="name" bindValue="id" formControlName="inventoryId"
                   [clearable]="true" [closeOnSelect]="true" [editableSearchTerm]="false" [addTag]="false"
                   class="form-control-patch">
@@ -80,11 +80,11 @@
 
       <!------------select product -------------------------------------------------------------->
       <div class="card customCard">
-        <div class="card-body">
+        <div class="card-body" style="padding-top:0px">
           <form [formGroup]="selectForm">
             <div class="row">
              <div class="col-md-3 form-group">
-                <label for="name-f">Select Product </label>
+                <label for="name-f">Search Product </label>
                 <ng-select style="width: 500px;" (keyup)="setSearch($event.target)" [items]="products"
                 (click)="onSearch('Product')"
                 (change)="setProductDetails($event)"
@@ -99,17 +99,19 @@
       </div>
       &nbsp;&nbsp;
       <!-----------------------------------Selling price settings---------------------------------->
-      <div class="card customCard">
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <h5 class="card-title">Product List</h5>
-              <form [formGroup]="purchaseForm">
 
-                <div class="table-responsive">
+ 
+        <div class="card-body p-1">
+          <div class="border rounded p-1 position-relative">
+            <span class="position-absolute top-0 start-50 translate-middle bg-white px-2 small">
+              Product List
+            </span>
+      
+            <form [formGroup]="purchaseForm">
+              <div class="table-responsive mt-3">
+                <table class="table table-striped custom-table">
                   <table class="table table-striped custom-table">
                     <thead>
-                      <!-- <th>SL</th> -->
                       <th>SL</th>
                       <th>Product</th>
                       <th style="width:9%;">Unit Price</th>
@@ -126,21 +128,27 @@
                       <tr *ngFor="let itemrow of allPurchs.controls; let i=index;let l=last" [formGroupName]="i">
                         <td>{{i+1}}</td>
                         <td>
-                          <input  style="font-size:0.89em;" formControlName="productName" class="form-control"  type="text">
+                          <input  readonly style="font-size:0.89em;" formControlName="productName" class="form-control"  type="text">
                         </td>
                         <td>
-                          <input formControlName="unitPrice" class="form-control"  type="text">
+                          <input formControlName="unitPrice" (keyup)="calculateData(i)" class="form-control"  type="text">
                         </td>
                         <td>
-                          <input formControlName="quantity" class="form-control"  type="text">
+                          <div class="row g-0">
+                            <span class="d-inline-flex align-items-center" style="color:green;">
+                              [{{stocks[i]}}] 
+                              <input formControlName="quantity" (keyup)="calculateData(i)" class="form-control ms-2" type="text" style="width:120px;">
+                            </span>
+                          </div>
+
                         </td>
                         <td>
                           <div class="row g-0">
                             <div class="col-7">
-                              <input formControlName="disAmount" class="form-control" type="text" placeholder="Amount">
+                              <input formControlName="disAmount" (keyup)="setDiscount('amount',i)"    class="form-control" type="text" placeholder="Amount">
                             </div>
                             <div class="col-5">
-                              <input formControlName="disPct" class="form-control" type="text" placeholder="%">
+                              <input formControlName="disPct"   (keyup)="setDiscount('percentage',i)" class="form-control" type="text" placeholder="%">
                             </div>
                           </div>
                         </td>
@@ -148,10 +156,10 @@
                         <td>
                           <div class="row g-0">
                             <div class="col-7">
-                              <input formControlName="vatAmount" class="form-control" type="text" placeholder="Amount">
+                              <input formControlName="vatAmount" (keyup)="setVat('amount',i)"  class="form-control" type="text" placeholder="Amount">
                             </div>
                             <div class="col-5">
-                              <input formControlName="vatPct" class="form-control" type="text" placeholder="%">
+                              <input formControlName="vatPct" (keyup)="setVat('percentage',i)"  class="form-control" type="text" placeholder="%">
                             </div>
                           </div>
                         </td>
@@ -166,24 +174,52 @@
 
                         <td>
                           <button *ngIf="opMode!=='view'" (click)="removeSell(i)"
-                            class="btn btn-danger btn-sm">Delete</button>
+                            class="btn btn-danger btn-sm">
+                            <i class="fa fa-minus"></i></button>
                           &nbsp;
-                          <button *ngIf="opMode!=='view'" (click)="addSell()" class="btn btn-danger btn-sm">Add</button>
+                          <button *ngIf="opMode!=='view'" (click)="addSell(i)" class="btn btn-danger btn-sm">
+                            <i class="fa fa-plus"></i>
+                          </button>
                         </td>
 
                       </tr>
                     </tbody>
                   </table>
-                </div>
-              </form>
-            </div>
-
+                </table>
+              </div>
+            </form>
           </div>
-
+        </div>
+      
+      &nbsp;&nbsp;
+      <div class="card customCard">
+        <div class="card-body p-2 position-relative">
+          <span class="position-absolute top-0 start-50 translate-middle bg-white px-2 small">
+            Purchase Summary
+          </span>
+            <div class="table-responsive mt-3">
+              <table class="table table-striped custom-table">
+               <tr>
+                <td>Total</td>
+                <td>{{priceSum}}</td>
+                <td>Total Discount</td>
+                <td>{{totalDiscount}}</td>
+               </tr>
+               <tr>
+                <td>Total Vat</td>
+                <td>{{totalVat}}</td>
+                <td>Total Net</td>
+                <td>{{totalNetPrice}}</td>
+                <td>Grand Total</td>
+                <td>{{pricePayable}}</td>
+               </tr>
+              </table>
+            </div>
+  
         </div>
       </div>
 
-      &nbsp;&nbsp;
+      
       <div class="d-flex gap-2 mt-2" *ngIf="opMode==='edit' || opMode==='create'">
         <button type="submit" class="btn btn-sm btn-primary" (click)="onSubmit()">
           <i class="fas fa-save me-1"></i> Save

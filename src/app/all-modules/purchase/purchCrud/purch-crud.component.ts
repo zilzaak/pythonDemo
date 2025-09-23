@@ -39,7 +39,12 @@ export class PurchCrudComponent implements OnInit {
   madeWithOptions: any[] = [];
   branchList: any[] = [];
   id: any;
-
+  stocks:any[]=[];
+   priceSum:any=0;
+   totalNetPrice:any=0;
+   pricePayable:any=0; 
+   totalDiscount:any=0;
+   totalVat:any=0;
   constructor(
     private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,
@@ -48,6 +53,7 @@ export class PurchCrudComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.stocks.push(50,50,450,120,22,45);
     this.initializeForm();
     this.loadAllBranch();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
@@ -189,12 +195,14 @@ export class PurchCrudComponent implements OnInit {
     return this.purchaseForm.get("purchPrices") as FormArray;
   }
 
-  addSell(): void {
-    this.allPurchs.push(this.sellPriceCreate(null));
+  addSell(index: number): void {
+    this.allPurchs.insert(index, this.sellPriceCreate(null));
+    this.calculateAll();
   }
 
   removeSell(index: any): void {
     this.allPurchs.removeAt(index);
+    this.calculateAll();
   }
 
 
@@ -413,6 +421,155 @@ export class PurchCrudComponent implements OnInit {
       }
     });
   }
+
+
+  setVat(type:any,index:any){
+    let i:number=Number(index.toString());
+    let unitPrice:any= (this.allPurchs.at(i) as FormGroup).get('unitPrice')?.value;
+    if(!unitPrice || unitPrice===undefined || unitPrice==null || unitPrice===''){
+      unitPrice=0;
+    }
+    let quantity:any= (this.allPurchs.at(i) as FormGroup).get('quantity')?.value;
+    if(!quantity || quantity===undefined || quantity==null || quantity===''){
+      quantity=0;
+    }
+    let disAmount:any= (this.allPurchs.at(i) as FormGroup).get('disAmount')?.value;
+    if(!disAmount || disAmount===undefined || disAmount==null || disAmount===''){
+      disAmount=0;
+    }
+    let totalPrice:any=quantity*unitPrice;
+    
+    let vatAmount:any=0;
+    let vatPct:any=0;
+    let netAmount:any=totalPrice-disAmount;
+
+    if(type==='amount'){
+      vatAmount=(this.allPurchs.at(i) as FormGroup).get('vatAmount')?.value;
+      vatPct=(vatAmount/netAmount)*100;
+    }else{
+      vatPct=(this.allPurchs.at(i) as FormGroup).get('vatPct')?.value;
+      vatAmount=(vatPct/100)*netAmount;
+    }
+
+    let totalAmount:any=netAmount+vatAmount;
+    vatAmount=(vatAmount>0)?vatAmount:'';
+    vatPct=(vatPct>0)?vatPct:'';
+    (this.allPurchs.at(i) as FormGroup).patchValue({
+      vatAmount: vatAmount,
+      vatPct: vatPct,
+      netAmount:netAmount,
+      totalAmount:totalAmount
+    }); 
+    this.calculateAll();
+
+  }
+
+  calculateData(index:any){
+    let i:number=Number(index.toString());
+    let unitPrice:any=(this.allPurchs.at(i) as FormGroup).get('unitPrice')?.value;
+    let quantity:any=(this.allPurchs.at(i) as FormGroup).get('quantity')?.value; 
+   if(!unitPrice || unitPrice===undefined || unitPrice==null || unitPrice===''){
+      unitPrice=0;
+    }
+    if(!quantity || quantity===undefined || quantity==null || quantity===''){
+      quantity=0;
+    }
+    let disPct:any= (this.allPurchs.at(i) as FormGroup).get('disPct')?.value;
+    if(!disPct || disPct===undefined || disPct==='' || disPct==null){
+      disPct=0;
+    }
+    let vatPct:any=(this.allPurchs.at(i) as FormGroup).get('vatPct')?.value;
+    if(!vatPct || vatPct===undefined || vatPct==='' || vatPct==null){
+      vatPct=0;
+    }
+    let totalPrice:any=quantity*unitPrice;
+    let disAmount:any=(disPct/100)*totalPrice;
+    let netAmount:any=totalPrice-disAmount;
+    let vatAmount:any=(vatPct/100)*netAmount;;
+    let totalAmount:any=netAmount+vatAmount;
+
+    vatAmount=(vatAmount>0)?vatAmount:'';
+    vatPct=(vatPct>0)?vatPct:'';
+    disAmount=(disAmount>0)?disAmount:'';
+    disPct=(disPct>0)?disPct:'';
+
+    (this.allPurchs.at(i) as FormGroup).patchValue({
+      vatAmount: vatAmount,
+      vatPct: vatPct,
+      disAmount:disAmount,
+      disPct:disPct,
+      netAmount:netAmount,
+      totalAmount:totalAmount
+    });
+    this.calculateAll();
+  }
+
+  calculateAll(){
+     this.priceSum=0;
+     this.totalNetPrice=0;
+     this.pricePayable=0; 
+     this.totalDiscount=0;
+     this.totalVat=0;
+
+    let i:number=0;
+    for (let hb of this.purchaseForm.value.purchPrices) {
+                i++;
+                if(i<2){
+                    this.priceSum=hb.unitPrice*hb.quantity;
+                    this.totalDiscount=hb.disAmount;
+                    this.totalVat=hb.vatAmount;
+                }else{
+                  this.priceSum=this.priceSum+hb.unitPrice*hb.quantity;
+                  this.totalDiscount=this.totalDiscount+hb.disAmount;
+                  this.totalVat=this.totalVat+hb.vatAmount;
+                }
+        }
+        this.totalNetPrice=this.priceSum-this.totalDiscount;
+        this.pricePayable=this.totalNetPrice+this.totalVat;
+
+  }
+
+  setDiscount(type:any,index:any){
+    let i:number=Number(index.toString());
+    let unitPrice:any= (this.allPurchs.at(i) as FormGroup).get('unitPrice')?.value;
+    if(!unitPrice || unitPrice===undefined || unitPrice==null || unitPrice===''){
+      unitPrice=0;
+    }
+    let quantity:any= (this.allPurchs.at(i) as FormGroup).get('quantity')?.value;
+    if(!quantity || quantity===undefined || quantity==null || quantity===''){
+      quantity=0;
+    }
+    let totalPrice:any=quantity*unitPrice;    
+    let disAmount:any=0;
+    let disPct:any=0;
+    if(type==='amount'){
+      disAmount=(this.allPurchs.at(i) as FormGroup).get('disAmount')?.value;
+      disPct=(disAmount/totalPrice)*100;
+    }else{
+      disPct=(this.allPurchs.at(i) as FormGroup).get('disPct')?.value;
+      disAmount=(disPct/100)*totalPrice;
+    }
+    let netAmount:any=totalPrice-disAmount;
+
+    let vatAmount:any= (this.allPurchs.at(i) as FormGroup).get('vatAmount')?.value;
+    if(!vatAmount || vatAmount===undefined || vatAmount==null || vatAmount===''){
+      vatAmount=0;
+    }
+
+    let totalAmount:any=netAmount+vatAmount;
+    disAmount=(disAmount>0)?disAmount:'';
+    disPct=(disPct>0)?disPct:'';
+    (this.allPurchs.at(i) as FormGroup).patchValue({
+      disAmount: disAmount,
+      disPct: disPct,
+      netAmount:netAmount,
+      totalAmount:totalAmount
+    }); 
+    this.calculateAll();
+  }
+
+
+
 
 
 }
