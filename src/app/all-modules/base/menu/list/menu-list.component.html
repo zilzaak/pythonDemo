@@ -34,6 +34,7 @@
                     <label class="focus-label">Parent Menu</label>
                     <ng-select
                     (keyup)="setValm($event.target)"
+                    (change)="getList()"
                     [items]="menuOptions"
                     bindLabel="moduleName"
                     bindValue="id"
