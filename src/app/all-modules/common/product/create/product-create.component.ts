@@ -80,16 +80,22 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
     this.showCriteriaPopup = false;
   
     switch(this.currentPopupType) {
-      case 'Color':
+      case 'ProductCat':
+        this.catOptions.push(newItem);
+        break;
+      case 'ProductColor':
         this.colorOptions.push(newItem);
         break;
-      case 'Size':
+        case 'MadeWith':
+          this.madeWithOptions.push(newItem);
+          break;
+      case 'ProductSize':
         this.sizeOptions.push(newItem);
         break;
       case 'Brand':
         this.brandOptions.push(newItem);
         break;
-      case 'Model':
+      case 'ProductModel':
         this.modelOptions.push(newItem);
         break;
     }

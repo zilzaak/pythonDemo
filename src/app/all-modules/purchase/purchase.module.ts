@@ -8,13 +8,17 @@ import { PurchListComponent } from './purchList/purch-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SupplierListComponent } from './supplier/suppList/supplier-list.component';
+import { SuppCrudComponent } from './supplier/suppCrud/supp-crud.component';
 
 
 @NgModule({
   declarations: [
     PurchaseComponent,
     PurchCrudComponent,
-    PurchListComponent
+    PurchListComponent,
+    SupplierListComponent,
+    SuppCrudComponent
   ],
   imports: [
     CommonModule,

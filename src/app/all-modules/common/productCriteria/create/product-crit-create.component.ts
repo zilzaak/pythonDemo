@@ -44,7 +44,6 @@ export class ProductCritCreateComponent implements OnInit, AfterViewInit {
   newCriteria = { id: 0, name: '' };
 
   save() {
-    alert("okkkkkkkkkkkkk saving data");
     // You can call API or logic here
     this.onSaved.emit(this.newCriteria);
   }
@@ -126,6 +125,10 @@ export class ProductCritCreateComponent implements OnInit, AfterViewInit {
       description:['',Validators.required],
       confirmSimilarity:[false]
     });
+    if(this.popupMode==true){
+      this.createForm.controls['entity'].setValue(this.criteriaType);
+      this.createForm.controls['entity'].disable();
+    }
   }
 
 
