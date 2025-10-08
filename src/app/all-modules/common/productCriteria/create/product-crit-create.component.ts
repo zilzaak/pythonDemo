@@ -134,7 +134,7 @@ export class ProductCritCreateComponent implements OnInit, AfterViewInit {
       next: (response: any) => {
         if (response.success) {
           alert(response.message);
-          this.router.navigate(['/common/productCrit/list']);
+          this.router.navigate(['/setting/productCrit/list']);
         } else {
           alert(response.message);
           this.loading = false;

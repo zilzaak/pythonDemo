@@ -304,7 +304,7 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
       next: (response: any) => {
         if (response.success) {
           alert(response.message);
-          this.router.navigate(['/common/product/list']);
+          this.router.navigate(['/setting/product/list']);
         } else {
           this.loading = false;
           if (response.message.includes('Similar')) {
