@@ -189,7 +189,8 @@ export class UserCreateComponent implements OnInit {
       menu: term,
       dropDown:"gggggg",
       pageNum: this.currentPage.toString(),
-      pageSize: this.pageSize.toString()
+      pageSize: this.pageSize.toString(),
+      entity:"organization"
     }
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {

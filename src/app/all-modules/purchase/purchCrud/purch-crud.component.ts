@@ -526,7 +526,6 @@ export class PurchCrudComponent implements OnInit {
         }
         this.totalNetPrice=this.priceSum-this.totalDiscount;
         this.pricePayable=this.totalNetPrice+this.totalVat;
-
   }
 
   setDiscount(type:any,index:any){
