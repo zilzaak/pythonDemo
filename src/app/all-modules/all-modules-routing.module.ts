@@ -21,7 +21,7 @@ const routes: Routes = [
         loadChildren: () => import('./base/base.module').then(m => m.BaseModule)
       },
       {
-        path: 'common',
+        path: 'setting',
         loadChildren: () => import('./common/setting-product.module').then(m => m.SettingProductModule)
       },
       {

@@ -57,6 +57,7 @@
                   <ng-select
                   (keyup)="setValu($event.target)"
                   [items]="urlOptions"
+                  (change)="getList()"
                   bindLabel="urlCode"
                   bindValue="id"
                   formControlName="backendUrl"
