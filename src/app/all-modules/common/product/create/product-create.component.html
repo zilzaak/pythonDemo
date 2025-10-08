@@ -8,15 +8,15 @@
                   <li class="breadcrumb-item active">Product</li>
                   <li class="breadcrumb-item active">{{pageTitle}}</li>
                   <li *ngIf="pageTitle==='Edit'"class="breadcrumb-item active">     
-                     <span routerLink="/common/product/create" style="color:blue;">
+                     <span routerLink="/setting/product/create" style="color:blue;">
                     <i class="fas fa-plus-circle"></i>(Create)</span> <br/></li>
                     <li *ngIf="pageTitle==='View'"class="breadcrumb-item active">     
-                      <span routerLink="/common/product/edit/{{id}}" style="color:blue;">
+                      <span routerLink="/setting/product/edit/{{id}}" style="color:blue;">
                      <i class="fas fa-plus-circle"></i>(Edit)</span> <br/></li>
               </ul>
           </div>
           <div class="col-auto float-right ml-auto">
-            <a id="backBtn"   [routerLink]="['/common/product/list']" class="btn btn-sm btn-outline-secondary"> 
+            <a id="backBtn"   [routerLink]="['/setting/product/list']" class="btn btn-sm btn-outline-secondary"> 
               <i class="fas fa-times me-1"></i> Back
             </a>
           </div>
