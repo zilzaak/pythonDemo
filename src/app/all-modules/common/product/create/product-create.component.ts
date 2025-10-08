@@ -62,6 +62,39 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
   costPrice:any;
   id:any;
 
+  showCriteriaPopup: boolean = false;
+  currentPopupType: string = ''; // store which dropdown triggered the popup
+  
+  openCriteriaPopup(type: string) {
+    this.currentPopupType = type; 
+    this.showCriteriaPopup = true;
+  }
+  
+  closeCriteriaPopup() {
+    this.showCriteriaPopup = false;
+  }
+
+
+  onCriteriaAdded(newItem: any) {
+    alert("onCriteriaAdded saving data");
+    this.showCriteriaPopup = false;
+  
+    switch(this.currentPopupType) {
+      case 'Color':
+        this.colorOptions.push(newItem);
+        break;
+      case 'Size':
+        this.sizeOptions.push(newItem);
+        break;
+      case 'Brand':
+        this.brandOptions.push(newItem);
+        break;
+      case 'Model':
+        this.modelOptions.push(newItem);
+        break;
+    }
+  }
+
   constructor(
     private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,

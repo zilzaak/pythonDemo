@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
@@ -35,6 +35,23 @@ export class ProductCritCreateComponent implements OnInit, AfterViewInit {
   brandOptions:any[]=[];
   private debounceTimer: any;
   searchItem:any;
+
+  @Output() onSaved = new EventEmitter<any>();
+  @Output() onCancel = new EventEmitter<void>();
+
+  @Input() popupMode: boolean = false;
+  @Input() criteriaType: string = '';
+  newCriteria = { id: 0, name: '' };
+
+  save() {
+    alert("okkkkkkkkkkkkk saving data");
+    // You can call API or logic here
+    this.onSaved.emit(this.newCriteria);
+  }
+
+  cancel() {
+    this.onCancel.emit();
+  }
 
   constructor(
     private commmonService: CommonServiceService,
@@ -125,24 +142,32 @@ export class ProductCritCreateComponent implements OnInit, AfterViewInit {
     if (this.opMode === 'view') return;
     if(this.createForm.invalid){
       alert("Invalid form");
-    return;
+      return;
     }
     this.loading = true;
-    let payload:any={ ...this.createForm.value};
+    let payload:any = { ...this.createForm.value };
     let method = this.opMode === 'create' ? 'post' : 'put';
-    this.commmonService.sendPostPutReq<any>(this.api.toString(), payload,method).subscribe({
+    
+    this.commmonService.sendPostPutReq<any>(this.api.toString(), payload, method).subscribe({
       next: (response: any) => {
+        this.loading = false;
         if (response.success) {
           alert(response.message);
-          this.router.navigate(['/setting/productCrit/list']);
+  
+          if (this.popupMode) {
+            // **Popup scenario**: just emit the new item to parent
+            this.onSaved.emit(response.data); // you may need to adapt data
+          } else {
+            // **Standalone scenario**: navigate to list
+            this.router.navigate(['/setting/productCrit/list']);
+          }
+  
         } else {
           alert(response.message);
-          this.loading = false;
-            if(response.message.includes("Similar")){
-              this.similarCrit=response.data.productCrit;
+          if(response.message.includes("Similar")){
+            this.similarCrit = response.data.productCrit;
             this.mButton.nativeElement.click();
-            }
-
+          }
         }
       },
       error: () => {
@@ -150,6 +175,7 @@ export class ProductCritCreateComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  
 
   setSearch(x:any){
     this.searchItem=x.value;

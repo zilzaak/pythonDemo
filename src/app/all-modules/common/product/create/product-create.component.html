@@ -52,7 +52,7 @@
                                         [editableSearchTerm]="false"
                                         [addTag]="false" 
                                         class="form-control-patch">
-                                      </ng-select>
+                                      </ng-select>                                   
                                 
                                       </div>
 
@@ -75,6 +75,15 @@
                                             [addTag]="false" 
                                             class="form-control-patch">
                                           </ng-select>
+                                          <button 
+                                          type="button" 
+                                          class="btn btn-sm btn-outline-primary rounded-circle"
+                                          title="Add new color"
+                                          (click)="openCriteriaPopup('Category')"
+                                          style="width:15px; height:15px; padding:0; display:flex;
+                                           align-items:center; justify-content:center;">
+                                          <i class="fa fa-plus"></i>
+                                        </button>
                                     
                                           </div>
 
@@ -102,6 +111,15 @@
                                         [addTag]="false" 
                                         class="form-control-patch">
                                       </ng-select>
+                                      <button 
+                                      type="button" 
+                                      class="btn btn-sm btn-outline-primary rounded-circle"
+                                      title="Add new color"
+                                      (click)="openCriteriaPopup('Brand')"
+                                      style="width:15px; height:15px; padding:0; display:flex;
+                                       align-items:center; justify-content:center;">
+                                      <i class="fa fa-plus"></i>
+                                    </button>
                                 
                                       </div>
 
@@ -109,46 +127,66 @@
 
                                       <div class="col-md-3 form-group">
                                         <label for="name-f" >Model</label>
-                                        <ng-select
-                                        (keyup)="setSearch($event.target)"
-                                        (click)="setSearch($event.target)"
-                                        [items]="modelOptions"
-                                        bindLabel="name"
-                                        bindValue="id"
-                                        formControlName="modelId"
-                                        (search)="onBrandSearch($event,'ProductModel')"
-                                        (click)="onBrandSearch($event,'ProductModel')"
-                                        (scrollToEnd)="brandLoadMore('ProductModel')"
-                                         [loading]="modelLoadingDropDown"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                
+                                           <span>
+                                            <ng-select
+                                            (keyup)="setSearch($event.target)"
+                                            (click)="setSearch($event.target)"
+                                            [items]="modelOptions"
+                                            bindLabel="name"
+                                            bindValue="id"
+                                            formControlName="modelId"
+                                            (search)="onBrandSearch($event,'ProductModel')"
+                                            (click)="onBrandSearch($event,'ProductModel')"
+                                            (scrollToEnd)="brandLoadMore('ProductModel')"
+                                             [loading]="modelLoadingDropDown"
+                                            [clearable]="true"
+                                            [closeOnSelect]="true"
+                                            [editableSearchTerm]="false"
+                                            [addTag]="false" 
+                                            class="form-control-patch">
+                                          </ng-select>
+                                          <button 
+                                          type="button" 
+                                          class="btn btn-sm btn-outline-primary rounded-circle"
+                                          title="Add new color"
+                                          (click)="openCriteriaPopup('Color')"
+                                          style="width:15px; height:15px; padding:0; display:flex;
+                                           align-items:center; justify-content:center;">
+                                          <i class="fa fa-plus"></i>
+                                        </button>
+                                      </span>
+
                                       </div>
 
                                       <div class="col-md-3 form-group">
-                                        <label for="name-f" >Color</label>
-                                        <ng-select
-                                        (keyup)="setSearch($event.target)"
-                                        (click)="setSearch($event.target)"
-                                        [items]="colorOptions"
-                                        bindLabel="name"
-                                        bindValue="id"
-                                        formControlName="colorId"
-                                        (search)="onBrandSearch($event,'ProductColor')"
-                                        (click)="onBrandSearch($event,'ProductColor')"
-                                        (scrollToEnd)="brandLoadMore('ProductColor')"
-                                         [loading]="colorLoadingDropDown"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                
+                                        <label for="name-f">Color</label>
+                                          <ng-select 
+                                            (keyup)="setSearch($event.target)"
+                                            (click)="setSearch($event.target)"
+                                            [items]="colorOptions"
+                                            bindLabel="name"
+                                            bindValue="id"
+                                            formControlName="colorId"
+                                            (search)="onBrandSearch($event,'ProductColor')"
+                                            (click)="onBrandSearch($event,'ProductColor')"
+                                            (scrollToEnd)="brandLoadMore('ProductColor')"
+                                            [loading]="colorLoadingDropDown"
+                                            [clearable]="true"
+                                            [closeOnSelect]="true"
+                                            [editableSearchTerm]="false"
+                                            [addTag]="false" 
+                                            class="form-control-patch flex-grow-1">
+                                          </ng-select>
+                                          <button 
+                                          type="button" 
+                                          class="btn btn-sm btn-outline-primary rounded-circle"
+                                          title="Add new color"
+                                          (click)="openCriteriaPopup('Color')"
+                                          style="width:15px; height:15px; padding:0; display:flex;
+                                           align-items:center; justify-content:center;">
+                                          <i class="fa fa-plus"></i>
+                                        </button>
+                                    
                                       </div>
 
                                       <div class="col-md-3 form-group">
@@ -170,7 +208,15 @@
                                         [addTag]="false" 
                                         class="form-control-patch">
                                       </ng-select>
-                                
+                                      <button 
+                                      type="button" 
+                                      class="btn btn-sm btn-outline-primary rounded-circle"
+                                      title="Add new color"
+                                      (click)="openCriteriaPopup('Color')"
+                                      style="width:15px; height:15px; padding:0; display:flex;
+                                       align-items:center; justify-content:center;">
+                                      <i class="fa fa-plus"></i>
+                                    </button>
                                       </div>
 
                                       <div class="col-md-3 form-group">
@@ -192,28 +238,16 @@
                                         [addTag]="false" 
                                         class="form-control-patch">
                                       </ng-select>
-                                
+                                      <button 
+                                      type="button" 
+                                      class="btn btn-sm btn-outline-primary rounded-circle"
+                                      title="Add new color"
+                                      (click)="openCriteriaPopup('Color')"
+                                      style="width:15px; height:15px; padding:0; display:flex;
+                                       align-items:center; justify-content:center;">
+                                      <i class="fa fa-plus"></i>
+                                    </button>
                                       </div>
-
-                                      <!-- <div class="col-md-3 form-group">
-                                        <label for="name-f" >Measure By</label>
-                                        <ng-select
-                                        (keyup)="setSearch($event.target)"
-                                        [items]="oumOptions"
-                                        bindLabel="name"
-                                        bindValue="id"
-                                        formControlName="uomId"
-                                        (search)="onBrandSearch($event,'UnitOfMeasure')"
-                                        (scrollToEnd)="brandLoadMore('UnitOfMeasure')"
-                                         [loading]="uomLoadingDropDown"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                
-                                      </div> -->
 
 
                                       <div class="col-md-3 form-group">
@@ -437,6 +471,22 @@
           <button type="button" class="btn btn-primary" (click)="confirmSimilarity()">I Confirm</button>
         </div>
       </div>
+    </div>
+  </div>
+
+
+
+  <!------- include existed component to reuse that component------------->
+  <div class="popup-backdrop" *ngIf="showCriteriaPopup" (click)="closeCriteriaPopup()"></div>
+
+  <div class="popup-overlay" *ngIf="showCriteriaPopup">
+    <div class="popup-content">
+      <app-product-crit-create
+         [popupMode]="true"
+         [criteriaType]="currentPopupType"
+        (onSaved)="onCriteriaAdded($event)"
+        (onCancel)="closeCriteriaPopup()">
+      </app-product-crit-create>
     </div>
   </div>
 
