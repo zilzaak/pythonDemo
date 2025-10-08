@@ -115,7 +115,7 @@ export class ProductCreateComponent implements OnInit, AfterViewInit {
         }
       ];
       this.opMode = 'create';
-      this.api = this.baseUrl + '/setting/product/create2';
+      this.api = this.baseUrl + '/setting/product/create';
     } else if (this.pageTitle === 'Edit') {
       this.opMode = 'edit';
       this.api = this.baseUrl + '/setting/product/update';
