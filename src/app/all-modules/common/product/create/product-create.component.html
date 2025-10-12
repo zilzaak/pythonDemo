@@ -57,34 +57,33 @@
                                       </div>
 
                                         <div class="col-md-3 form-group">
-                                            <label for="name-f" >Category * </label>
-                                            <ng-select
-                                            (keyup)="setSearch($event.target)"
-                                            (click)="setSearch($event.target)"
-                                            [items]="catOptions"
-                                            bindLabel="name"
-                                            bindValue="id"
-                                            formControlName="catId"
-                                            (search)="onBrandSearch($event,'ProductCat')"
-                                            (click)="onBrandSearch($event,'ProductCat')"
-                                            (scrollToEnd)="brandLoadMore('ProductCat')"
-                                             [loading]="catLoadingDropDown"
-                                            [clearable]="true"
-                                            [closeOnSelect]="true"
-                                            [editableSearchTerm]="false"
-                                            [addTag]="false" 
-                                            class="form-control-patch">
-                                          </ng-select>
-                                          <button 
-                                          type="button" 
-                                          class="btn btn-sm btn-outline-primary rounded-circle"
-                                          title="Add new color"
-                                          (click)="openCriteriaPopup('ProductCat')"
-                                          style="width:15px; height:15px; padding:0; display:flex;
-                                           align-items:center; justify-content:center;">
-                                          <i class="fa fa-plus"></i>
-                                        </button>
-                                    
+                                          <div class="row">
+                                            <div class="col col-sm-11">
+                                              <label for="name-f" >Category * </label>
+                                              <ng-select
+                                              (keyup)="setSearch($event.target)"
+                                              (click)="setSearch($event.target)"
+                                              [items]="catOptions"
+                                              bindLabel="name"
+                                              bindValue="id"
+                                              formControlName="catId"
+                                              (search)="onBrandSearch($event,'ProductCat')"
+                                              (click)="onBrandSearch($event,'ProductCat')"
+                                              (scrollToEnd)="brandLoadMore('ProductCat')"
+                                               [loading]="catLoadingDropDown"
+                                              [clearable]="true"
+                                              [closeOnSelect]="true"
+                                              [editableSearchTerm]="false"
+                                              [addTag]="false" 
+                                              class="form-control-patch">
+                                            </ng-select>
+                                            </div>
+                                            <div class="col col-sm-1">
+                                              <label for="name-f" ></label>
+                                               <i class="fa  fa-sm fa-plus"  (click)="openCriteriaPopup('ProductCat')">
+                                              </i>                                           
+                                            </div>
+                                          </div>                                   
                                           </div>
 
                                           <div class="col-md-3 form-group">
@@ -93,41 +92,41 @@
                                             </div>
 
                                       <div class="col-md-3 form-group">
-                                        <label for="name-f" >Brand</label>
-                                        <ng-select
-                                        (keyup)="setSearch($event.target)"
-                                        (click)="setSearch($event.target)"
-                                        [items]="brandOptions"
-                                        bindLabel="name"
-                                        bindValue="id"
-                                        formControlName="brandId"
-                                        (search)="onBrandSearch($event,'Brand')"
-                                        (click)="onBrandSearch($event,'Brand')"
-                                        (scrollToEnd)="brandLoadMore('Brand')"
-                                         [loading]="barndLoadingDropDown"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                      <button 
-                                      type="button" 
-                                      class="btn btn-sm btn-outline-primary rounded-circle"
-                                      title="Add new color"
-                                      (click)="openCriteriaPopup('Brand')"
-                                      style="width:15px; height:15px; padding:0; display:flex;
-                                       align-items:center; justify-content:center;">
-                                      <i class="fa fa-plus"></i>
-                                    </button>
-                                
+                                        <div class="row">
+                                          <div class="col col-sm-11">
+                                            <label for="name-f" >Brand</label>
+                                            <ng-select
+                                            (keyup)="setSearch($event.target)"
+                                            (click)="setSearch($event.target)"
+                                            [items]="brandOptions"
+                                            bindLabel="name"
+                                            bindValue="id"
+                                            formControlName="brandId"
+                                            (search)="onBrandSearch($event,'Brand')"
+                                            (click)="onBrandSearch($event,'Brand')"
+                                            (scrollToEnd)="brandLoadMore('Brand')"
+                                             [loading]="barndLoadingDropDown"
+                                            [clearable]="true"
+                                            [closeOnSelect]="true"
+                                            [editableSearchTerm]="false"
+                                            [addTag]="false" 
+                                            class="form-control-patch">
+                                          </ng-select>
+                                          </div>    
+                                          <div class="col col-sm-1">
+                                            <label for="name-f" ></label>
+                                            <i  class="fa  fa-sm fa-plus"
+                                            (click)="openCriteriaPopup('Brand')"></i>
+                                            </div>  
+                                        </div>                              
                                       </div>
 
 
 
                                       <div class="col-md-3 form-group">
-                                        <label for="name-f" >Model</label>
-                                           <span>
+                                        <div class="row">
+                                          <div class="col col-sm-11">
+                                            <label for="name-f" >Model</label>                                          
                                             <ng-select
                                             (keyup)="setSearch($event.target)"
                                             (click)="setSearch($event.target)"
@@ -145,108 +144,113 @@
                                             [addTag]="false" 
                                             class="form-control-patch">
                                           </ng-select>
-                                          <button 
-                                          type="button" 
-                                          class="btn btn-sm btn-outline-primary rounded-circle"
-                                          title="Add new color"
-                                          (click)="openCriteriaPopup('ProductModel')"
-                                          style="width:15px; height:15px; padding:0; display:flex;
-                                           align-items:center; justify-content:center;">
-                                          <i class="fa fa-plus"></i>
-                                        </button>
-                                      </span>
-
+                                          </div>
+                                        <div class="col col-sm-1">
+                                          <label for="name-f" ></label>  
+                                          <i class="fa fa-sm fa-plus"  
+                                          (click)="openCriteriaPopup('ProductModel')">
+                                         </i>
+                                         </div>
+                                      </div>
                                       </div>
 
+
+
                                       <div class="col-md-3 form-group">
-                                        <label for="name-f">Color</label>
-                                          <ng-select 
+                                        <div class="row">
+                                          <div class="col col-sm-11">
+                                            <label for="name-f">Color</label>
+                                            <ng-select 
+                                              (keyup)="setSearch($event.target)"
+                                              (click)="setSearch($event.target)"
+                                              [items]="colorOptions"
+                                              bindLabel="name"
+                                              bindValue="id"
+                                              formControlName="colorId"
+                                              (search)="onBrandSearch($event,'ProductColor')"
+                                              (click)="onBrandSearch($event,'ProductColor')"
+                                              (scrollToEnd)="brandLoadMore('ProductColor')"
+                                              [loading]="colorLoadingDropDown"
+                                              [clearable]="true"
+                                              [closeOnSelect]="true"
+                                              [editableSearchTerm]="false"
+                                              [addTag]="false" 
+                                              class="form-control-patch flex-grow-1">
+                                            </ng-select>
+                                          </div>
+                                          <div class="col col-sm-1">
+                                            <label for="name-f"></label>
+                                             <i class="fa fa-sm fa-plus"
+                                            (click)="openCriteriaPopup('ProductColor')">
+                                             </i>
+                                          </div>
+                                        </div>
+                                       </div>
+
+
+
+
+
+                                      <div class="col-md-3 form-group">
+                                         <div class="row">
+                                          <div class="col col-sm-11">
+                                            <label for="name-f" >Size/Dimension/Volume</label>
+                                            <ng-select
                                             (keyup)="setSearch($event.target)"
                                             (click)="setSearch($event.target)"
-                                            [items]="colorOptions"
+                                            [items]="sizeOptions"
                                             bindLabel="name"
                                             bindValue="id"
-                                            formControlName="colorId"
-                                            (search)="onBrandSearch($event,'ProductColor')"
-                                            (click)="onBrandSearch($event,'ProductColor')"
-                                            (scrollToEnd)="brandLoadMore('ProductColor')"
-                                            [loading]="colorLoadingDropDown"
+                                            formControlName="sizeId"
+                                            (search)="onBrandSearch($event,'ProductSize')"
+                                            (click)="onBrandSearch($event,'ProductSize')"
+                                            (scrollToEnd)="brandLoadMore('ProductSize')"
+                                             [loading]="sizeLoadingDropDown"
                                             [clearable]="true"
                                             [closeOnSelect]="true"
                                             [editableSearchTerm]="false"
                                             [addTag]="false" 
-                                            class="form-control-patch flex-grow-1">
+                                            class="form-control-patch">
                                           </ng-select>
-                                          <button 
-                                          type="button" 
-                                          class="btn btn-sm btn-outline-primary rounded-circle"
-                                          title="Add new color"
-                                          (click)="openCriteriaPopup('ProductColor')"
-                                          style="width:15px; height:15px; padding:0; display:flex;
-                                           align-items:center; justify-content:center;">
-                                          <i class="fa fa-plus"></i>
-                                        </button>
-                                    
+                                          </div>
+                                          <div class="col col-sm-1">
+                                            <label for="name-f" ></label>
+                                            <i class="fa fa-plus" (click)="openCriteriaPopup('ProductSize')">
+                                          </i>
+                                          </div>
+                                         </div>
                                       </div>
 
                                       <div class="col-md-3 form-group">
-                                        <label for="name-f" >Size/Dimension/Volume</label>
-                                        <ng-select
-                                        (keyup)="setSearch($event.target)"
-                                        (click)="setSearch($event.target)"
-                                        [items]="sizeOptions"
-                                        bindLabel="name"
-                                        bindValue="id"
-                                        formControlName="sizeId"
-                                        (search)="onBrandSearch($event,'ProductSize')"
-                                        (click)="onBrandSearch($event,'ProductSize')"
-                                        (scrollToEnd)="brandLoadMore('ProductSize')"
-                                         [loading]="sizeLoadingDropDown"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                      <button 
-                                      type="button" 
-                                      class="btn btn-sm btn-outline-primary rounded-circle"
-                                      title="Add new color"
-                                      (click)="openCriteriaPopup('ProductSize')"
-                                      style="width:15px; height:15px; padding:0; display:flex;
-                                       align-items:center; justify-content:center;">
-                                      <i class="fa fa-plus"></i>
-                                    </button>
-                                      </div>
-
-                                      <div class="col-md-3 form-group">
-                                        <label for="name-f" >Made With</label>
-                                        <ng-select
-                                        (keyup)="setSearch($event.target)"
-                                        (click)="setSearch($event.target)"
-                                        [items]="madeWithOptions"
-                                        bindLabel="name"
-                                        bindValue="id"
-                                        formControlName="madeWithId"
-                                        (search)="onBrandSearch($event,'MadeWith')"
-                                        (click)="onBrandSearch($event,'MadeWith')"
-                                        (scrollToEnd)="brandLoadMore('MadeWith')"
-                                         [loading]="madeLoadingDropDown"
-                                        [clearable]="true"
-                                        [closeOnSelect]="true"
-                                        [editableSearchTerm]="false"
-                                        [addTag]="false" 
-                                        class="form-control-patch">
-                                      </ng-select>
-                                      <button 
-                                      type="button" 
-                                      class="btn btn-sm btn-outline-primary rounded-circle"
-                                      title="Add new color"
-                                      (click)="openCriteriaPopup('MadeWith')"
-                                      style="width:15px; height:15px; padding:0; display:flex;
-                                       align-items:center; justify-content:center;">
-                                      <i class="fa fa-plus"></i>
-                                    </button>
+                                      
+                                          <div class="row">
+                                           <div class="col col-sm-11">
+                                            <label for="name-f" >Made With</label>
+                                            <ng-select
+                                            (keyup)="setSearch($event.target)"
+                                            (click)="setSearch($event.target)"
+                                            [items]="madeWithOptions"
+                                            bindLabel="name"
+                                            bindValue="id"
+                                            formControlName="madeWithId"
+                                            (search)="onBrandSearch($event,'MadeWith')"
+                                            (click)="onBrandSearch($event,'MadeWith')"
+                                            (scrollToEnd)="brandLoadMore('MadeWith')"
+                                             [loading]="madeLoadingDropDown"
+                                            [clearable]="true"
+                                            [closeOnSelect]="true"
+                                            [editableSearchTerm]="false"
+                                            [addTag]="false" 
+                                            class="form-control-patch">
+                                          </ng-select>
+                                           </div>
+                                           <div class="col col-sm-1">
+                                            <label for="name-f" ></label>
+                                              <i class="fa fa-sm fa-plus"
+                                            (click)="openCriteriaPopup('MadeWith')">
+                                           </i>
+                                           </div>
+                                          </div>
                                       </div>
 
 
