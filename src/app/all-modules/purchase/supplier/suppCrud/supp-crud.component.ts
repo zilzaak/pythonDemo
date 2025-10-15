@@ -66,14 +66,14 @@ export class SuppCrudComponent implements OnInit {
         }
       ];
       this.opMode = 'create';
-      this.api = this.baseUrl + '/setting/product/create2';
+      this.api = this.baseUrl + '/purchase/supplier/create';
     } else if (this.pageTitle === 'Edit') {
       this.opMode = 'edit';
-      this.api = this.baseUrl + '/setting/product/update';
+      this.api = this.baseUrl + '/purchase/supplier/update';
       this.formData(this.activeRouter.snapshot.params.id);
     } else if (this.pageTitle === 'View') {
       this.opMode = 'view';
-      this.api = this.baseUrl + '/setting/product/list';
+      this.api = this.baseUrl + '/purchase/supplier/list';
       this.formData(this.activeRouter.snapshot.params.id);
     }
   }
@@ -87,7 +87,7 @@ export class SuppCrudComponent implements OnInit {
     this.id = id;
     let org: any = localStorage.getItem('orgId');
     const para = { id: id, orgId: org };
-    this.commmonService.getWithToken(this.baseUrl + '/purchase/product/list', para).subscribe({
+    this.commmonService.getWithToken(this.baseUrl + '/purchase/supplier/list', para).subscribe({
       next: (response) => {
         this.menuOptions = [
           {
@@ -172,12 +172,8 @@ export class SuppCrudComponent implements OnInit {
           this.router.navigate(['/purchase/supplier/list']);
         } else {
           this.loading = false;
-          if (response.message.includes('Similar')) {
-            this.similarProduct = response.data.existsData;
-            this.myButton.nativeElement.click();
-          } else {
-            alert(response.message);
-          }
+          alert(response.message);
+
         }
       },
       error: () => {
