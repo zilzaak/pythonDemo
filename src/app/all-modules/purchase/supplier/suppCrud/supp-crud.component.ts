@@ -156,15 +156,16 @@ export class SuppCrudComponent implements OnInit {
 
   onSubmit() {
     if (this.opMode === 'view') return;
-    if (this.createForm.invalid) {
+    if (this.purchaseForm.invalid) {
       alert('Invalid form');
       return;
     }
     this.loading = true;
-    let payload: any = { ...this.createForm.value };
+    let payload: any = { ...this.purchaseForm.value };
+    let objList:any=payload.purchPrices;
 
     let method = this.opMode === 'create' ? 'post' : 'put';
-    this.commmonService.sendPostPutReq<any>(this.api.toString(), payload, method).subscribe({
+    this.commmonService.sendPostPutReq<any>(this.api.toString(), objList, method).subscribe({
       next: (response: any) => {
         if (response.success) {
           alert(response.message);
@@ -183,6 +184,7 @@ export class SuppCrudComponent implements OnInit {
         this.loading = false;
       }
     });
+
   }
 
   setSearch(x: any) {
