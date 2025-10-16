@@ -126,7 +126,7 @@ export class ProductCritCreateComponent implements OnInit, AfterViewInit {
       confirmSimilarity:[false]
     });
     if(this.popupMode==true){
-      this.createForm.controls['entity'].setValue(this.criteriaType);
+      this.createForm.controls['entity'].setValue(this.criteriaType.toString());
       this.createForm.controls['entity'].disable();
     }
   }
@@ -150,7 +150,10 @@ export class ProductCritCreateComponent implements OnInit, AfterViewInit {
     this.loading = true;
     let payload:any = { ...this.createForm.value };
     let method = this.opMode === 'create' ? 'post' : 'put';
-    
+
+    if(this.popupMode==true){
+      payload.entity=this.criteriaType.toString();
+    }
     this.commmonService.sendPostPutReq<any>(this.api.toString(), payload, method).subscribe({
       next: (response: any) => {
         this.loading = false;
