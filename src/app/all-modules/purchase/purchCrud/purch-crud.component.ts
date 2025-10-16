@@ -299,12 +299,13 @@ export class PurchCrudComponent implements OnInit {
 
 
   onSearch(entity: any): void {
-    const term = this.searchItem;
+    let term:any = this.searchItem;
+    if(this.searchItem==undefined || this.searchItem===''){
+      term=null;
+    }
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
     }
-
-
     this.debounceTimer = setTimeout(() => {
       this.currentPage = 1;
       if (entity === 'Organization') {
@@ -322,7 +323,10 @@ export class PurchCrudComponent implements OnInit {
   }
 
   loadMore(entity: any): void {
-    const term = this.searchItem;
+    let term:any = this.searchItem;
+    if( this.searchItem==undefined ||  this.searchItem===''){
+      term=null;
+    }
     this.currentPage++;
     let uri: string = '';
 
@@ -404,8 +408,9 @@ export class PurchCrudComponent implements OnInit {
           this.loadDropOrg = false;
         }
         if (entity === 'Supplier') {
-          this.suppList = response?.data?.listData || [];
-          this.hasMoreSupp = this.menuOptions.length === this.pageSize;
+          this.suppList=[];
+          this.suppList = response.data.listData;
+          this.hasMoreSupp = this.suppList.length === this.pageSize;
           this.loadDropSupp = false;
         }
         if (entity === 'Product') {

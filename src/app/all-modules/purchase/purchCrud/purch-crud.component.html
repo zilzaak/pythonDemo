@@ -40,7 +40,9 @@
 
               <div class="col-md-3 form-group">
                 <label for="name-f">Organization *</label>
-                <ng-select (change)="loadAllBranch()" (keyup)="setSearch($event.target)" [items]="menuOptions"
+                <ng-select (change)="loadAllBranch()" (keyup)="setSearch($event.target)"
+                (click)="setSearch($event.target)"
+                 [items]="menuOptions"
                   bindLabel="orgName" bindValue="id" formControlName="orgId" (search)="onSearch('Organization')"
                   (scrollToEnd)="loadMore('Organization')" [loading]="loadDropOrg" [clearable]="true"
                   [closeOnSelect]="true" [editableSearchTerm]="false" [addTag]="false" class="form-control-patch">
@@ -66,9 +68,13 @@
 
               <div class="col-md-3 form-group">
                 <label for="name-f">Supplier*</label>
-                <ng-select (keyup)="setSearch($event.target)" [items]="suppList" bindLabel="name" bindValue="id"
-                  formControlName="supplierId" (search)="onSearch('Supplier')" (scrollToEnd)="loadMore('Supplier')"
-                  [loading]="loadDropSupp" [clearable]="true" [closeOnSelect]="true" [editableSearchTerm]="false"
+                <ng-select (keyup)="setSearch($event.target)" [items]="suppList" 
+                  bindLabel="name" bindValue="id"
+                  formControlName="supplierId" (keyup)="onSearch('Supplier')" 
+                  (click)="onSearch('Supplier')" 
+                  (scrollToEnd)="loadMore('Supplier')"
+                  [loading]="loadDropSupp" [clearable]="true" [closeOnSelect]="true" 
+                  [editableSearchTerm]="false"
                   [addTag]="false" class="form-control-patch">
                 </ng-select>
               </div>
@@ -79,8 +85,6 @@
       &nbsp;&nbsp;
 
       <!------------select product -------------------------------------------------------------->
-      <div class="card customCard">
-        <div class="card-body" style="padding-top:0px">
           <form [formGroup]="selectForm">
             <div class="row">
              <div class="col-md-3 form-group">
@@ -95,8 +99,6 @@
               </div>
             </div>
           </form>
-        </div>
-      </div>
       &nbsp;&nbsp;
       <!-----------------------------------Selling price settings---------------------------------->
         <div class="card customCard">
