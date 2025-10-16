@@ -13,6 +13,8 @@ export class SuppCrudComponent implements OnInit {
 
   @ViewChild('myButton') myButton!: ElementRef;
 
+   errorList:any;
+   errorMessage:any;
   similarProduct: any;
   selectForm!: FormGroup;
   purchaseForm!: FormGroup;
@@ -149,11 +151,6 @@ export class SuppCrudComponent implements OnInit {
   }
 
 
-  confirmSimilarity() {
-    this.createForm.controls['confirmSimilarity'].setValue(true);
-    this.onSubmit();
-  }
-
   onSubmit() {
     if (this.opMode === 'view') return;
     if (this.purchaseForm.invalid) {
@@ -171,9 +168,10 @@ export class SuppCrudComponent implements OnInit {
           alert(response.message);
           this.router.navigate(['/purchase/supplier/list']);
         } else {
+          this.errorMessage=response.message;
+          this.errorList=response.data;
           this.loading = false;
-          alert(response.message);
-
+          this.myButton.nativeElement.click();
         }
       },
       error: () => {

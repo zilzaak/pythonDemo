@@ -158,6 +158,7 @@ export class SupplierListComponent implements OnInit {
     params.commonField=this.searchForm.value.commonField;
   }
 
+
     this.commonService.getWithToken('http://localhost:8000/purchase/supplier/list', params)
       .subscribe({
         next: (response) => {
