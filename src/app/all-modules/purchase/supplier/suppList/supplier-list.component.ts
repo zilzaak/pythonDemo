@@ -47,8 +47,7 @@ export class SupplierListComponent implements OnInit {
   initForm(){
 
     this.searchForm=this.formBuilder.group({
-      name:[''],
-      branchId:[''],
+      commonField:[''],
       orgId:[Number(localStorage.getItem('orgId'))]
     })
   }
@@ -154,17 +153,12 @@ export class SupplierListComponent implements OnInit {
     params.orgId=this.searchForm.value.orgId;
   }
 
-  if(this.searchForm.value.name && this.searchForm.value.name!=null && this.searchForm.value.name!==''
+  if(this.searchForm.value.commonField && this.searchForm.value.commonField!=null && this.searchForm.value.commonField!==''
   ){
-    params.name=this.searchForm.value.name;
+    params.commonField=this.searchForm.value.commonField;
   }
 
-  if(this.searchForm.value.branchId && this.searchForm.value.branchId!=null && this.searchForm.value.branchId!==''
-  ){
-    params.branchId=this.searchForm.value.branchId;
-  }
-  
-    this.commonService.getWithToken('http://localhost:8000/inventory/list', params)
+    this.commonService.getWithToken('http://localhost:8000/purchase/supplier/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];

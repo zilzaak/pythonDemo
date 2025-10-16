@@ -25,8 +25,8 @@
   
                  <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus">
-                      <label class="focus-label">Organization</label>
-                      <ng-select  [items]="menuOptions"
+                      <ng-select  [items]="menuOptions" 
+                      aria-placeholder="Organization"
                       bindLabel="name"
                       bindValue="id"
                       formControlName="orgId"
@@ -37,31 +37,16 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-md-3">
-                  <label for="name-f" >Branch</label>
-                  <ng-select
-                  (keyup)="setBranchId($event.target)"
-                  (click)="setBranchId($event.target)"
-                  [items]="branchOptions"
-                  bindLabel="name"
-                  bindValue="id"
-                  formControlName="branchId"
-                  (search)="onSearchBranch()"
-                  (click)="onSearchBranch()"
-                  (scrollToEnd)="loadMoreBranch()"
-                   [loading]="loadDropdownBranch"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  [editableSearchTerm]="false"
-                  [addTag]="false" 
-                  (change)="getList()"
-                  class="form-control-patch">
-                </ng-select>
+                <div class="col-sm-6 col-md-5">
+                  <div class="form-group form-focus">
+                    <input  placeholder="Phone or Name or Address" formControlName="commonField" class="form-control"  type="text" />                
                   </div>
+              </div>
+
   
                 <div class="col-sm-6 col-md-2">
                   <div class="form-group form-focus">
-                      <button class="btn btn-md btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
+                      <button class="btn btn-md btn-succes" (click)="getList()"><i class="fas fa-search"></i></button>              
                   </div>
               </div> 
             </div>
@@ -106,11 +91,10 @@
           <thead>
             <tr>
               <th>SL</th>
-              <th>Inventory</th>
-              <th>Phone</th>
-              <th>Branch</th>
-              <th>Branch Address</th>
+              <th>Name</th>
               <th>Organization</th>
+              <th>Phone</th>
+              <th>Addres</th>
               <th>Others</th>
               <th>Operation</th>
 
@@ -120,15 +104,14 @@
             <tr *ngFor="let x of listData; index as i">
               <td>{{ i + 1 }}</td>
               <td>{{ x.name}}</td>
-              <td>{{x.phone}}</td>
-              <td>{{ x.branch.name}}</td>
-              <td>{{ x.branch.address}}</td>
-              <td>{{ x.org.name}}</td>
+              <td>{{x.orgName}}</td>
+              <td>{{ x.phone}}</td>
+              <td>{{ x.address}}</td>
               <td>{{ x.others}}</td>    
               <td class="compact-cell">
                 <span> 
-                  <a  routerLink="/inventory/edit/{{x.id}}"><i class="fas fa-edit"></i></a> &nbsp;
-                  <a  routerLink="/inventory/view/{{x.id}}"><i class="fas fa-eye"></i></a>&nbsp;
+                  <a  routerLink="/purchase/supplier/edit/{{x.id}}"><i class="fas fa-edit"></i></a> &nbsp;
+                  <a  routerLink="/purchase/supplier/view/{{x.id}}"><i class="fas fa-eye"></i></a>&nbsp;
                   <button  (click)="deleteMenu(x.id)">Del</button>
                 </span>
               </td>
