@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonServiceService } from 'src/app/all-modules/commonService/common-service.service';
@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SuppCrudComponent implements OnInit {
 
-  @ViewChild('myButton') myButton!: ElementRef;
+  @ViewChild('suppButton') suppButton!: ElementRef;
 
    errorList:any;
    errorMessage:any;
@@ -48,6 +48,23 @@ export class SuppCrudComponent implements OnInit {
    pricePayable:any=0; 
    totalDiscount:any=0;
    totalVat:any=0;
+
+     @Output() onSaved = new EventEmitter<any>();
+     @Output() onCancel = new EventEmitter<void>();
+   
+     @Input() popupMode: boolean = false;
+     @Input() criteriaType: string = '';
+     newCriteria = { id: 0, name: '' };
+   
+     save() {
+       // You can call API or logic here
+       this.onSaved.emit(this.newCriteria);
+     }
+   
+     cancel() {
+       this.onCancel.emit();
+     }
+     
   constructor(
     private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,
@@ -82,7 +99,7 @@ export class SuppCrudComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    console.log('Button element:', this.myButton.nativeElement);
+    console.log('Button element:', this.suppButton.nativeElement);
   }
 
   formData(id: any) {
@@ -168,12 +185,19 @@ export class SuppCrudComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           alert(response.message);
-          this.router.navigate(['/purchase/supplier/list']);
+          if(this.popupMode==false){
+            this.router.navigate(['/purchase/supplier/list']);
+          }
+          if(this.popupMode==true){
+            this.onSaved.emit(response.data);
+            this.onCancel.emit();
+          }
+          this.loading = false;
         } else {
           this.errorMessage=response.message;
           this.errorList=response.data;
           this.loading = false;
-          this.myButton.nativeElement.click();
+          this.suppButton.nativeElement.click();
         }
       },
       error: () => {

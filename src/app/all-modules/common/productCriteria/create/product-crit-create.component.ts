@@ -159,12 +159,10 @@ export class ProductCritCreateComponent implements OnInit, AfterViewInit {
         this.loading = false;
         if (response.success) {
           alert(response.message);
-  
           if (this.popupMode) {
-            // **Popup scenario**: just emit the new item to parent
             this.onSaved.emit(response.data); // you may need to adapt data
+            this.cancel();
           } else {
-            // **Standalone scenario**: navigate to list
             this.router.navigate(['/setting/productCrit/list']);
           }
   

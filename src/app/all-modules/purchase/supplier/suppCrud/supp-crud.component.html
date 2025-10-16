@@ -18,7 +18,7 @@
           </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-          <a id="backBtn" [routerLink]="['/purchase/supplier/list']" class="btn btn-sm btn-outline-secondary">
+          <a *ngIf="popupMode==false" id="backBtn" [routerLink]="['/purchase/supplier/list']" class="btn btn-sm btn-outline-secondary">
             <i class="fas fa-times me-1"></i> Back
           </a>
         </div>
@@ -114,7 +114,7 @@
     <!-- simple-modal.component.html -->
   
     <!-- Button to trigger modal -->
-    <button #myButton type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal"
+    <button #suppButton type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal"
       data-bs-target="#exampleModal">
       Open Modal
     </button>

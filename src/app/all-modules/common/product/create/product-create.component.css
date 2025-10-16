@@ -245,7 +245,9 @@ loader style*/
   pointer-events: auto;
 }
 
-/* popup styling */
+
+
+/*pop up moderl for instantly create drop down value */
 /* Full screen semi-transparent background */
 .popup-backdrop {
   position: fixed;
@@ -256,8 +258,6 @@ loader style*/
   background: rgba(0,0,0,0.5);
   z-index: 1050; /* above everything else */
 }
-
-/* Centered overlay container */
 .popup-overlay {
   position: fixed;
   top: 50%;

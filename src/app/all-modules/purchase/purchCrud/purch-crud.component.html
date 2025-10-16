@@ -79,16 +79,29 @@
               </div>
 
               <div class="col-md-3 form-group">
-                <label for="name-f">Supplier*</label>
-                <ng-select (keyup)="setSearch($event.target)" [items]="suppList" 
-                  bindLabel="name" bindValue="id"
-                  formControlName="supplierId" (keyup)="onSearch('Supplier')" 
-                  (click)="onSearch('Supplier')" 
-                  (scrollToEnd)="loadMore('Supplier')"
-                  [loading]="loadDropSupp" [clearable]="true" [closeOnSelect]="true" 
-                  [editableSearchTerm]="false"
-                  [addTag]="false" class="form-control-patch">
-                </ng-select>
+                <div class="row">
+<div class="col col-sm-11">
+  <label for="name-f">Supplier*</label>
+  <ng-select (keyup)="setSearch($event.target)" [items]="suppList" 
+    bindLabel="name" bindValue="id"
+    formControlName="supplierId" (keyup)="onSearch('Supplier')" 
+    (click)="onSearch('Supplier')" 
+    (scrollToEnd)="loadMore('Supplier')"
+    [loading]="loadDropSupp" [clearable]="true" [closeOnSelect]="true" 
+    [editableSearchTerm]="false"
+    [addTag]="false" class="form-control-patch">
+  </ng-select>
+</div>
+<div class="col col-sm-1">          
+  <label for="name-f"></label>
+   <i class="fa fa-sm fa-plus"
+  (click)="openCriteriaPopup('Supplier')">
+   </i>
+</div>
+ </div>
+
+
+
               </div>
             </div>
           </form>
@@ -255,7 +268,7 @@
   <!-- simple-modal.component.html -->
 
   <!-- Button to trigger modal -->
-  <button #myButton type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal"
+  <button #prchButton type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal"
     data-bs-target="#exampleModal">
     Open Modal
   </button>
@@ -297,6 +310,20 @@
       </div>
     </div>
   </div>
+
+<!----------------including pop up model to create suplier instantly----------------------------->
+<div class="popup-backdrop" *ngIf="showCriteriaPopup" (click)="closeCriteriaPopup()"></div>
+
+<div class="popup-overlay" *ngIf="showCriteriaPopup">
+  <div class="popup-content">
+    <app-supp-crud
+       [popupMode]="true"
+       [criteriaType]="currentPopupType"
+      (onSaved)="onCriteriaAdded($event)"
+      (onCancel)="closeCriteriaPopup()">
+    </app-supp-crud>
+  </div>
+</div>
 
 
 </div>

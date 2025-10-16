@@ -10,7 +10,7 @@ import { CommonServiceService } from '../../commonService/common-service.service
   styleUrls: ['./purch-crud.component.css']
 })
 export class PurchCrudComponent implements OnInit {
-  @ViewChild('myButton') myButton!: ElementRef;
+  @ViewChild('prchButton') prchButton!: ElementRef;
 
   similarProduct: any;
   selectForm!: FormGroup;
@@ -54,6 +54,27 @@ export class PurchCrudComponent implements OnInit {
     private router: Router
   ) { }
 
+  showCriteriaPopup: boolean = false;
+  currentPopupType: string = ''; // store which dropdown triggered the popup
+   openCriteriaPopup(type: string) {
+    this.currentPopupType = type; 
+    this.showCriteriaPopup = true;
+  }
+  
+  closeCriteriaPopup() {
+    this.showCriteriaPopup = false;
+  }
+
+
+  onCriteriaAdded(newItem: any) {
+    this.showCriteriaPopup = false;
+    switch(this.currentPopupType) {
+      case '':
+        this.suppList.push(newItem);
+        break;
+    }
+  }
+
   ngOnInit(): void {
     this.stocks.push(50,50,450,120,22,45);
     this.initializeForm();
@@ -95,7 +116,7 @@ export class PurchCrudComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    console.log('Button element:', this.myButton.nativeElement);
+    console.log('Button element:', this.prchButton.nativeElement);
   }
 
   formData(id: any) {
@@ -236,7 +257,7 @@ export class PurchCrudComponent implements OnInit {
           this.loading = false;
           if (response.message.includes('Similar')) {
             this.similarProduct = response.data.existsData;
-            this.myButton.nativeElement.click();
+            this.prchButton.nativeElement.click();
           } else {
             alert(response.message);
           }
