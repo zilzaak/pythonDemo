@@ -87,18 +87,17 @@ export class SuppCrudComponent implements OnInit {
 
   formData(id: any) {
     this.id = id;
-    let org: any = localStorage.getItem('orgId');
-    const para = { id: id, orgId: org };
+    const para = { id: id };
     this.commmonService.getWithToken(this.baseUrl + '/purchase/supplier/list', para).subscribe({
       next: (response) => {
         this.menuOptions = [
-          {
-            id: Number(localStorage.getItem('orgId')),
-            orgName: localStorage.getItem('orgName')
+          {id: Number(localStorage.getItem('orgId')),
+          orgName: localStorage.getItem('orgName')
           }
         ];
         let resp: any = response.data.listData[0];
-        this.createForm.patchValue(resp);
+        this.allPurchs.insert(0, this.sellPriceCreate(resp));
+        this.allPurchs.removeAt(1);
         if (this.opMode === 'view') {
           this.createForm.disable();
           this.purchaseForm.disable();
@@ -129,11 +128,11 @@ export class SuppCrudComponent implements OnInit {
      })
     }else{
       return this.formBuilder.group({
-        id:[''],
-        orgId:['',Validators.required],
-        name:['',Validators.required],
-        phone:[''],
-        address:['',Validators.required],
+        id:[obj.id],
+        orgId:[obj.orgId],
+        name:[obj.name],
+        phone:[obj.phone],
+        address:[obj.address],
      })
     }
 
@@ -153,13 +152,16 @@ export class SuppCrudComponent implements OnInit {
 
   onSubmit() {
     if (this.opMode === 'view') return;
-    if (this.purchaseForm.invalid) {
-      alert('Invalid form');
-      return;
-    }
+
     this.loading = true;
     let payload: any = { ...this.purchaseForm.value };
     let objList:any=payload.purchPrices;
+
+    if (this.purchaseForm.invalid || objList.length<1) {
+      this.loading = false;
+      alert('Invalid form');
+      return;
+    }
 
     let method = this.opMode === 'create' ? 'post' : 'put';
     this.commmonService.sendPostPutReq<any>(this.api.toString(), objList, method).subscribe({
