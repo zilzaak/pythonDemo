@@ -114,10 +114,12 @@
             <div class="row">
              <div class="col-md-3 form-group">
                 <label for="name-f">Search Product </label>
-                <ng-select style="width: 500px;" (keyup)="setSearch($event.target)" [items]="products"
+                <ng-select style="width: 500px;" (keyup)="setSearch($event.target)"
+                 [items]="products"
                 (click)="onSearch('Product')"
+                (keyup)="onSearch('Product')"
                 (change)="setProductDetails($event)"
-                  bindLabel="productName" bindValue="id" formControlName="product" (search)="onSearch('Product')"
+                  bindLabel="productName" bindValue="id" formControlName="product" 
                   (scrollToEnd)="loadMore('Product')" [loading]="loadDropPro" [clearable]="true"
                   [closeOnSelect]="true" [editableSearchTerm]="false" [addTag]="false" class="form-control-patch">
                 </ng-select>
@@ -264,9 +266,6 @@
 
   <!-- /Delete Modal -->
   <br />
-
-  <!-- simple-modal.component.html -->
-
   <!-- Button to trigger modal -->
   <button #prchButton type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal"
     data-bs-target="#exampleModal">
