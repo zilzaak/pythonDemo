@@ -248,11 +248,11 @@ export class PurchCrudComponent implements OnInit {
     let method = this.opMode === 'create' ? 'post' : 'put';
     this.commmonService.sendPostPutReq<any>(this.api.toString(), payload, method).subscribe({
       next: (response: any) => {
+        this.loading = false;
         if (response.success) {
           alert(response.message);
           this.router.navigate(['/common/product/list']);
         } else {
-          this.loading = false;
           if (response.message.includes('Similar')) {
             this.similarProduct = response.data.existsData;
             this.prchButton.nativeElement.click();
