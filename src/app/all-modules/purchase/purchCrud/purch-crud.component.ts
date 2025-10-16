@@ -147,12 +147,10 @@ export class PurchCrudComponent implements OnInit {
   initializeForm() {
     this.createForm = this.formBuilder.group({
       id: [null],
-      name: ['', [Validators.required, Validators.maxLength(100)]],
       orgId: [Number(localStorage.getItem('orgId')), [Validators.required, Validators.maxLength(100)]],
       branchId: [null],
       inventoryId: [''],
       supplierId: [''],
-      description: ['', [Validators.maxLength(500)]],
       confirmSimilarity: [false]
     });
     this.selectForm=this.formBuilder.group({
