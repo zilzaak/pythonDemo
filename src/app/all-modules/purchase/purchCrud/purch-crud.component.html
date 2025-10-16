@@ -52,16 +52,28 @@
 
               <div class="col-md-3 form-group">
                 <label for="name-f">Branch*</label>
-                <ng-select (change)="loadInventory()" [items]="branchList" bindLabel="name" bindValue="id"
-                  formControlName="branchId" [clearable]="true" [closeOnSelect]="true" [editableSearchTerm]="false"
+                <ng-select 
+                [items]="branchList" bindLabel="name" 
+                bindValue="id"
+                  formControlName="branchId" [clearable]="true" 
+                  [closeOnSelect]="true" 
+                  [editableSearchTerm]="false"
                   [addTag]="false" class="form-control-patch">
                 </ng-select>
               </div>
 
               <div class="col-md-3 form-group">
                 <label for="name-f">Receiving Inventory*</label>
-                <ng-select [items]="invList" bindLabel="name" bindValue="id" formControlName="inventoryId"
-                  [clearable]="true" [closeOnSelect]="true" [editableSearchTerm]="false" [addTag]="false"
+                <ng-select [items]="invList"  
+                  (keyup)="setSearch($event.target)"
+                  (keyup)="onSearch('Inventory')" 
+                  (click)="onSearch('Inventory')"
+                  (scrollToEnd)="loadMore('Inventory')"
+                  bindLabel="name" bindValue="id" 
+                  formControlName="inventoryId"
+                  [loading]="loadInv"
+                  [clearable]="true" [closeOnSelect]="true" 
+                  [editableSearchTerm]="false" [addTag]="false"
                   class="form-control-patch">
                 </ng-select>
               </div>

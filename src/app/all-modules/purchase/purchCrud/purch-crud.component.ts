@@ -23,12 +23,14 @@ export class PurchCrudComponent implements OnInit {
   loading = false;
   listData: any[] = [];
   loadDropOrg = false;
+  loadInv=false;
   loadDropSupp = false;
   loadDropPro = false;
   currentPage = 1;
   pageSize = 10;
   hasMore = true;
   hasMoreSupp = true;
+  hasMoreInv=true;
   hasMorePro = true;
   menuOptions: any[] = [];
   products: any[] = [];
@@ -91,19 +93,6 @@ export class PurchCrudComponent implements OnInit {
     });
   }
 
-  loadInventory() {
-    let org: any = this.createForm.value.orgId;
-    let branch: any = this.createForm.value.branchId;
-    const para = { orgId: org, branchId: branch, dropDown: "need", pageNum: 1, pageSize: 50 };
-    this.commmonService.getWithToken(this.baseUrl + '/inventory/list', para).subscribe({
-      next: (response) => {
-        this.invList = response.data.listData;
-      },
-      error: (err) => {
-        console.error('Failed to load data', err);
-      }
-    });
-  }
 
   ngAfterViewInit() {
     console.log('Button element:', this.myButton.nativeElement);
@@ -317,6 +306,9 @@ export class PurchCrudComponent implements OnInit {
       if (entity === 'Product') {
         this.hasMorePro = true;
       }
+      if (entity === 'Inventory') {
+        this.hasMoreInv = true;
+      }
 
       this.performSearch(term, entity);
     }, 300);
@@ -389,16 +381,24 @@ export class PurchCrudComponent implements OnInit {
       this.loadDropPro = true;
       uri = this.baseUrl + '/setting/product/list';
     }
+    if (entity === 'Inventory') {
+      this.loadInv = true;
+      uri = this.baseUrl + '/inventory/list';
+    }
 
     let params: any = {
-      commonField: term,
       dropDown: 'dropDown',
+      branchId:this.createForm.value.branchId,
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString(),
       entity: entity,
       name:term,
       orgId:this.createForm.value.orgId
     };
+
+    if(term!=null){
+     params.commonField=term;
+    }
 
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
@@ -417,6 +417,12 @@ export class PurchCrudComponent implements OnInit {
           this.products = response?.data?.listData || [];
           this.hasMorePro = this.products.length === this.pageSize;
           this.loadDropPro = false;
+        }
+        if (entity === 'Inventory') {
+          this.invList = [];
+          this.invList=response?.data?.listData;
+          this.hasMoreInv = this.invList.length === this.pageSize;
+          this.loadInv = false;
         }
       },
       error: (err) => {
