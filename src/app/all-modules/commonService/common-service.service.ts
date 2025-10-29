@@ -30,7 +30,7 @@ export class CommonServiceService {
 
   // Existing method (for reference)
   getMenu() {
-    return this.getWithToken('http://localhost:8000/base/permittedModule/getMenu');
+    return this.getWithToken(this.baseUrl+'/base/permittedModule/getMenu');
   }
 
  public sendPostPutReq<T>(apiURL:any, data: any,method:any): Observable<T>{

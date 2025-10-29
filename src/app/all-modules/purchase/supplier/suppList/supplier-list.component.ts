@@ -159,7 +159,7 @@ export class SupplierListComponent implements OnInit {
   }
 
 
-    this.commonService.getWithToken('http://localhost:8000/purchase/supplier/list', params)
+    this.commonService.getWithToken(this.baseUrl+'/purchase/supplier/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];

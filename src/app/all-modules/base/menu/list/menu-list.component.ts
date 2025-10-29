@@ -101,7 +101,7 @@ export class MenuListComponent implements OnInit {
     params.frontendUrl=this.searchForm.value.frontendUrl;
   }
 
-    this.commonService.getWithToken('http://localhost:8000/base/module/list', params)
+    this.commonService.getWithToken(this.baseUrl+'/base/module/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];

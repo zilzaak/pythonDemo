@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    baseUrl: 'http://localhost:9001/dpe',
+    baseUrl: 'http://172.23.133.242:8000/',
     //baseUrl:'http://192.168.134.88:9001/hrms_api',
     //baseUrl:'http://192.168.0.105:9001/hrms_api',
     //baseUrl:'https://smart-hrms.waltonbd.com/smart_hrms_api',

@@ -81,7 +81,7 @@ export class ProductCritComponent implements OnInit {
   }
 
 
-    this.commonService.getWithToken('http://localhost:8000/setting/productCriteria/list', params)
+    this.commonService.getWithToken(this.baseUrl+'/setting/productCriteria/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];

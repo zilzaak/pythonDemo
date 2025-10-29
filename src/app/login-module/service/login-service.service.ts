@@ -21,7 +21,7 @@ export class LoginServiceService {
   constructor(private http: HttpClient, private router: Router,) { }
 
   public generateToken(loginData: any) {
-    return this.http.post('http://localhost:8000/auth/getToken', loginData);
+    return this.http.post('http://172.23.133.242:8000/auth/getToken', loginData);
   }
 
   public getMenu(): Observable<any> {
@@ -30,7 +30,7 @@ export class LoginServiceService {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
-    return this.http.get<any>('http://localhost:8000/base/permittedModule/getMenu', { headers })
+    return this.http.get<any>('http://172.23.133.242:8000/base/permittedModule/getMenu', { headers })
       .pipe(retry(3));
   }
 

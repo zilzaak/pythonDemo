@@ -165,7 +165,7 @@ export class PurchListComponent implements OnInit {
     params.branchId=this.searchForm.value.branchId;
   }
   
-    this.commonService.getWithToken('http://localhost:8000/inventory/list', params)
+    this.commonService.getWithToken(this.baseUrl+'/inventory/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];

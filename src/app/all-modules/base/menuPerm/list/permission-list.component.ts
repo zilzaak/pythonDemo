@@ -137,7 +137,7 @@ this.uvalue=x.value
   console.log("params vaue is ");
   console.log(params);
 
-    this.commonService.getWithToken('http://localhost:8000/base/permittedModule/list', params)
+    this.commonService.getWithToken(this.baseUrl+'/base/permittedModule/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];

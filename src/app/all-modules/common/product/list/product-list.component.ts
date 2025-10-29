@@ -149,7 +149,7 @@ export class ProductListComponent implements OnInit {
   ){
     params.name=this.searchForm.value.name;
   }
-    this.commonService.getWithToken('http://localhost:8000/setting/product/list', params)
+    this.commonService.getWithToken(this.baseUrl+'/setting/product/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];

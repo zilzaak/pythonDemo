@@ -80,7 +80,7 @@ export class OrganizationComponent implements OnInit {
     params.orgId=Number(localStorage.getItem('orgId'))
   }
 
-    this.commonService.getWithToken('http://localhost:8000/base/organization/list', params)
+    this.commonService.getWithToken(this.baseUrl+'/base/organization/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];
