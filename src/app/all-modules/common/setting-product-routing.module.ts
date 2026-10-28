@@ -7,11 +7,11 @@ import { ProductCreateComponent } from './product/create/product-create.componen
 
 
 const routes: Routes = [ {
-    path: 'productCrit/create',component: ProductCritCreateComponent,
+    path: 'productCriteria/create',component: ProductCritCreateComponent,
     data: { title: 'Create' },
   },
     {
-      path: 'productCrit/list', component: ProductCritComponent,
+      path: 'productCriteria/list', component: ProductCritComponent,
       data: { title: 'List' },
     },
     {

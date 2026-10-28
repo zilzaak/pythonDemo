@@ -16,6 +16,8 @@ import { OrganizationComponent } from './org/list/organization.component';
 import { OrgCreateComponent } from './org/create/org-create.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { BranchComponent } from './branch/create/branch.component';
+import { BranchlistComponent } from './branch/list/branchlist.component';
 
 
 
@@ -28,6 +30,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     PermissionListComponent, PermissionCreateComponent,
      OrganizationComponent,
      OrgCreateComponent,
+     BranchComponent,
+     BranchlistComponent,
   ],
   imports: [
     CommonModule,

@@ -10,6 +10,8 @@ import { PermissionListComponent } from './menuPerm/list/permission-list.compone
 import { PermissionCreateComponent } from './menuPerm/create/permission-create.component';
 import { OrgCreateComponent } from './org/create/org-create.component';
 import { OrganizationComponent } from './org/list/organization.component';
+import { BranchComponent } from './branch/create/branch.component';
+import { BranchlistComponent } from './branch/list/branchlist.component';
 
 const routes: Routes = [
 
@@ -111,20 +113,20 @@ const routes: Routes = [
     data: { title: 'List' ,entity:'Organization'},
   },
   {
-    path: 'branch/create', component: OrgCreateComponent,
+    path: 'branch/create', component: BranchComponent,
     data: { title: 'Create' , entity:'Branch'},
   },
   {
-    path: 'branch/view/:id', component: OrgCreateComponent,
+    path: 'branch/view/:id', component: BranchComponent,
     data: { title: 'View' , entity:'Branch'},
   },
 
   {
-    path: 'branch/edit/:id', component: OrgCreateComponent,
+    path: 'branch/edit/:id', component: BranchComponent,
     data: { title: 'Edit' , entity:'Branch'},
   },
   {
-    path: 'branch/list', component: OrganizationComponent,
+    path: 'branch/list', component: BranchlistComponent,
     data: { title: 'List' , entity:'Branch' },
   },
 

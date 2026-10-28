@@ -72,7 +72,6 @@ export class ProductListComponent implements OnInit {
 
   uvalue:any;
   mvalue:any;
-
   constructor(private commonService:CommonServiceService,  
       private formBuilder: FormBuilder,
     private loginService:LoginServiceService) { }
@@ -96,6 +95,11 @@ export class ProductListComponent implements OnInit {
       orgId:[Number(localStorage.getItem('orgId'))]
     })
   }
+
+
+  redirectToAuthServer() {
+  window.location.href = 'http://localhost:4500/setting/product/list';
+}
 
   getPageRange(): number[] {
     const maxVisiblePages = 5;

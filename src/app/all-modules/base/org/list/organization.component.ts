@@ -24,21 +24,17 @@ export class OrganizationComponent implements OnInit {
   totalItems = 0;
   totalPages = 0;
   pageTitle: any;
-  entity: any;
 
   constructor(private commonService:CommonServiceService, 
-        private activeRouter: ActivatedRoute, 
+      private activeRouter: ActivatedRoute, 
       private formBuilder: FormBuilder,) { }
 
  ngOnInit(): void {
-  this.pageTitle = this.activeRouter.snapshot.data['title'];
-  this.entity = this.activeRouter.snapshot.data['entity'];
  this.initForm();
  this.loadPage(1);
   }
 
   initForm(){
-
     this.searchForm=this.formBuilder.group({
       commonField:[''],
       orgId:['']
@@ -66,7 +62,6 @@ export class OrganizationComponent implements OnInit {
   params = {
     pageNum: page.toString(),
     pageSize: this.pageSize.toString(),
-    entity:this.entity,
   };
   console.log("form value is ");
   console.log( this.searchForm.value);
@@ -76,10 +71,8 @@ export class OrganizationComponent implements OnInit {
     params.commonField=this.searchForm.value.commonField;
   }
 
-  if(this.entity==='Branch'){
-    params.orgId=Number(localStorage.getItem('orgId'))
-  }
-
+  params.orgId=Number(localStorage.getItem('orgId'))
+  
     this.commonService.getWithToken(this.baseUrl+'/base/organization/list', params)
       .subscribe({
         next: (response) => {

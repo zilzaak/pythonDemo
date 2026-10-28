@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginServiceService {
 
-  baseUrl = environment?.baseUrl;
+  baseUrl:string = environment?.baseUrl.toString();
   private userData:any={
     menuList:[],
     orgList:[]
@@ -21,7 +21,8 @@ export class LoginServiceService {
   constructor(private http: HttpClient, private router: Router,) { }
 
   public generateToken(loginData: any) {
-    return this.http.post('http://172.23.133.242:8000/auth/getToken', loginData);
+    let url:string=this.baseUrl+'/auth/getToken';
+    return this.http.post(url, loginData);
   }
 
   public getMenu(): Observable<any> {
@@ -30,7 +31,9 @@ export class LoginServiceService {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
-    return this.http.get<any>('http://172.23.133.242:8000/base/permittedModule/getMenu', { headers })
+    let url:string=this.baseUrl+'/base/permittedModule/getMenu';
+
+    return this.http.get<any>(url, { headers })
       .pipe(retry(3));
   }
 

@@ -9,6 +9,10 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "scripts": {
+  "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve",
+  "build": "set NODE_OPTIONS=--openssl-legacy-provider && ng build"
+},
   "private": true,
   "dependencies": {
     "@angular/animations": "^11.2.14",

@@ -34,7 +34,6 @@ export class OrgCreateComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.pageTitle = this.activeRouter.snapshot.data['title'];
-    this.entity = this.activeRouter.snapshot.data['entity'];
     if(this.pageTitle==='View' || this.pageTitle==='Edit'){
     this.getFormData(this.activeRouter.snapshot.params.id);
     }
@@ -55,23 +54,11 @@ export class OrgCreateComponent implements OnInit {
   getFormData(id:any){
     let api=this.baseUrl+"/base/organization/list"
     let params:any={ };
-    if(this.entity==='Organization'){
         params.id=id,
         params.entity=this.entity
-    };
-    if(this.entity==='Branch'){
-      params.id=id,
-      params.orgId=Number(localStorage.getItem('orgId')),
-      params.entity=this.entity
-  };
-  
     this.commmonService.getWithToken(api,params).subscribe(
       { next: (response) => {
         this.createForm.patchValue(response?.data?.listData[0]);
-        if(this.entity==='Branch'){
-        this.menuOptions=[{orgName:response?.data?.listData[0].orgName ,
-           id:response?.data?.listData[0].orgId}];
-        }
         if(this.pageTitle==='View'){
           this.createForm.disable();
         }
@@ -181,13 +168,7 @@ export class OrgCreateComponent implements OnInit {
     this.commmonService.sendPostPutReq<any>(apiUrl, org,this.method).subscribe({
       next: (response: any) => {
         if (response.success) {
-          if(this.entity==='Organization'){
             this.router.navigate(['/base/organization/list']);
-          }
-          if(this.entity==='Branch'){
-            this.router.navigate(['/base/branch/list']);
-          }
-
         } else {
           alert(response.message);
         }
