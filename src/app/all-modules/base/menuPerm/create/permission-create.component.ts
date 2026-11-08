@@ -211,7 +211,7 @@ export class PermissionCreateComponent implements OnInit {
      loadMethod:"loadMethod"
     }
 
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         if(menu==='menu'){
@@ -268,7 +268,7 @@ this.username=k.username;
       this.loadingDropdown = true;
     }
 
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     let params: any={
       menu: term,
       loadMethod:"loadMethod",

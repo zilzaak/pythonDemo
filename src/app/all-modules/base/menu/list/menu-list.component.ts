@@ -101,7 +101,7 @@ export class MenuListComponent implements OnInit {
     params.frontendUrl=this.searchForm.value.frontendUrl;
   }
 
-    this.commonService.getWithToken(this.baseUrl+'/base/module/list', params)
+    this.commonService.getWithToken(this.baseUrl+'/base/menu/list', params)
       .subscribe({
         next: (response) => {
           this.listData = response.data.listData || [];
@@ -188,7 +188,7 @@ export class MenuListComponent implements OnInit {
        loadMethod:"loadMethod"
       }
   
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     this.commonService.getWithToken(uri, params).subscribe({
       next: (response) => {
           this.urlOptions = response?.data?.listData || [];
@@ -217,7 +217,7 @@ export class MenuListComponent implements OnInit {
        menuSearch:"menuSearch"
       }
    
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     this.commonService.getWithToken(uri, params).subscribe({
       next: (response) => {
           this.menuOptions = response?.data?.listData || [];
@@ -235,7 +235,7 @@ export class MenuListComponent implements OnInit {
 private performSearchm(): void {
   console.log("performSearchm()()")
 this.loadingDropdownm = true;
-let uri=this.baseUrl+"/base/module/list";
+let uri=this.baseUrl+"/base/menu/list";
 let params: any;
   params={
     menu: this.mvalue,
@@ -261,7 +261,7 @@ error: (err) => {
 
   private performSearchu(): void {
       this.loadingDropdownu = true;  
-    let uri=this.baseUrl+"/base/module/list";  
+    let uri=this.baseUrl+"/base/menu/list";  
     let params: any;
       params={
         menu: this.uvalue,
@@ -295,7 +295,7 @@ error: (err) => {
         let formData:any={
           id:x
         };
-          this.commonService.sendDeleteRequest(this.baseUrl+"/base/module/delete",formData).subscribe({
+          this.commonService.sendDeleteRequest(this.baseUrl+"/base/menu/delete",formData).subscribe({
           next: (response: any) => {
             if (response.success) {
               alert(response.message);

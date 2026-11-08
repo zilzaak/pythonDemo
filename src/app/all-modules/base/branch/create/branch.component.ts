@@ -20,6 +20,7 @@ export class BranchComponent implements OnInit {
   method:any;
   api:any;
   pageSize = 10;
+  orgId!:number;
   constructor(private commmonService: CommonServiceService,
     private formBuilder: FormBuilder,
     private activeRouter: ActivatedRoute,
@@ -38,7 +39,6 @@ export class BranchComponent implements OnInit {
     if(this.pageTitle==='View' || this.pageTitle==='Edit'){
     this.getFormData(this.activeRouter.snapshot.params.id);
     }
-
     if(this.pageTitle==='Edit'){
       this.api="/base/branch/update";
       this.method="put";
@@ -56,16 +56,13 @@ export class BranchComponent implements OnInit {
     let api=this.baseUrl+"/base/branch/list"
     let params:any={ };
       params.id=id,
-      params.orgId=Number(localStorage.getItem('orgId')),
+      params.orgId=this.orgId,
       params.entity=this.entity
-  
-  
     this.commmonService.getWithToken(api,params).subscribe(
       { next: (response) => {
         this.createForm.patchValue(response?.data?.listData[0]);
         this.menuOptions=[{orgName:response?.data?.listData[0].orgName ,
-           id:response?.data?.listData[0].orgId}];
-           
+           id:response?.data?.listData[0].orgId}];         
         if(this.pageTitle==='View'){
           this.createForm.disable();
         }
@@ -78,6 +75,7 @@ export class BranchComponent implements OnInit {
 
 
   initializeForm() {
+    this.orgId=Number(localStorage.getItem('orgId'));
     this.createForm = this.formBuilder.group({
       id:[''],
       name:['',Validators.required],
@@ -85,7 +83,7 @@ export class BranchComponent implements OnInit {
       address: ['', Validators.required],
       remarks: ['', Validators.required],
       location:[''],
-      orgId:['']
+      orgId:[Number(localStorage.getItem('orgId'))]
     });
   }
 
@@ -144,7 +142,7 @@ export class BranchComponent implements OnInit {
       dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString(),
-      entity:'Organization'
+      entity:'Branch'
     };
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
@@ -169,7 +167,7 @@ export class BranchComponent implements OnInit {
      remarks:this.createForm.value.remarks,
      entity:this.entity,
      location:this.createForm.value.location,
-     orgId:this.createForm.value.orgId,
+     orgId:this.orgId,
   } ;
 
     this.commmonService.sendPostPutReq<any>(apiUrl, org,this.method).subscribe({

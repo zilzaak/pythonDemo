@@ -1,158 +1,136 @@
 <!-- Main Content Area -->
 <div class="content-container">
 
-  <div class="page-header">
-    <div class="row align-items-center">
-        <div class="col">
-           <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Base</a></li>
-                <li class="breadcrumb-item active">Organization</li>
-                <li class="breadcrumb-item active">List</li>
-            </ul>
+  <!-- Page Header -->
+  <div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+    <ul class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Base</a></li>
+      <li class="breadcrumb-item active">Branch</li>
+      <li class="breadcrumb-item active">List</li>
+    </ul>
+
+    <button class="btn btn-primary btn-sm" routerLink="/base/branch/create">
+      <i class="fas fa-plus-circle"></i> Create
+    </button>
+  </div>
+
+  <!-- Search Card (full width, aligned) -->
+  <div class="card mb-3 mt-2">
+    <div class="card-body">
+      <form novalidate [formGroup]="searchForm" class="d-flex gap-2 align-items-end flex-wrap">
+        <div class="flex-grow-1" style="min-width: 240px;">
+          <label class="form-label small mb-1">Name / Phone / Address</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="commonField"
+            placeholder="Search by name, phone or address..." />
         </div>
-    </div>
-     </div>
-
-    <button class="btn btn-primary btn-sm" routerLink="/base/organization/create">
-       <i class="fas fa-plus-circle"></i>Create</button>
-
-        <br/>
-    <!-- Table Container -->
-
-        <!---- search div start -->
-<div class="card mb-2 mt-2" style="background-color:transparent;margin-left:23%;margin-right:24%;">
-  <div class="card-body p-3">
-     <form novalidate [formGroup]="searchForm">
-          <div class="row filter-row" >
-
-            <div class="col-sm-6 col-md-3"></div>
-
-            <div class="col-sm-6 col-md-3">
-              <div class="form-group form-focus">
-                <label class="focus-label">Name/Phone/Address</label>
-                <input type="text" class="form-control"  formControlName="commonField"/> 
-                
-              </div>
-          </div>
-
-              <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus">
-                    <button class="btn btn-md btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
-                </div>
-            </div> 
-          </div>
+        <button type="button" class="btn btn-success" (click)="getList()">
+          <i class="fas fa-search"></i> Search
+        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="resetSearch()">
+          <i class="fas fa-undo"></i> Reset
+        </button>
       </form>
-
+    </div>
   </div>
+
+  <!-- Table -->
+  <div class="table-container table-responsive">
+    <table class="data-table table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>SL</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>Remarks</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th>Created By</th>
+          <th>Updated By</th>
+          <th class="text-center">Edit</th>
+          <th class="text-center">View</th>
+          <th class="text-center">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of listData; index as i">
+          <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+          <td>{{ x.name }}</td>
+          <td>{{ x.phone }}</td>
+          <td>{{ x.address }}</td>
+          <td>{{ x.remarks }}</td>
+          <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ x.updated ? (x.updated | date: 'yyyy-MM-dd') : '—' }}</td>
+          <td>{{ x.createBy || '—' }}</td>
+          <td>{{ x.updateBy || '—' }}</td>
+
+          <td class="text-center">
+            <a class="btn btn-sm btn-outline-primary"
+               routerLink="/base/branch/edit/{{x.id}}"
+               title="Edit">
+              <i class="fas fa-edit"></i>
+            </a>
+          </td>
+
+          <td class="text-center">
+            <a class="btn btn-sm btn-outline-info"
+               routerLink="/base/branch/view/{{x.id}}"
+               title="View">
+              <i class="fas fa-eye"></i>
+            </a>
+          </td>
+
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger"
+                    
+                    title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="listData.length === 0">
+          <td colspan="12" class="text-center text-muted py-4">
+            No branches found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination (single, bottom only) -->
+  <div class="pagination-container mt-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div class="pagination-info text-muted small">
+      Showing
+      {{ (currentPage - 1) * pageSize + 1 }}–{{
+        currentPage * pageSize > totalItems ? totalItems : currentPage * pageSize
+      }}
+      of {{ totalItems }} branches
+    </div>
+
+    <ul class="pagination mb-0">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage - 1)">
+          Previous
+        </a>
+      </li>
+
+      <li class="page-item" *ngFor="let page of getPageRange()"
+          [class.active]="page === currentPage">
+        <a class="page-link" href="javascript:void(0)" (click)="loadPage(page)">
+          {{ page }}
+        </a>
+      </li>
+
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage + 1)">
+          Next
+        </a>
+      </li>
+    </ul>
+  </div>
+
 </div>
-<!---- search div ended-->
-
-
-    <div class="pagination-container mt-3">
-      <ul class="pagination">
-        <!-- Previous Button -->
-        <li class="page-item" [class.disabled]="currentPage === 1">
-          <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage - 1)">
-            Previous
-          </a>
-        </li>
-    
-        <!-- Page Numbers -->
-        <li class="page-item" *ngFor="let page of getPageRange()" [class.active]="page === currentPage">
-          <a class="page-link" href="javascript:void(0)" (click)="loadPage(page)">
-            {{ page }}
-          </a>
-        </li>
-    
-        <!-- Next Button -->
-        <li class="page-item" [class.disabled]="currentPage === totalPages">
-          <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage + 1)">
-            Next
-          </a>
-        </li>
-      </ul>
-    
-      <!-- Info Text -->
-      <div class="pagination-info mt-2 text-center">
-        Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} total items)
-      </div>
-    </div>
-
-
-    <div class="table-container">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>SL</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Remarks</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th>Create By</th>
-            <th>Update By</th>
-            <th>Edit</th>
-            <th>View</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let x of listData; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ x.name}}</td>
-            <td>{{ x.phone}}</td>
-            <td>{{ x.address}}</td>
-            <td>
-              <span>
-                {{ x.remarks}}
-              </span>
-
-            </td>
-            <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ x.createBy}}</td>
-            <td>{{ x.updateBy }}</td>
-            <td><a  routerLink="/base/organization/edit/{{x.id}}"><i class="fas fa-edit"></i></a></td>
-            <td> <a  routerLink="/base/organization/view/{{x.id}}"><i class="fas fa-eye"></i></a></td>
-            <td> <a ><i class="fas fa-delete"></i></a></td>
-
-          </tr>
-  
-          <tr *ngIf="listData.length === 0">
-            <td colspan="5">No users found.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="pagination-container mt-3">
-      <ul class="pagination">
-        <!-- Previous Button -->
-        <li class="page-item" [class.disabled]="currentPage === 1">
-          <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage - 1)">
-            Previous
-          </a>
-        </li>
-    
-        <!-- Page Numbers -->
-        <li class="page-item" *ngFor="let page of getPageRange()" [class.active]="page === currentPage">
-          <a class="page-link" href="javascript:void(0)" (click)="loadPage(page)">
-            {{ page }}
-          </a>
-        </li>
-    
-        <!-- Next Button -->
-        <li class="page-item" [class.disabled]="currentPage === totalPages">
-          <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage + 1)">
-            Next
-          </a>
-        </li>
-      </ul>
-    
-      <!-- Info Text -->
-      <div class="pagination-info mt-2 text-center">
-        Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} total items)
-      </div>
-    </div>
-  </div>

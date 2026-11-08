@@ -152,7 +152,7 @@ export class InvCrudComponent implements OnInit {
       pageSize: this.pageSize.toString()
     };
 
-    let uri = this.baseUrl + '/base/organization/list';
+    let uri = this.baseUrl + '/base/branch/list';
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         this.menuOptions = response?.data?.listData || [];
@@ -178,7 +178,7 @@ export class InvCrudComponent implements OnInit {
       pageSize: this.pageSize.toString()
     };
 
-    let uri = this.baseUrl + '/base/organization/list';
+    let uri = this.baseUrl + '/base/branch/list';
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         this.branchOptions = response?.data?.listData || [];
@@ -192,7 +192,7 @@ export class InvCrudComponent implements OnInit {
 
   private performSearchBranch(term: string): void {
     this.loadDropdownBranch = true;
-    let uri = this.baseUrl + '/base/organization/list';
+    let uri = this.baseUrl + '/base/branch/list';
     let params: any = {
       commonField: term,
       orgId: this.createForm.value.orgId,
@@ -216,7 +216,7 @@ export class InvCrudComponent implements OnInit {
 
   private performSearch(term: string): void {
     this.loadDropdown = true;
-    let uri = this.baseUrl + '/base/organization/list';
+    let uri = this.baseUrl + '/base/inventory/list';
     let params: any = {
       commonField: term,
       dropDown: 'dropDown',

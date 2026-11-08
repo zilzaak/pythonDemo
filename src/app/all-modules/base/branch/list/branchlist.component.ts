@@ -145,6 +145,12 @@ export class BranchlistComponent implements OnInit {
     });
   }
 
+  resetSearch() {
+  this.searchForm.reset({ commonField: '' });
+  this.currentPage = 1;
+  this.getList();
+}
+
   private performSearch(term: string): void {
     this.loadingDropdown = true;
     let uri = this.baseUrl + '/base/branch/list';

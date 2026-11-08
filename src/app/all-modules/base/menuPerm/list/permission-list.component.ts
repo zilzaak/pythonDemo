@@ -208,7 +208,7 @@ this.uvalue=x.value
      loadMethod:"loadMethod"
     }
 
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     this.commonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         if(menu==='menu'){
@@ -237,7 +237,7 @@ this.uvalue=x.value
      menuSearch:"menuSearch"
     }
 
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     this.commonService.getWithToken(uri, params).subscribe({
       next: (response) => {
           this.parentMenuOptions = response?.data?.listData || [];
@@ -255,7 +255,7 @@ this.uvalue=x.value
       this.loadingDropdown = true;
     }
 
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     let params: any={
       menu: term,
       loadMethod:"loadMethod",
@@ -279,7 +279,7 @@ this.uvalue=x.value
 
   private performSearchp(term: string): void {
   this.loadingDropdownp = true;
-let uri=this.baseUrl+"/base/module/list";
+let uri=this.baseUrl+"/base/menu/list";
 let params: any={
   menu: term,
   menuSearch:"menuSearch",

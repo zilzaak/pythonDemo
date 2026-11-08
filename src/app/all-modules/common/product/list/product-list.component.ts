@@ -249,7 +249,7 @@ export class ProductListComponent implements OnInit {
        loadMethod:"loadMethod"
       }
   
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     this.commonService.getWithToken(uri, params).subscribe({
       next: (response) => {
           this.urlOptions = response?.data?.listData || [];
@@ -278,7 +278,7 @@ export class ProductListComponent implements OnInit {
        menuSearch:"menuSearch"
       }
    
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     this.commonService.getWithToken(uri, params).subscribe({
       next: (response) => {
           this.menuOptions = response?.data?.listData || [];
@@ -296,7 +296,7 @@ export class ProductListComponent implements OnInit {
 private performSearchm(): void {
   console.log("performSearchm()()")
 this.loadingDropdownm = true;
-let uri=this.baseUrl+"/base/module/list";
+let uri=this.baseUrl+"/base/menu/list";
 let params: any;
   params={
     menu: this.mvalue,
@@ -322,7 +322,7 @@ error: (err) => {
 
   private performSearchu(): void {
       this.loadingDropdownu = true;  
-    let uri=this.baseUrl+"/base/module/list";  
+    let uri=this.baseUrl+"/base/menu/list";  
     let params: any;
       params={
         menu: this.uvalue,

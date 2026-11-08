@@ -43,14 +43,14 @@ export class MenuCreateComponent implements OnInit {
 
     if (this.pageTitle === 'Create') {
       this.opMode = 'create';
-      this.api = this.baseUrl + '/base/module/create';
+      this.api = this.baseUrl + '/base/menu/create';
     } else if (this.pageTitle === 'Edit') {
       this.opMode = 'edit';
-      this.api = this.baseUrl + '/base/module/update';
+      this.api = this.baseUrl + '/base/menu/update';
       this.formData(this.activeRouter.snapshot.params.id);
     } else if (this.pageTitle === 'View') {
       this.opMode = 'view';
-      this.api = this.baseUrl + '/base/module/list';
+      this.api = this.baseUrl + '/base/menu/list';
       this.formData(this.activeRouter.snapshot.params.id);
     }
   }
@@ -60,7 +60,7 @@ export class MenuCreateComponent implements OnInit {
 
   formData(id: any) {
     const para = { moduleId :id , menuDetails:"menuDetails"};
-    this.commmonService.getWithToken(this.baseUrl + '/base/module/list', para).subscribe({
+    this.commmonService.getWithToken(this.baseUrl + '/base/menu/list', para).subscribe({
       next: (response) => {
         this.menuOptions=response?.data?.listData;
         let k:any=response?.data?.parent?.apiSeq.toString()+'-'+response?.data?.parent?.menu
@@ -183,7 +183,7 @@ return;
     pageSize: this.pageSize.toString()
     }
 
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         if(menu==='parent'){
@@ -211,7 +211,7 @@ return;
       this.loadingDropdown2 = true;
     }
 
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     let params: any={
       menu: term,
       menuSearch:"menuSearch",
@@ -238,6 +238,13 @@ return;
             "id":null}
            ]
         }
+      if(this.opMode==='edit' &&  menu==='menu' &&  this.menuOptions.length < 1  ){
+           this.menuOptions=[
+            {"moduleName":term,
+            "ddlCode":term,
+            "id":this.activeRouter.snapshot.params.id}
+           ]
+        }
       },
       error: (err) => {
         this.loadingDropdown = false; 
@@ -254,7 +261,7 @@ return;
     for(let obj of this.menuOptions){
         if(menu===obj.moduleName){
           this.createForm.controls['id'].setValue(obj.id);
-          let uri=this.baseUrl+"/base/module/list";
+          let uri=this.baseUrl+"/base/menu/list";
           let params: any={ moduleId: obj.id,menuDetails:"menuDetails" }
           this.commmonService.getWithToken(uri, params).subscribe({
             next: (response) => {
@@ -284,7 +291,7 @@ return;
     this.initializeForm();
     this.pageTitle = 'Edit'
     this.opMode = 'edit';
-    this.api = this.baseUrl + '/base/module/update';
+    this.api = this.baseUrl + '/base/menu/update';
     this.formData(x);
   }
   navigateToView(x:any){

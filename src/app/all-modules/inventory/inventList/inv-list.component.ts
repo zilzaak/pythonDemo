@@ -86,7 +86,7 @@ export class InvListComponent implements OnInit {
       pageSize: this.pageSize.toString()
     };
 
-    let uri = this.baseUrl + '/base/organization/list';
+    let uri = this.baseUrl + '/base/branch/list';
     this.commonService.getWithToken(uri, params).subscribe({
       next: (response) => {
         this.branchOptions = response?.data?.listData || [];
@@ -100,7 +100,7 @@ export class InvListComponent implements OnInit {
 
   private performSearchBranch(term: string): void {
     this.loadDropdownBranch = true;
-    let uri = this.baseUrl + '/base/organization/list';
+    let uri = this.baseUrl + '/base/branch/list';
     let params: any = {
       commonField: term,
       orgId: this.searchForm.value.orgId,

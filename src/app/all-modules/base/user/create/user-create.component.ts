@@ -168,7 +168,7 @@ export class UserCreateComponent implements OnInit {
     pageSize: this.pageSize.toString()
     }
 
-    let uri=this.baseUrl+"/base/module/list";
+    let uri=this.baseUrl+"/base/menu/list";
     this.commmonService.getWithToken(uri, params).subscribe({
       next: (response) => {
           this.menuOptions = response?.data?.listData || [];
