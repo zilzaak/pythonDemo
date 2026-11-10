@@ -173,13 +173,9 @@ export class BranchComponent implements OnInit {
     this.commmonService.sendPostPutReq<any>(apiUrl, org,this.method).subscribe({
       next: (response: any) => {
         if (response.success) {
-          if(this.entity==='Organization'){
-            this.router.navigate(['/base/organization/list']);
-          }
-          if(this.entity==='Branch'){
-            this.router.navigate(['/base/branch/list']);
-          }
-
+          
+       this.router.navigate(['/base/branch/list']);
+          
         } else {
           alert(response.message);
         }

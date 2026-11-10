@@ -33,7 +33,9 @@ export class CommonServiceService {
     return this.getWithToken(this.baseUrl+'/base/permittedModule/getMenu');
   }
 
- public sendPostPutReq<T>(apiURL:any, data: any,method:any): Observable<T>{
+ public sendPostPutReq<T>(apiURL:any, data: any[],method:any): Observable<T>{
+    console.log("oooooooooooooooooooooooo");
+  console.log(data);
   const headers = this.getHeaders();
 if(method.toString()==='post'){
   return this.http.post<T>(apiURL, data, { headers });

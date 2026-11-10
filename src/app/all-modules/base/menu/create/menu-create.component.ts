@@ -73,7 +73,7 @@ export class MenuCreateComponent implements OnInit {
         this.createForm.controls['menu'].setValue(response?.data?.listData[0].moduleName);
         this.createForm.controls['parentMenu'].setValue(response?.data?.parent?.menu);
         this.createForm.controls['apiSeq'].setValue(response?.data?.listData[0].apiSeq);
-        this.createForm.controls['apiPattern'].setValue(response?.data?.listData[0].apiPattern);
+        this.createForm.controls['apiPattern'].setValue(response?.data?.listData[0].apiSeq);
         this.createForm.controls['frontUrl'].setValue(response?.data.listData[0].frontUrl);
         this.createForm.controls['methodName'].setValue(response?.data?.listData[0].methodName);
         this.createForm.controls['parentId'].setValue(response?.data?.parent?.id);
@@ -110,7 +110,7 @@ export class MenuCreateComponent implements OnInit {
       parentMenu: [''],
       apiPattern: [''],
       methodName: [''],
-      apiSeq: ['',Validators.required],
+      apiSeq: [''],
       parentId:[''],
     });
   }
@@ -122,10 +122,21 @@ export class MenuCreateComponent implements OnInit {
 return;
     }
     this.loading = true;
-    let payload:any={ ...this.createForm.value};
     let method = this.opMode === 'create' ? 'post' : 'put';
     let formData:any[]=[];
-    formData.push(payload);
+      formData[0] = {
+        id: this.createForm.controls['id'].value,
+        frontUrl: this.createForm.controls['frontUrl'].value,
+        menu: this.createForm.controls['menu'].value,
+        parentMenu: this.createForm.controls['parentMenu'].value,
+        apiPattern: this.createForm.controls['apiPattern'].value,
+        methodName: this.createForm.controls['methodName'].value,
+        apiSeq: this.createForm.controls['apiSeq'].value,
+        parentId: this.createForm.controls['parentId'].value,
+      };
+
+    console.log("form data is ");
+    console.log(formData);
     this.commmonService.sendPostPutReq<any>(this.api.toString(), formData,method).subscribe({
       next: (response: any) => {
         if (response.success) {
