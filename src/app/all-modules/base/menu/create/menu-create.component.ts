@@ -69,6 +69,7 @@ export class MenuCreateComponent implements OnInit {
           moduleName:response?.data?.parent?.menu,
           ddlCode:k
      }];
+
         this.createForm.controls['id'].setValue(response?.data?.listData[0].id);
         this.createForm.controls['menu'].setValue(response?.data?.listData[0].moduleName);
         this.createForm.controls['parentMenu'].setValue(response?.data?.parent?.menu);
@@ -77,6 +78,7 @@ export class MenuCreateComponent implements OnInit {
         this.createForm.controls['frontUrl'].setValue(response?.data.listData[0].frontUrl);
         this.createForm.controls['methodName'].setValue(response?.data?.listData[0].methodName);
         this.createForm.controls['parentId'].setValue(response?.data?.parent?.id);
+        this.createForm.controls['sidebarElement'].setValue(response?.data?.listData[0].sidebarElement);
         this.childMenuDetails=response?.data?.childMenus;
         this.parentMenuDetails=response.data.parent;
 
@@ -112,15 +114,22 @@ export class MenuCreateComponent implements OnInit {
       methodName: [''],
       apiSeq: [''],
       parentId:[''],
+      sidebarElement:[true],
     });
   }
 
+
+
+
+
   onSubmit() {
+
     if (this.opMode === 'view') return;
     if(this.createForm.invalid){
       alert("Invalid form");
-return;
+     return;
     }
+
     this.loading = true;
     let method = this.opMode === 'create' ? 'post' : 'put';
     let formData:any[]=[];
@@ -133,6 +142,7 @@ return;
         methodName: this.createForm.controls['methodName'].value,
         apiSeq: this.createForm.controls['apiSeq'].value,
         parentId: this.createForm.controls['parentId'].value,
+        sidebarElement: this.createForm.controls['sidebarElement'].value,
       };
 
     console.log("form data is ");
@@ -140,10 +150,10 @@ return;
     this.commmonService.sendPostPutReq<any>(this.api.toString(), formData,method).subscribe({
       next: (response: any) => {
         if (response.success) {
-          alert(response.data);
+          alert(response.message);
           this.router.navigate(['/base/menu/list']);
         } else {
-          alert(response.data);
+          alert(response.message);
         }
       },
       error: () => {

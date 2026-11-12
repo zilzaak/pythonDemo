@@ -131,10 +131,10 @@ export class PermissionCreateComponent implements OnInit {
     this.commmonService.sendPostPutReq<any>(this.api.toString(), formData,method).subscribe({
       next: (response: any) => {
         if (response.success) {
-          alert(response.message);
+          alert(response.data.message);
           this.router.navigate(['/base/menuPerm/list']);
         } else {
-          alert(response.message);
+          alert(response.data.message);
           this.router.navigate(['/base/menuPerm/list']);
         }
       },

@@ -22,6 +22,7 @@
           <tr>
             <th>SL</th>
             <th>Authority</th>
+            <th>Remarks</th>
             <th>Created</th>
             <th>Updated</th>
             <th>Edit</th>
@@ -31,7 +32,8 @@
         <tbody>
           <tr *ngFor="let role of listData; index as i">
             <td>{{ i + 1 }}</td>
-            <td>{{ role.authority }}</td>
+            <td>{{ role?.authority }}</td>
+            <td>{{ role?.remarks }}</td>
             <td>{{ role.created | date: 'yyyy-MM-dd' }}</td>
             <td>{{ role.updated | date: 'yyyy-MM-dd' }}</td>
             <td><a  routerLink="/base/role/edit/{{role.id}}"><i class="fas fa-edit"></i></a></td>
