@@ -48,13 +48,18 @@ export class PermissionListComponent implements OnInit {
   currentPagep = 1;
   pageSizeP = 10;   
 
+  selectedParentOption: any = null;
+  selectedMenuOption: any = null;
+  selectedRoleOption: any = null;
+  selectedUserOption: any = null;
+
   constructor(private commonService:CommonServiceService,   
      private formBuilder: FormBuilder,) { }
 
   ngOnInit(): void {
- this.initForm();
- this.fetchRoles();
- this.loadPage(1);
+    this.initForm();
+    this.fetchRoles();
+    this.restoreSearchState();
   }
 
   initForm(){
@@ -65,6 +70,99 @@ export class PermissionListComponent implements OnInit {
       menuId:[''],
       parentMenuId:['']
     });
+  }
+
+  saveSearchState(): void {
+    const parentId = this.searchForm.value.parentMenuId;
+    const menuId = this.searchForm.value.menuId;
+    const roleId = this.searchForm.value.roleId;
+    const userId = this.searchForm.value.userId;
+
+    const parentOpt = parentId ? (this.parentMenuOptions?.find((m: any) => m.id === parentId) || this.selectedParentOption) : null;
+    const menuOpt = menuId ? (this.menuOptions?.find((u: any) => u.id === menuId) || this.selectedMenuOption) : null;
+    const roleOpt = roleId ? (this.roleList?.find((r: any) => r.id === roleId) || this.selectedRoleOption) : null;
+    const userOpt = userId ? (this.userOptions?.find((u: any) => u.id === userId) || this.selectedUserOption) : null;
+
+    const state = {
+      parentMenuId: parentId || '',
+      menuId: menuId || '',
+      roleId: roleId || '',
+      userId: userId || '',
+      currentPage: this.currentPage,
+      selectedParentOption: parentOpt || null,
+      selectedMenuOption: menuOpt || null,
+      selectedRoleOption: roleOpt || null,
+      selectedUserOption: userOpt || null
+    };
+
+    sessionStorage.setItem('menu_perm_search_state', JSON.stringify(state));
+  }
+
+  restoreSearchState(): void {
+    const savedStateStr = sessionStorage.getItem('menu_perm_search_state');
+    if (savedStateStr) {
+      try {
+        const savedState = JSON.parse(savedStateStr);
+        if (savedState) {
+          if (savedState.selectedParentOption) {
+            this.selectedParentOption = savedState.selectedParentOption;
+            this.parentMenuOptions = [savedState.selectedParentOption];
+          }
+          if (savedState.selectedMenuOption) {
+            this.selectedMenuOption = savedState.selectedMenuOption;
+            this.menuOptions = [savedState.selectedMenuOption];
+          }
+          if (savedState.selectedUserOption) {
+            this.selectedUserOption = savedState.selectedUserOption;
+            this.userOptions = [savedState.selectedUserOption];
+          }
+          if (savedState.selectedRoleOption) {
+            this.selectedRoleOption = savedState.selectedRoleOption;
+            if (!this.roleList || this.roleList.length === 0) {
+              this.roleList = [savedState.selectedRoleOption];
+            }
+          }
+
+          this.searchForm.patchValue({
+            parentMenuId: savedState.parentMenuId || '',
+            menuId: savedState.menuId || '',
+            roleId: savedState.roleId || '',
+            userId: savedState.userId || ''
+          });
+
+          const pageToLoad = savedState.currentPage ? Number(savedState.currentPage) : 1;
+          this.loadPage(pageToLoad);
+          return;
+        }
+      } catch (e) {
+        console.error('Error restoring menu permission search state', e);
+      }
+    }
+    this.loadPage(1);
+  }
+
+  onParentMenuChange(selected: any): void {
+    this.selectedParentOption = selected || null;
+    this.currentPage = 1;
+    this.getList();
+  }
+
+  onMenuChange(selected: any): void {
+    this.selectedMenuOption = selected || null;
+    this.currentPage = 1;
+    this.getList();
+  }
+
+  onRoleChange(selected: any): void {
+    this.selectedRoleOption = selected || null;
+    this.currentPage = 1;
+    this.getList();
+  }
+
+  onUserChange(selected: any): void {
+    this.selectedUserOption = selected || null;
+    this.currentPage = 1;
+    this.getList();
   }
 
   getPageRange(): number[] {
@@ -132,6 +230,8 @@ this.uvalue=x.value
     params.parentMenuId=this.searchForm.value.parentMenuId;
   }
 
+  this.saveSearchState();
+
   console.log("search form vaue is ");
   console.log(this.searchForm.value);
   console.log("params vaue is ");
@@ -153,6 +253,14 @@ this.uvalue=x.value
   }
 
   reset() {
+    sessionStorage.removeItem('menu_perm_search_state');
+    this.selectedParentOption = null;
+    this.selectedMenuOption = null;
+    this.selectedRoleOption = null;
+    this.selectedUserOption = null;
+    this.parentMenuOptions = [];
+    this.menuOptions = [];
+    this.userOptions = [];
     this.searchForm.reset();
     this.loadPage(1);
   }
@@ -299,6 +407,9 @@ this.commonService.getWithToken(uri, params).subscribe({
 }
 
 deleteData(x:any){
+  if (!confirm('Are you sure you want to delete this menu permission?')) {
+    return;
+  }
   let formData:any={
     id:x
   };

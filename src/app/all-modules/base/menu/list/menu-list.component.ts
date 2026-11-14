@@ -42,12 +42,14 @@ export class MenuListComponent implements OnInit {
 
   uvalue:any;
   mvalue:any;
+  selectedParentOption: any = null;
+  selectedUrlOption: any = null;
 
   constructor(private commonService:CommonServiceService,    private formBuilder: FormBuilder,) { }
 
   ngOnInit(): void {
- this.initForm();
- this.loadPage(1);
+    this.initForm();
+    this.restoreSearchState();
   }
 
   initForm(){
@@ -57,6 +59,68 @@ export class MenuListComponent implements OnInit {
       backendUrl:[''],
       frontendUrl:['']
     })
+  }
+
+  saveSearchState(): void {
+    const parentId = this.searchForm.value.parentMenuId;
+    const backendUrl = this.searchForm.value.backendUrl;
+    const frontendUrl = this.searchForm.value.frontendUrl;
+
+    const parentOpt = this.menuOptions?.find((m: any) => m.id === parentId) || this.selectedParentOption;
+    const urlOpt = this.urlOptions?.find((u: any) => u.id === backendUrl) || this.selectedUrlOption;
+
+    const state = {
+      parentMenuId: parentId || '',
+      backendUrl: backendUrl || '',
+      frontendUrl: frontendUrl || '',
+      currentPage: this.currentPage,
+      selectedParentOption: parentOpt || null,
+      selectedUrlOption: urlOpt || null
+    };
+
+    sessionStorage.setItem('menu_list_search_state', JSON.stringify(state));
+  }
+
+  restoreSearchState(): void {
+    const savedStateStr = sessionStorage.getItem('menu_list_search_state');
+    if (savedStateStr) {
+      try {
+        const savedState = JSON.parse(savedStateStr);
+        if (savedState) {
+          if (savedState.selectedParentOption) {
+            this.selectedParentOption = savedState.selectedParentOption;
+            this.menuOptions = [savedState.selectedParentOption];
+          }
+          if (savedState.selectedUrlOption) {
+            this.selectedUrlOption = savedState.selectedUrlOption;
+            this.urlOptions = [savedState.selectedUrlOption];
+          }
+
+          this.searchForm.patchValue({
+            parentMenuId: savedState.parentMenuId || '',
+            backendUrl: savedState.backendUrl || '',
+            frontendUrl: savedState.frontendUrl || ''
+          });
+
+          const pageToLoad = savedState.currentPage ? Number(savedState.currentPage) : 1;
+          this.loadPage(pageToLoad);
+          return;
+        }
+      } catch (e) {
+        console.error('Error restoring menu list search state', e);
+      }
+    }
+    this.loadPage(1);
+  }
+
+  onParentMenuChange(selected: any): void {
+    this.selectedParentOption = selected || null;
+    this.getList();
+  }
+
+  onBackendUrlChange(selected: any): void {
+    this.selectedUrlOption = selected || null;
+    this.getList();
   }
 
   getPageRange(): number[] {
@@ -101,6 +165,8 @@ export class MenuListComponent implements OnInit {
     params.frontendUrl=this.searchForm.value.frontendUrl;
   }
 
+    this.saveSearchState();
+
     this.commonService.getWithToken(this.baseUrl+'/base/menu/list', params)
       .subscribe({
         next: (response) => {
@@ -118,6 +184,11 @@ export class MenuListComponent implements OnInit {
 
 
   reset() {
+    sessionStorage.removeItem('menu_list_search_state');
+    this.selectedParentOption = null;
+    this.selectedUrlOption = null;
+    this.menuOptions = [];
+    this.urlOptions = [];
     this.searchForm.reset();
     this.loadPage(1);
   }
@@ -292,6 +363,9 @@ error: (err) => {
       }
 
       deleteMenu(x:any){
+        if (!confirm('Are you sure you want to delete this menu?')) {
+          return;
+        }
         let formData:any={
           id:x
         };

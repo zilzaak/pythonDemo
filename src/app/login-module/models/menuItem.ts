@@ -8,6 +8,7 @@ export interface MenuItem {
   methodName:string; // backend api method , like post , put , get , patch etc 
   parentId:number;   // parent menu id 
   details:MenuItem[]; // cheild menu list under current menu
+  sidebarElement:boolean;
 
   }
   

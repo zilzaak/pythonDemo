@@ -182,7 +182,11 @@ export class InvListComponent implements OnInit {
 
 
   reset() {
-    this.searchForm.reset();
+    this.searchForm.reset({
+      orgId: Number(localStorage.getItem('orgId')),
+      name: '',
+      branchId: ''
+    });
     this.loadPage(1);
   }
 
@@ -190,22 +194,21 @@ export class InvListComponent implements OnInit {
    this.loadPage(this.currentPage);
   }
 
-      deleteMenu(x:any){
-        let formData:any={
-          id:x
-        };
-          this.commonService.sendDeleteRequest(this.baseUrl+"/setting/product/delete",formData).subscribe({
-          next: (response: any) => {
-            if (response.success) {
-              alert(response.message);
-              this.ngOnInit();
-            } else {
-              alert(response.message);
-            }
-          },
-          error: () => {
-          }
-        });
-
+  deleteMenu(x:any){
+    if (!confirm('Are you sure you want to delete this inventory?')) {
+      return;
+    }
+    this.commonService.sendDeleteRequest(this.baseUrl + "/inventory/delete/" + x, {}).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          alert(response.message);
+          this.loadPage(this.currentPage);
+        } else {
+          alert(response.message);
+        }
+      },
+      error: () => {
       }
+    });
+  }
 }

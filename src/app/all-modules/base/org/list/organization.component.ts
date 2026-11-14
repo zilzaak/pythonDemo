@@ -11,95 +11,112 @@ import { environment } from 'src/environments/environment';
 })
 export class OrganizationComponent implements OnInit {
 
-  loadingDropdown: boolean=false;
+  loadingDropdown: boolean = false;
   menuOptions: any;
-  hasMore: boolean=false;
+  hasMore: boolean = false;
   searchItem: any;
   private debounceTimer: any;
   currentPage = 1;
   pageSize = 10;
-  listData:any[]=[];
-  searchForm!:FormGroup;
-  baseUrl=environment.baseUrl;
+  listData: any[] = [];
+  searchForm!: FormGroup;
+  baseUrl = environment.baseUrl;
   totalItems = 0;
   totalPages = 0;
   pageTitle: any;
 
-  constructor(private commonService:CommonServiceService, 
-      private activeRouter: ActivatedRoute, 
-      private formBuilder: FormBuilder,) { }
+  constructor(
+    private commonService: CommonServiceService,
+    private activeRouter: ActivatedRoute,
+    private formBuilder: FormBuilder
+  ) { }
 
- ngOnInit(): void {
- this.initForm();
- this.loadPage(1);
+  ngOnInit(): void {
+    this.initForm();
+    this.loadPage(1);
   }
 
-  initForm(){
-    this.searchForm=this.formBuilder.group({
-      commonField:[''],
-      orgId:['']
-    })
+  initForm(): void {
+    this.searchForm = this.formBuilder.group({
+      commonField: [''],
+      orgId: ['']
+    });
   }
 
   getPageRange(): number[] {
     const maxVisiblePages = 5;
     const start = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
     const end = Math.min(this.totalPages, start + maxVisiblePages - 1);
-    const range = [];
-  
+    const range: number[] = [];
+
     for (let i = start; i <= end; i++) {
       range.push(i);
     }
-  
+
     return range;
   }
 
-  loadPage(page: number) {
-  if (page < 1 ) return;
+  loadPage(page: number): void {
+    if (page < 1) return;
 
-  this.currentPage = page;
-  let params:any;
-  params = {
-    pageNum: page.toString(),
-    pageSize: this.pageSize.toString(),
-  };
-  console.log("form value is ");
-  console.log( this.searchForm.value);
-  if(this.searchForm.value.commonField && this.searchForm.value.commonField!=null 
-    && this.searchForm.value.commonField!==''
-  ){
-    params.commonField=this.searchForm.value.commonField;
-  }
+    this.currentPage = page;
+    let params: any = {
+      pageNum: page.toString(),
+      pageSize: this.pageSize.toString()
+    };
 
-  params.orgId=Number(localStorage.getItem('orgId'))
-  
-    this.commonService.getWithToken(this.baseUrl+'/base/organization/list', params)
+    if (this.searchForm.value.commonField && this.searchForm.value.commonField != null && this.searchForm.value.commonField !== '') {
+      params.commonField = this.searchForm.value.commonField;
+    }
+
+    params.orgId = Number(localStorage.getItem('orgId'));
+
+    this.commonService.getWithToken(this.baseUrl + '/base/organization/list', params)
       .subscribe({
         next: (response) => {
-          this.listData = response.data.listData || [];
-          this.totalItems = response.data.totalItems;
-          this.totalPages = response.data.totalPages;
-          this.totalItems = response.data.totalItems;
-          this.pageSize = response.data.pageSize;
+          this.listData = response?.data?.listData || [];
+          this.totalItems = response?.data?.totalItems || 0;
+          this.totalPages = response?.data?.totalPages || 0;
+          this.pageSize = response?.data?.pageSize || this.pageSize;
         },
         error: (err) => {
-          console.error('Failed to load module list', err);
+          console.error('Failed to load organization list', err);
+          this.listData = [];
         }
       });
   }
 
-
-  reset() {
+  reset(): void {
     this.searchForm.reset();
     this.loadPage(1);
   }
 
-
-  getList(){
-   this.loadPage(this.currentPage);
+  getList(): void {
+    this.loadPage(this.currentPage);
   }
 
-  setSearch(x: any) {
+  deleteOrganization(id: any): void {
+    if (!confirm('Are you sure you want to delete this organization?')) {
+      return;
+    }
+    let formData: any = {
+      id: id,
+      entity: 'Organization'
+    };
+    this.commonService.sendDeleteRequest(this.baseUrl + '/base/organization/delete', formData).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          alert(response.message);
+          this.loadPage(this.currentPage);
+        } else {
+          alert(response.message);
+        }
+      },
+      error: () => {}
+    });
+  }
+
+  setSearch(x: any): void {
     this.searchItem = x.value;
   }
 
@@ -153,7 +170,7 @@ export class OrganizationComponent implements OnInit {
       dropDown: 'dropDown',
       pageNum: this.currentPage.toString(),
       pageSize: this.pageSize.toString(),
-      entity:'Organization'
+      entity: 'Organization'
     };
     this.commonService.getWithToken(uri, params).subscribe({
       next: (response) => {

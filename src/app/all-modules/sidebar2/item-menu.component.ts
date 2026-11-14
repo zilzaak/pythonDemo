@@ -15,16 +15,9 @@ export class ItemMenuComponent{
 
 
   checkUrl(menu:MenuItem):boolean{
-    let  apiEndPart = ['create', 'update','delete','get','edit'];
-  if(menu.apiPattern==null){
+    
    return true;
-  }
-  let strArr=menu.apiPattern.toString().split("/");
-  let lastPart=strArr[strArr.length-1];
-  if(apiEndPart.includes(lastPart)){
-    return false;
-  }
-   return true;
+
   }
 
 

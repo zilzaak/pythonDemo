@@ -1,217 +1,298 @@
 <!-- Main Content Area -->
 <div class="content-container">
-  <div class="page-header">
-    <div class="row align-items-center">
-        <div class="col">
-           <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Base</a></li>
-                <li class="breadcrumb-item active">Menu Permission</li>
-                <li class="breadcrumb-item active">List</li>
-            </ul>
-        </div>
+
+  <!-- Page Header -->
+  <div class="page-header mb-3">
+    <div class="row align-items-center g-2">
+      <div class="col-12 col-sm-auto">
+        <ul class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a routerLink="/base/menuPerm/list">Base</a></li>
+          <li class="breadcrumb-item active">Menu Permission</li>
+          <li class="breadcrumb-item active">List</li>
+        </ul>
+      </div>
+      <div class="col-12 col-sm-auto ms-sm-auto d-flex align-items-center gap-2">
+        <button class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1 shadow-sm" routerLink="/base/menuPerm/create">
+          <i class="fas fa-plus-circle"></i>
+          <span>Create</span>
+        </button>
+        <a id="backBtn" [routerLink]="['/base/menu/list']" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1"> 
+          <i class="fas fa-arrow-left"></i>
+          <span>Back</span>
+        </a>
+      </div>
     </div>
-     </div>
+  </div>
 
+  <!-- Search Filter Card -->
+  <div class="card search-card mb-3">
+    <div class="card-body p-3">
+      <form novalidate [formGroup]="searchForm">
+        <div class="row g-3 align-items-end">
 
-    <button  class="btn btn-primary btn-sm" routerLink="/base/menuPerm/create">
-       <i class="fas fa-plus-circle"></i>Create</button> <br/>
-    <!-- Table Container -->
-
-<!---- search div start -->
-<div class="card mb-2 mt-2" style="background-color:transparent;margin-left:15%;margin-right:20%;">
-  <div class="card-body p-3">
-     <form novalidate [formGroup]="searchForm">
-          <div class="row filter-row" >
-
-
-            <div class="col-sm-6 col-md-3">
-              <div class="form-group form-focus">
-                <label class="focus-label">Parent Menu</label>
-                <ng-select
+          <!-- Parent Menu -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="form-group form-focus">
+              <label class="focus-label">
+                <i class="fas fa-sitemap text-primary me-1"></i> Parent Menu
+              </label>
+              <ng-select
                 [items]="parentMenuOptions"
                 (keyup)="setpValue($event.target)"
                 bindLabel="moduleName"
                 bindValue="id"
                 formControlName="parentMenuId"
+                placeholder="Search Parent Menu..."
                 (search)="onSearchp()"
                 (scrollToEnd)="loadMorep()"
-                 [loading]="loadingDropdownp"
+                (change)="onParentMenuChange($event)"
+                [loading]="loadingDropdownp"
                 [clearable]="true"
                 [closeOnSelect]="true"
                 [editableSearchTerm]="false"
                 [addTag]="false" 
                 class="form-control-patch">
               </ng-select> 
-                
-              </div>
-          </div>
-
-                 <div class="col-sm-6 col-md-3">
-                  <div class="form-group form-focus">
-                    <label class="focus-label">Url</label>
-                    <ng-select
-                    [items]="menuOptions"
-                    bindLabel="urlCode"
-                    bindValue="id"
-                    formControlName="menuId"
-                    (search)="onSearch($event,'menu')"
-                    (scrollToEnd)="loadMore('menu')"
-                     [loading]="loadingDropdown"
-                    [clearable]="true"
-                    [closeOnSelect]="true"
-                    [editableSearchTerm]="false"
-                    [addTag]="false" 
-                    class="form-control-patch">
-                  </ng-select> 
-                    
-                  </div>
-              </div>
-
-              <div class="col-sm-6 col-md-2">
-                  <div class="form-group form-focus">
-                    <label class="focus-label">Role</label>
-                    <ng-select
-                    [items]="roleList"
-                    bindLabel="authority" bindValue="id"
-                    formControlName="roleId" class="form-control-patch">
-                  </ng-select>                     
-                  </div>
-              </div> 
-              
-              <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus">
-                  <label class="focus-label">User</label>
-                  <ng-select
-                  [items]="userOptions"
-                  bindLabel="username"
-                  bindValue="id"
-                  formControlName="userId"
-                  (search)="onSearchUser($event)"
-                  (scrollToEnd)="loadMoreUser()"
-                   [loading]="loadingDropdown3"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  [editableSearchTerm]="false"
-                  [addTag]="false" 
-                  (click)="setUser()"
-                  class="form-control-patch">
-                </ng-select> 
-                   
-                </div>
             </div>
-              <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus">
-                    <button class="btn btn-md btn-succes mt-4" (click)="getList()"><i class="fas fa-search"></i></button>              
-                </div>
-            </div> 
           </div>
+
+          <!-- URL / Menu -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="form-group form-focus">
+              <label class="focus-label">
+                <i class="fas fa-link text-info me-1"></i> Menu / Url
+              </label>
+              <ng-select
+                [items]="menuOptions"
+                bindLabel="urlCode"
+                bindValue="id"
+                formControlName="menuId"
+                placeholder="Search URL / Menu..."
+                (search)="onSearch($event,'menu')"
+                (scrollToEnd)="loadMore('menu')"
+                (change)="onMenuChange($event)"
+                [loading]="loadingDropdown"
+                [clearable]="true"
+                [closeOnSelect]="true"
+                [editableSearchTerm]="false"
+                [addTag]="false" 
+                class="form-control-patch">
+              </ng-select> 
+            </div>
+          </div>
+
+          <!-- Role -->
+          <div class="col-12 col-sm-6 col-lg-2">
+            <div class="form-group form-focus">
+              <label class="focus-label">
+                <i class="fas fa-user-tag text-warning me-1"></i> Role
+              </label>
+              <ng-select
+                [items]="roleList"
+                bindLabel="authority" 
+                bindValue="id"
+                formControlName="roleId" 
+                placeholder="Select Role..."
+                (change)="onRoleChange($event)"
+                [clearable]="true"
+                [closeOnSelect]="true"
+                class="form-control-patch">
+              </ng-select>                     
+            </div>
+          </div> 
+          
+          <!-- User -->
+          <div class="col-12 col-sm-6 col-lg-2">
+            <div class="form-group form-focus">
+              <label class="focus-label">
+                <i class="fas fa-user text-secondary me-1"></i> User
+              </label>
+              <ng-select
+                [items]="userOptions"
+                bindLabel="username"
+                bindValue="id"
+                formControlName="userId"
+                placeholder="Search User..."
+                (search)="onSearchUser($event)"
+                (scrollToEnd)="loadMoreUser()"
+                (change)="onUserChange($event)"
+                [loading]="loadingDropdown3"
+                [clearable]="true"
+                [closeOnSelect]="true"
+                [editableSearchTerm]="false"
+                [addTag]="false" 
+                (click)="setUser()"
+                class="form-control-patch">
+              </ng-select> 
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="col-12 col-lg-2">
+            <div class="d-flex align-items-center gap-2 search-btn-group">
+              <button type="button" class="btn btn-sm btn-primary flex-fill d-inline-flex align-items-center justify-content-center gap-1 shadow-sm" (click)="getList()">
+                <i class="fas fa-search"></i>
+                <span>Search</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-secondary flex-fill d-inline-flex align-items-center justify-content-center gap-1" (click)="reset()">
+                <i class="fas fa-undo"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+          </div> 
+
+        </div>
       </form>
-
+    </div>
   </div>
-</div>
-<!---- search div ended-->
 
-
-
-    <div class="pagination-container mt-3">
-      <ul class="pagination">
-        <!-- Previous Button -->
+  <!-- Top Pagination & Summary Bar -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2 px-1">
+    <div class="table-info-badge">
+      <span class="badge bg-light text-dark border">
+        <i class="fas fa-shield-alt me-1 text-primary"></i> Total: <strong>{{ totalItems }}</strong> permissions
+      </span>
+    </div>
+    <div class="pagination-wrapper" *ngIf="totalPages > 1">
+      <ul class="pagination pagination-sm mb-0">
         <li class="page-item" [class.disabled]="currentPage === 1">
           <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage - 1)">
-            Previous
+            <i class="fas fa-chevron-left"></i>
           </a>
         </li>
-    
-        <!-- Page Numbers -->
         <li class="page-item" *ngFor="let page of getPageRange()" [class.active]="page === currentPage">
           <a class="page-link" href="javascript:void(0)" (click)="loadPage(page)">
             {{ page }}
           </a>
         </li>
-    
-        <!-- Next Button -->
         <li class="page-item" [class.disabled]="currentPage === totalPages">
           <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage + 1)">
-            Next
+            <i class="fas fa-chevron-right"></i>
           </a>
         </li>
       </ul>
-    
-      <!-- Info Text -->
-      <div class="pagination-info mt-2 text-center">
-        Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} total items)
-      </div>
     </div>
+  </div>
 
-    <div class="table-container">
+  <!-- Table Card & Responsive Container -->
+  <div class="card table-card shadow-sm border-0">
+    <div class="table-responsive">
       <table class="data-table">
         <thead>
           <tr>
-            <th>SL</th>
+            <th class="text-center" style="width: 50px;">SL</th>
             <th>Menu</th>
             <th>Backend Url</th>
-            <th>Method</th>
-            <th>Permitted Users</th>
-            <th>Permitted Role's</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th>Action</th>
+            <th class="text-center" style="width: 95px;">Method</th>
+            <th>Permitted User</th>
+            <th>Permitted Role</th>
+            <th style="width: 105px;">Created</th>
+            <th style="width: 105px;">Updated</th>
+            <th class="text-center" style="width: 115px;">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let x of listData; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ x.menu}}</td>
-            <td>{{ x.backendUrl	}}</td>
-            <td>{{ x.methodName	}}</td>
-            <td>{{ x.username}}</td>
-            <td>{{ x.authority}}</td>
-            <td>{{ x.created | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ x.updated | date: 'yyyy-MM-dd' }}</td>
-
+            <td class="text-center text-muted fw-semibold">
+              {{ (currentPage - 1) * pageSize + i + 1 }}
+            </td>
             <td>
-              <span>
-                <a  routerLink="/base/menuPerm/edit/{{x.id}}"><i class="fas fa-edit"></i></a>
-                <a  routerLink="/base/menuPerm/view/{{x.id}}"><i class="fas fa-eye"></i></a>
-               <a ><i class="fas fa-delete" (click)="deleteData(x.id)">delete</i></a>
-              </span></td>
-
+              <span class="fw-semibold text-dark">
+                <i class="fas fa-folder me-1 text-primary opacity-75"></i>
+                {{ x.menu || '-' }}
+              </span>
+            </td>
+            <td>
+              <code class="url-code" *ngIf="x.backendUrl">
+                {{ x.backendUrl }}
+              </code>
+              <span *ngIf="!x.backendUrl" class="text-muted small">-</span>
+            </td>
+            <td class="text-center">
+              <span class="badge method-badge" [ngClass]="{
+                'method-get': x.methodName === 'GET',
+                'method-post': x.methodName === 'POST',
+                'method-put': x.methodName === 'PUT',
+                'method-delete': x.methodName === 'DELETE',
+                'method-patch': x.methodName === 'PATCH',
+                'bg-secondary': !x.methodName
+              }">
+                {{ x.methodName || '-' }}
+              </span>
+            </td>
+            <td>
+              <span *ngIf="x.username" class="badge bg-light text-dark border">
+                <i class="fas fa-user me-1 text-muted"></i>
+                {{ x.username }}
+              </span>
+              <span *ngIf="!x.username" class="text-muted small">-</span>
+            </td>
+            <td>
+              <span *ngIf="x.authority" class="badge bg-light text-primary border">
+                <i class="fas fa-shield-alt me-1"></i>
+                {{ x.authority }}
+              </span>
+              <span *ngIf="!x.authority" class="text-muted small">-</span>
+            </td>
+            <td class="small text-muted">
+              {{ x.created | date: 'yyyy-MM-dd' }}
+            </td>
+            <td class="small text-muted">
+              {{ x.updated | date: 'yyyy-MM-dd' }}
+            </td>
+            <td class="text-center">
+              <div class="action-btn-group d-inline-flex align-items-center gap-1">
+                <a routerLink="/base/menuPerm/edit/{{x.id}}" class="btn-action btn-action-edit" title="Edit Permission">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a routerLink="/base/menuPerm/view/{{x.id}}" class="btn-action btn-action-view" title="View Details">
+                  <i class="fas fa-eye"></i>
+                </a>
+                <button type="button" (click)="deleteData(x.id)" class="btn-action btn-action-delete" title="Delete Permission">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
           </tr>
-  
+
           <tr *ngIf="listData.length === 0">
-            <td colspan="5">No users found.</td>
+            <td colspan="9" class="text-center py-5 text-muted">
+              <div class="empty-state py-4">
+                <i class="fas fa-shield-alt fa-3x mb-3 text-muted opacity-50"></i>
+                <p class="mb-0 fw-medium">No menu permissions found</p>
+                <small class="text-muted">Try adjusting your search criteria</small>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+  </div>
 
-    <div class="pagination-container mt-3">
-      <ul class="pagination">
-        <!-- Previous Button -->
+  <!-- Bottom Pagination & Info -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3 pt-2 px-1">
+    <div class="pagination-info small text-muted">
+      Showing page {{ currentPage }} of {{ totalPages || 1 }} ({{ totalItems }} total records)
+    </div>
+    <div class="pagination-wrapper" *ngIf="totalPages > 1">
+      <ul class="pagination pagination-sm mb-0">
         <li class="page-item" [class.disabled]="currentPage === 1">
           <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage - 1)">
             Previous
           </a>
         </li>
-    
-        <!-- Page Numbers -->
         <li class="page-item" *ngFor="let page of getPageRange()" [class.active]="page === currentPage">
           <a class="page-link" href="javascript:void(0)" (click)="loadPage(page)">
             {{ page }}
           </a>
         </li>
-    
-        <!-- Next Button -->
         <li class="page-item" [class.disabled]="currentPage === totalPages">
           <a class="page-link" href="javascript:void(0)" (click)="loadPage(currentPage + 1)">
             Next
           </a>
         </li>
       </ul>
-    
-      <!-- Info Text -->
-      <div class="pagination-info mt-2 text-center">
-        Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} total items)
-      </div>
     </div>
   </div>
+
+</div>
