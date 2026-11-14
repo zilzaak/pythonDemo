@@ -1,24 +1,36 @@
-<li class="menu-item" [class.has-children]="menu.details.length > 0">
-  <div *ngIf="menu.details.length > 0" class="menu-parent" (click)="toggleMenu(menu.id)">
-    <span class="menu-label">
-      {{ menu.menu }}
-      <span class="toggle-icon">
-        {{ isMenuExpanded(menu.id) ? '▼' : '►' }}
-      </span>
-    </span>
+<li class="menu-item" 
+    [class.has-children]="menu.details && menu.details.length > 0" 
+    [class.is-expanded]="isMenuExpanded(menu.id)">
+  
+  <!-- Parent Menu with Children -->
+  <div *ngIf="menu.details && menu.details.length > 0" 
+       class="menu-parent" 
+       (click)="toggleMenu(menu.id)">
+    <div class="menu-label">
+      <div class="menu-title-group">
+        <i [class]="getMenuIcon(menu)" class="menu-icon"></i>
+        <span class="menu-text">{{ menu.menu }}</span>
+      </div>
+      <i class="fas fa-chevron-right toggle-icon" [class.rotated]="isMenuExpanded(menu.id)"></i>
+    </div>
   </div>
   
-  <span *ngIf="!menu.details.length">
-    <a  *ngIf="checkUrl(menu)===true"   routerLinkActive="active-menu"
-    [routerLink]="[menu.frontUrl]" class="menu-link">
-      {{ menu.menu }}
+  <!-- Leaf Menu Link (no children) -->
+  <div *ngIf="!menu.details || menu.details.length === 0" class="menu-leaf">
+    <a *ngIf="checkUrl(menu)" 
+       [routerLink]="[menu.frontUrl]" 
+       routerLinkActive="active-menu" 
+       class="menu-link">
+      <div class="menu-title-group">
+        <i [class]="getMenuIcon(menu)" class="menu-icon"></i>
+        <span class="menu-text">{{ menu.menu }}</span>
+      </div>
     </a>
-  </span>
+  </div>
 
-
-  <ul *ngIf="menu.details.length > 0 && isMenuExpanded(menu.id)" 
-      class="sub-menu" 
-      [style.padding-left.px]="15 + (level * 15)">
+  <!-- Recursive Sub-Menus -->
+  <ul *ngIf="menu.details && menu.details.length > 0 && isMenuExpanded(menu.id)" 
+      class="sub-menu">
     <app-item-menu 
       *ngFor="let child of menu.details"
       [menu]="child"

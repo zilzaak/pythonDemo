@@ -1,44 +1,69 @@
- <div id="topbar" class="row">
-  <div class="col-md-10">
+<!-- Top Navigation Bar -->
+<header id="topbar" class="topbar-navbar">
+  <!-- Brand / Logo Area -->
+  <div class="topbar-brand">
+    <div class="brand-icon-box">
+      <i class="fas fa-cubes text-primary"></i>
+    </div>
+    <span class="brand-name">Bongo Bonik</span>
   </div>
-  <div class="col-md-2">
-    <div class="row">
-<div class="col-sm-6">
-</div>
-<div class="col-sm-3" style="padding:3px;background-color: white;">  
-  <form [formGroup]="createForm">
-    <ng-select
-    [items]="organizations"
-    bindLabel="name"
-    bindValue="id"
-    formControlName="org"
-    (change)="setOrg($event)"
-    class="form-control-patch">
-  </ng-select> 
-  </form>
-</div>
-<div class="col-sm-3" style="padding:3px;">  
-  <button class="logOut" (click)="logOutUser()">Log Out</button>
-</div>
+
+  <!-- Right Section: Organization & Logout -->
+  <div class="topbar-right">
+    <!-- Organization Dropdown -->
+    <div class="org-selector" *ngIf="organizations && organizations.length > 0">
+      <form [formGroup]="createForm" class="d-flex align-items-center">
+        <label class="org-label d-none d-md-flex align-items-center me-2">
+          <i class="fas fa-building text-info me-1"></i>
+          <span>Org:</span>
+        </label>
+        <ng-select
+          [items]="organizations"
+          bindLabel="name"
+          bindValue="id"
+          formControlName="org"
+          (change)="setOrg($event)"
+          [clearable]="false"
+          [searchable]="false"
+          class="topbar-org-select">
+        </ng-select> 
+      </form>
     </div>
 
+    <!-- Logout Button -->
+    <button class="btn btn-sm btn-outline-danger logout-btn" (click)="logOutUser()" title="Log Out">
+      <i class="fas fa-sign-out-alt me-1"></i>
+      <span class="d-none d-sm-inline">Log Out</span>
+    </button>
   </div>
- </div>
- <div class="page-container">
-    <div class="sidebar-container">
-      <div *ngIf="loading" class="loading-message">Loading menu...</div>
-      <nav *ngIf="!loading">
-        <ul class="main-menu">
-          <app-item-menu 
-            *ngFor="let menuItem of menuList"
-            [menu]="menuItem"
-            [level]="0">
-          </app-item-menu>
-        </ul>
-      </nav>
+</header>
+
+<!-- Main Page Layout -->
+<div class="page-container">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar-container">
+    <div class="sidebar-header">
+      <span class="sidebar-heading">MAIN MENU</span>
     </div>
-    
-    <div class="content-container">
-      <router-outlet></router-outlet>
+
+    <div *ngIf="loading" class="loading-message">
+      <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+      <span>Loading menu...</span>
     </div>
-  </div>
+
+    <nav class="sidebar-nav" *ngIf="!loading">
+      <ul class="main-menu">
+        <app-item-menu 
+          *ngFor="let menuItem of menuList"
+          [menu]="menuItem"
+          [level]="0">
+        </app-item-menu>
+      </ul>
+    </nav>
+  </aside>
+  
+  <!-- Main Routed Content -->
+  <main class="content-container">
+    <router-outlet></router-outlet>
+  </main>
+</div>

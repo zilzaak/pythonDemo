@@ -9,6 +9,6 @@ export interface MenuItem {
   parentId:number;   // parent menu id 
   details:MenuItem[]; // cheild menu list under current menu
   sidebarElement:boolean;
-
-  }
+  icon?: string;
+}
   
